@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository <Book, Integer>{
-    //This is JPA Repository for books
+    //This is JPA Repository for books.
 }
