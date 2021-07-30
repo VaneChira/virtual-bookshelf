@@ -11,7 +11,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private Integer id;
 
     @Column(name="book_title")
     private String bookTitle;
@@ -26,19 +26,19 @@ public class Book {
     private String genre;
 
     @Column(name="rating")
-    private int rating;
+    private Float rating;
 
     @Column(name="number_of_ratings")
-    private int numberOfRatings;
+    private Integer numberOfRatings;
 
     @Column(name="image_url")
     private String imageUrl;
 
     @Column(name="pages")
-    private int pages;
+    private Integer pages;
 
     @Column(name="stock")
-    private int stock;
+    private Integer stock;
 
     @OneToMany(mappedBy = "book")
     Set<UserBook> userBooks;
@@ -46,7 +46,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(int id, String bookTitle, String author, String description, int rating, int numberOfRatings, String imageUrl, int pages, int stock) {
+    public Book(int id, String bookTitle, String author, String description, Float rating, int numberOfRatings, String imageUrl, int pages, int stock) {
         this.id = id;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -98,11 +98,11 @@ public class Book {
         this.genre = genre;
     }
 
-    public int getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
@@ -136,6 +136,10 @@ public class Book {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Set<UserBook> getUserBooks() {
+        return userBooks;
     }
 
     @Override
