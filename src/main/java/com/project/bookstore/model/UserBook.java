@@ -25,6 +25,6 @@ public class UserBook {
     @Column(name="progress_pages")
     Long progressPage;
 
-    @Column(name="date")
+    @Column(name="date_bought")
     Date boughtDate;
 }
