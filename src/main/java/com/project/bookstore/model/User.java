@@ -2,6 +2,7 @@ package com.project.bookstore.model;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
@@ -23,6 +24,9 @@ public class User {
 
     @Column(name="active")
     private boolean active;
+
+    @OneToMany(mappedBy = "user")
+    Set<UserBook> userBooks;
 
     public User(){
 

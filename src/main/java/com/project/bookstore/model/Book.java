@@ -2,6 +2,7 @@ package com.project.bookstore.model;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="book")
@@ -21,6 +22,9 @@ public class Book {
     @Column(name="description")
     private String description;
 
+    @Column(name="genre")
+    private String genre;
+
     @Column(name="rating")
     private int rating;
 
@@ -35,6 +39,9 @@ public class Book {
 
     @Column(name="stock")
     private int stock;
+
+    @OneToMany(mappedBy = "book")
+    Set<UserBook> userBooks;
 
     public Book() {
     }
@@ -81,6 +88,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getRating() {
@@ -130,6 +145,7 @@ public class Book {
                 ", bookTitle='" + bookTitle + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
+                ", genres='" + genre + '\'' +
                 ", rating=" + rating +
                 ", numberOfRatings=" + numberOfRatings +
                 ", imageUrl='" + imageUrl + '\'' +

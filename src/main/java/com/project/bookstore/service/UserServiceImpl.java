@@ -1,5 +1,6 @@
 package com.project.bookstore.service;
 
+import com.project.bookstore.exception.ResourceNotFoundException;
 import com.project.bookstore.model.User;
 import com.project.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,34 +15,49 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findUserById(int theId) {
-        Optional<User> result = userRepository.findById(theId);
-        User theUser = null;
+    public User findUserById(int id) {
+        Optional<User> result = userRepository.findById(id);
 
         if (result.isPresent()) {
-            theUser = result.get();
+            return result.get();
         }
         else {
-            throw new RuntimeException("Did not find user id - " + theId);
+            throw new ResourceNotFoundException("Did not find user id - " + id , User.class.getSimpleName());
         }
-        return theUser;
     }
 
     @Override
-    public void saveUser(User theUser) {
-        userRepository.save(theUser);
+    public User saveUser(User user) {
+       return userRepository.save(user);
     }
 
     @Override
-    public void deleteUserById(int theId) {
-        userRepository.deleteById(theId);
+    public void deleteUserById(int id) {
+        Optional<User> result = userRepository.findById(id);
+        if (result.isPresent()) {
+            userRepository.deleteById(id);
+        }
+        else {
+            throw new ResourceNotFoundException("Did not find user id - " + id, User.class.getSimpleName());
+        }
+    }
 
+    @Override
+    public User updateUser(User user, int id) {
+        Optional<User> result = userRepository.findById(id);
+        if (result.isPresent()) {
+            User updatedUser = user;
+            updatedUser.setId(id);
+            return userRepository.save(updatedUser);
+        }
+        else {
+            throw new ResourceNotFoundException("Did not find user id - " + id, User.class.getSimpleName());
+        }
     }
 }
