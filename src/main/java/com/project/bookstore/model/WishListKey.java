@@ -6,17 +6,18 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class UserBookKey implements Serializable {
+public class WishListKey implements Serializable {
+
     @Column(name = "user_id")
     Long userId;
 
     @Column(name = "book_id")
     Long bookId;
 
-    public UserBookKey() {
+    public WishListKey() {
     }
 
-    public UserBookKey(Long userId, Long bookId) {
+    public WishListKey(Long userId, Long bookId) {
         this.userId = userId;
         this.bookId = bookId;
     }
@@ -41,7 +42,7 @@ public class UserBookKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserBookKey that = (UserBookKey) o;
+        WishListKey that = (WishListKey) o;
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(bookId, that.bookId);
     }

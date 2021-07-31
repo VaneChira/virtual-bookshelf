@@ -2,7 +2,6 @@ package com.project.bookstore.model;
 
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name="book")
@@ -39,9 +38,6 @@ public class Book {
 
     @Column(name="stock")
     private Integer stock;
-
-    @OneToMany(mappedBy = "book")
-    Set<UserBook> userBooks;
 
     public Book() {
     }
@@ -136,10 +132,6 @@ public class Book {
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public Set<UserBook> getUserBooks() {
-        return userBooks;
     }
 
     @Override
