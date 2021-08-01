@@ -2,6 +2,7 @@ package com.project.bookstore.model;
 
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name="user")
@@ -21,18 +22,21 @@ public class User {
     @Column(name="email")
     private String email;
 
-    @Column(name="active")
-    private Boolean active;
+    @Column(name="password")
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection< Role > roles;
+
 
     public User(){
 
-    }
-
-    public User(int id, String name, String lastName, String email) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
     }
 
     public Integer getId() {
@@ -67,14 +71,21 @@ public class User {
         this.email = email;
     }
 
-    public Boolean getActive() {
-        return active;
+    public String getPassword() {
+        return password;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {
