@@ -2,7 +2,7 @@ package com.project.bookstore.rest.mvc;
 
 import com.project.bookstore.model.Book;
 import com.project.bookstore.repository.UserRepository;
-import com.project.bookstore.service.UserBookInfoService;
+import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class HomeController {
+public class HomeViewController {
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -24,7 +24,7 @@ public class HomeController {
     UserRepository userRepository;
 
     @Autowired
-    UserBookInfoService userBookInfoService;
+    BookService bookService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -33,10 +33,10 @@ public class HomeController {
 
         com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
 
-        List<Book> booksByUser = userBookInfoService.findAllBooksByUserEmail(modelUser.getEmail());
+        List<Book> allBooks = bookService.findAll();
 
         model.addAttribute("loggedUserName", modelUser.getLastName());
-        model.addAttribute("books", booksByUser);
+        model.addAttribute("books", allBooks);
         return "index";
     }
 

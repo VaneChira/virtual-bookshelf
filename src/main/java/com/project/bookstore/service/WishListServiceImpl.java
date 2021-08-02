@@ -15,6 +15,7 @@ public class WishListServiceImpl implements WishListService{
     @Autowired
     WishListRepository wishListRepository;
 
+
     @Override
     public List<WishList> findAll() {
         return wishListRepository.findAll();
@@ -27,5 +28,10 @@ public class WishListServiceImpl implements WishListService{
             wishListBooks.add(wishList.getBook());
         }
         return wishListBooks;
+    }
+
+    @Override
+    public WishList save(WishList wishList) {
+        return wishListRepository.save(wishList);
     }
 }

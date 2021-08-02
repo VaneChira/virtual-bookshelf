@@ -8,12 +8,12 @@ public interface BookService {
 
      List<Book> findAll();
 
-     Book findBookById(int theId);
+     Book findBookById(Long id);
 
-     void saveBook(Book theBook);
+     void saveBook(Book book);
 
-     void deleteBookById(int theId);
+     void deleteBookById(Long id);
 
-     Book updateBook(Book book, int id);
+     Book updateBook(Book book, Long id);
 
 }

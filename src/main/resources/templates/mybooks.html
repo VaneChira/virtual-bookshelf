@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Registration and Login App</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<div th:insert="header :: header"></div>
+<br>
+<br>
+
+<div class="container">
+
+
+</div>
+<br><br>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Description</th>
+        <th>Genre</th>
+        <th>Rating</th>
+        <th>Number of ratings</th>
+        <th>Pages</th>
+        <th>Stock</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="book: ${books}">
+        <td><img th:src="${book.imageUrl}" height="300px" width="230px"></td>
+        <td th:text="${book.bookTitle}"/>
+        <td th:text="${book.author}"/>
+        <td th:text="${book.description}"/>
+        <td th:text="${book.genre}"/>
+        <td th:text="${book.rating}"/>
+        <td th:text="${book.numberOfRatings}"/>
+        <td th:text="${book.pages}"/>
+        <td th:text="${book.stock}"/>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

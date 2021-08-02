@@ -9,5 +9,9 @@ public interface WishListService {
 
     List<WishList> findAll();
 
-    public List<Book> wishListBooksByUserEmail(String email);
+    List<Book> wishListBooksByUserEmail(String email);
+
+    WishList save(WishList wishList);
+
+
 }

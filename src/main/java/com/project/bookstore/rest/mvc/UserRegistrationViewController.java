@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/registration")
-public class UserRegistrationController {
+public class UserRegistrationViewController {
     private UserSecurityService userSecurityService;
 
-    public UserRegistrationController(UserSecurityService userSecurityService) {
+    public UserRegistrationViewController(UserSecurityService userSecurityService) {
         super();
         this.userSecurityService = userSecurityService;
     }

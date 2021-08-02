@@ -22,37 +22,37 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findBookById(int theId) {
-        Optional<Book> result = bookRepository.findById(theId);
+    public Book findBookById(Long id) {
+        Optional<Book> result = bookRepository.findById(id);
 
         if (result.isPresent()) {
             return result.get();
         }
         else {
-            throw new ResourceNotFoundException("Did not find book id - " + theId, Book.class.getSimpleName());
+            throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
         }
     }
 
     @Override
-    public void saveBook(Book theBook) {
-        bookRepository.save(theBook);
+    public void saveBook(Book book) {
+        bookRepository.save(book);
 
     }
 
     @Override
-    public void deleteBookById(int theId) {
-        Optional<Book> result = bookRepository.findById(theId);
+    public void deleteBookById(Long id) {
+        Optional<Book> result = bookRepository.findById(id);
 
         if (!result.isPresent()) {
-            throw new ResourceNotFoundException("Did not find book id - " + theId, Book.class.getSimpleName());
+            throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
         }
         else {
-            bookRepository.deleteById(theId);
+            bookRepository.deleteById(id);
         }
     }
 
     @Override
-    public Book updateBook(Book book, int id) {
+    public Book updateBook(Book book, Long id) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isPresent()) {
             Book updatedBook = book;
