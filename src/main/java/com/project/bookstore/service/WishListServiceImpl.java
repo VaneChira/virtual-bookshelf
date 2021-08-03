@@ -2,6 +2,7 @@ package com.project.bookstore.service;
 
 import com.project.bookstore.model.Book;
 import com.project.bookstore.model.WishList;
+import com.project.bookstore.model.WishListKey;
 import com.project.bookstore.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,9 @@ public class WishListServiceImpl implements WishListService{
     @Override
     public WishList save(WishList wishList) {
         return wishListRepository.save(wishList);
+    }
+
+    public void deleteBookById(WishListKey wishListKey){
+        wishListRepository.deleteById(wishListKey);
     }
 }

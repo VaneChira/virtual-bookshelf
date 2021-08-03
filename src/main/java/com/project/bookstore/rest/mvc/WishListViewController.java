@@ -53,5 +53,19 @@ public class WishListViewController {
         return "redirect:/";
     }
 
+    @PostMapping("/wishlist/delete")
+    public String delete(@ModelAttribute Book book){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal(); // user from spring security (not model)
+
+        com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
+
+        WishListKey wishListKey = new WishListKey(modelUser.getId(), book.getId());
+        wishListService.deleteBookById(wishListKey);
+
+        return "redirect:/wishlist";
+    }
+
 
 }
+

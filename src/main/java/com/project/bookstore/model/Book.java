@@ -39,19 +39,25 @@ public class Book {
     @Column(name="stock")
     private Integer stock;
 
+    @Column(name="price")
+    private Float price;
+
     public Book() {
     }
 
-    public Book(Long id, String bookTitle, String author, String description, Float rating, int numberOfRatings, String imageUrl, int pages, int stock) {
+    public Book(Long id, String bookTitle, String author, String description, String genre, Float rating,
+                Integer numberOfRatings, String imageUrl, Integer pages, Integer stock, Float price) {
         this.id = id;
         this.bookTitle = bookTitle;
         this.author = author;
         this.description = description;
+        this.genre = genre;
         this.rating = rating;
         this.numberOfRatings = numberOfRatings;
         this.imageUrl = imageUrl;
         this.pages = pages;
         this.stock = stock;
+        this.price = price;
     }
 
     public Long getId() {
@@ -102,11 +108,11 @@ public class Book {
         this.rating = rating;
     }
 
-    public int getNumberOfRatings() {
+    public Integer getNumberOfRatings() {
         return numberOfRatings;
     }
 
-    public void setNumberOfRatings(int numberOfRatings) {
+    public void setNumberOfRatings(Integer numberOfRatings) {
         this.numberOfRatings = numberOfRatings;
     }
 
@@ -118,35 +124,27 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
-    public int getPages() {
+    public Integer getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(Integer pages) {
         this.pages = pages;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", bookTitle='" + bookTitle + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'' +
-                ", genres='" + genre + '\'' +
-                ", rating=" + rating +
-                ", numberOfRatings=" + numberOfRatings +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", pages=" + pages +
-                ", stock=" + stock +
-                '}';
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }

@@ -33,6 +33,7 @@
         <th>Number of ratings</th>
         <th>Pages</th>
         <th>Stock</th>
+        <th>Price</th>
 
     </tr>
     </thead>
@@ -50,6 +51,7 @@
         <td th:text="${book.numberOfRatings}"/>
         <td th:text="${book.pages}"/>
         <td th:text="${book.stock}"/>
+        <td th:text="@{${book.price} + '$'}"/>
 
     </tr>
     </tbody>
