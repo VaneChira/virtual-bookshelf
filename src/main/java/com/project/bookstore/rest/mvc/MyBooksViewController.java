@@ -23,7 +23,7 @@ public class MyBooksViewController {
     UserBookInfoService userBookInfoService;
 
     @GetMapping("/mybooks")
-    public String home(Model model) {
+    public String homeBooks(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal(); // user from spring security (not model)
 
@@ -31,7 +31,6 @@ public class MyBooksViewController {
 
         List<Book> booksByUser = userBookInfoService.findAllBooksByUserEmail(modelUser.getEmail());
 
-        model.addAttribute("loggedUserName", modelUser.getLastName());
         model.addAttribute("books", booksByUser);
         return "mybooks";
     }

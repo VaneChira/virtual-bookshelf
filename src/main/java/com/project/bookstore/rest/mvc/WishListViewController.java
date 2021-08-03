@@ -33,7 +33,6 @@ public class WishListViewController {
 
         com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
 
-        model.addAttribute("loggedUserName", modelUser.getLastName());
         model.addAttribute("books", wishListService.wishListBooksByUserEmail(modelUser.getEmail()));
 
         return "wishlist";
