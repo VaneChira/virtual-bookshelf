@@ -21,6 +21,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll();
     }
 
+
     @Override
     public Book findBookById(Long id) {
         Optional<Book> result = bookRepository.findById(id);
@@ -31,6 +32,14 @@ public class BookServiceImpl implements BookService {
         else {
             throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
         }
+    }
+
+    @Override
+    public List<Book> listAll(String keyword) {
+        if(keyword != null){
+            return bookRepository.search(keyword);
+        }
+        return bookRepository.findAll();
     }
 
     @Override

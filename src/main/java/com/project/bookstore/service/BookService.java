@@ -16,4 +16,8 @@ public interface BookService {
 
      Book updateBook(Book book, Long id);
 
+     List<Book> listAll(String keyword);
+
+
+
 }

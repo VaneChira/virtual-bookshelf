@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/html">
-
 <head>
     <meta charset="ISO-8859-1">
     <title>Registration and Login App</title>
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:insert="header :: header"></div>
@@ -28,7 +25,6 @@
         <th>Title</th>
         <th>Author</th>
         <th>Description</th>
-        <th>Genre</th>
         <th>Rating</th>
         <th>Number of ratings</th>
         <th>Pages</th>
@@ -46,7 +42,6 @@
         <td th:text="${book.bookTitle}"/>
         <td th:text="${book.author}"/>
         <td th:text="${book.description}"/>
-        <td th:text="${book.genre}"/>
         <td th:text="${book.rating}"/>
         <td th:text="${book.numberOfRatings}"/>
         <td th:text="${book.pages}"/>

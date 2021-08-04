@@ -1,7 +1,10 @@
 package com.project.bookstore.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="book")
@@ -21,8 +24,13 @@ public class Book {
     @Column(name="description")
     private String description;
 
-    @Column(name="genre")
-    private String genre;
+    @ManyToMany
+    @JoinTable(
+            name="genres_in_books",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name="genre_id"))
+    @JsonIgnoreProperties("booksForGenre")
+    Set<Genre> genresInBooks;
 
     @Column(name="rating")
     private Float rating;
@@ -45,13 +53,13 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String bookTitle, String author, String description, String genre, Float rating,
+    public Book(Long id, String bookTitle, String author, String description, Set<Genre> genresInBooks, Float rating,
                 Integer numberOfRatings, String imageUrl, Integer pages, Integer stock, Float price) {
         this.id = id;
         this.bookTitle = bookTitle;
         this.author = author;
         this.description = description;
-        this.genre = genre;
+        this.genresInBooks = genresInBooks;
         this.rating = rating;
         this.numberOfRatings = numberOfRatings;
         this.imageUrl = imageUrl;
@@ -92,12 +100,12 @@ public class Book {
         this.description = description;
     }
 
-    public String getGenre() {
-        return genre;
+    public Set<Genre> getGenresInBooks() {
+        return genresInBooks;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setGenresInBooks(Set<Genre> genresInBooks) {
+        this.genresInBooks = genresInBooks;
     }
 
     public Float getRating() {
@@ -146,5 +154,21 @@ public class Book {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", bookTitle='" + bookTitle + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", numberOfRatings=" + numberOfRatings +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", pages=" + pages +
+                ", stock=" + stock +
+                ", price=" + price +
+                '}';
     }
 }
