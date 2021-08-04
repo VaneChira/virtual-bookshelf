@@ -7,7 +7,7 @@
 <div th:fragment="header">
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
                 <div class="container">
-                    <a class="navbar-brand" href="index.html">Welcome <span th:text="${currentUser}?:'guest'"></span></a>
+                    <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUser}?:'guest'"></span></a>
                     <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
                         <div class="form-group d-flex">
                             <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3" placeholder="Search">
@@ -22,7 +22,6 @@
                             <li class="nav-item active"><a th:href="@{/}" class="nav-link">Home</a></li>
                             <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My Books</a></li>
                             <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a></li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/logout}" class="nav-link">Logout</a></li>
                             <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Browse</a>
                                 <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -32,7 +31,7 @@
                                     </div>
                                 </div>
                             </li>
-
+                            <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/logout}" class="nav-link">Logout</a></li>
                         </ul>
                 </div>
             </div>
