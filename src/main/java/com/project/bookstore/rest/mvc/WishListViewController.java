@@ -1,10 +1,10 @@
 package com.project.bookstore.rest.mvc;
 
 import com.project.bookstore.model.Book;
-import com.project.bookstore.model.WishList;
-import com.project.bookstore.model.WishListKey;
+import com.project.bookstore.model.UserBookInfo;
+import com.project.bookstore.model.UserBookKey;
+import com.project.bookstore.repository.UserBookRepository;
 import com.project.bookstore.repository.UserRepository;
-import com.project.bookstore.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,55 +15,44 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class WishListViewController {
 
     @Autowired
-    WishListService wishListService;
+    UserBookRepository userBookRepository;
 
     @Autowired
     UserRepository userRepository;
 
 
     @GetMapping("/wishlist")
-    public String wishlist(Model model){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User)authentication.getPrincipal(); // user from spring security (not model)
-
-        com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
-
-        model.addAttribute("books", wishListService.wishListBooksByUserEmail(modelUser.getEmail()));
+    public String wishlist(Model model) {
+        com.project.bookstore.model.User modelUser = getUser();
+        List<UserBookInfo> userBooks = userBookRepository.findAllWishlistByUser(modelUser.getId());
+        model.addAttribute("books", userBooks.stream().map(UserBookInfo::getBook).collect(Collectors.toList()));
 
         return "wishlist";
     }
 
-    @PostMapping("/wishlist/add-to-wishlist")
-    public String saveWishlist(@ModelAttribute Book book){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User)authentication.getPrincipal(); // user from spring security (not model)
-
-        com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
-
-        WishListKey wishListKey = new WishListKey(modelUser.getId(), book.getId());
-        WishList wishList = new WishList(wishListKey, modelUser, book);
-        // check if already exists, if so, alert book already exists in wishlist, otherwise .save();
-        wishListService.save(wishList);
-
-        return "redirect:/";
-    }
 
     @PostMapping("/wishlist/delete")
-    public String delete(@ModelAttribute Book book){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User)authentication.getPrincipal(); // user from spring security (not model)
+    public String delete(@ModelAttribute Book book) {
+        com.project.bookstore.model.User modelUser = getUser();
 
-        com.project.bookstore.model.User modelUser = userRepository.findByEmail(user.getUsername());
-
-        WishListKey wishListKey = new WishListKey(modelUser.getId(), book.getId());
-        wishListService.deleteBookById(wishListKey);
+        UserBookKey userBookKey = new UserBookKey(modelUser.getId(), book.getId());
+        userBookRepository.deleteById(userBookKey);
 
         return "redirect:/wishlist";
+    }
+
+    private com.project.bookstore.model.User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal(); // user from spring security (not model)
+
+        return userRepository.findByEmail(user.getUsername());
     }
 
 

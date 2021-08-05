@@ -27,7 +27,6 @@
         <th>Title</th>
         <th>Author</th>
         <th>Description</th>
-        <th>Genre</th>
         <th>Rating</th>
         <th>Number of ratings</th>
         <th>Pages</th>
@@ -52,16 +51,8 @@
         <td th:text="${book.stock}"/>
         <td th:text="@{${book.price} + '$'}"/>
         <td>
-            <form th:action="@{/wishlist/add-to-wishlist}" th:object="${book}" method="POST">
+            <form th:action="@{/user-book/add-to-wishlist}" th:object="${book}" method="POST">
                 <input type="hidden" th:value="${book.id}" name="id"/>
-                <input type="hidden" th:value="${book.bookTitle}" name="bookTitle"/>
-                <input type="hidden" th:value="${book.author}" name="author"/>
-                <input type="hidden" th:value="${book.description}" name="description"/>
-                <input type="hidden" th:value="${book.rating}" name="rating"/>
-                <input type="hidden" th:value="${book.numberOfRatings}" name="numberOfRatings"/>
-                <input type="hidden" th:value="${book.pages}" name="pages"/>
-                <input type="hidden" th:value="${book.stock}" name="stock"/>
-                <input type="hidden" th:value="${book.price}" name="price"/>
                 <button type="submit" class="btn btn-info col-2">Add to wishlist</button>
             </form>
         </td>

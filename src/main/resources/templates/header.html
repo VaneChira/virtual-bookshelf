@@ -5,36 +5,58 @@
 <body>
 
 <div th:fragment="header">
-        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-                <div class="container">
-                    <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUser}?:'guest'"></span></a>
-                    <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
-                        <div class="form-group d-flex">
-                            <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3" placeholder="Search">
-                            <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
-                        </div>
-                    </form>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="fa fa-bars"></span> Menu
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUser}?:'guest'"></span></a>
+            <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
+                <div class="form-group d-flex">
+                    <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3"
+                           placeholder="Search">
+                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="ftco-nav">
-                        <ul class="navbar-nav m-auto">
-                            <li class="nav-item active"><a th:href="@{/}" class="nav-link">Home</a></li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My Books</a></li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a></li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Browse</a>
-                                <div class="dropdown-menu" aria-labelledby="dropdown04">
-                                    <a class="dropdown-item" href="#">Most Popular</a>
-                                    <div class="dropdown-menu sub-menu" aria-labelledby="dropdown04">
-                                            <a th:each="genre:${usedGenres}" th:href="@{'/books-by-genre/' + ${genre.id}}" class="dropdown-item"  th:text="${genre.type}"></a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/logout}" class="nav-link">Logout</a></li>
-                        </ul>
                 </div>
+            </form>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                    aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item"><a th:href="@{/}" class="nav-link">Home</a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My
+                        Books</a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Browse</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a class="dropdown-item" href="#">Most Popular</a>
+                            <div class="dropdown-menu sub-menu" aria-labelledby="dropdown04">
+                                <a th:each="genre:${usedGenres}" th:href="@{'/books-by-genre/' + ${genre.id}}"
+                                   class="dropdown-item" th:text="${genre.type}"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                        <div class="image_outer_container">
+                            <div class="green_icon"></div>
+                            <div class="image_inner_container">
+                                <a href="#" id="imageDropdown" data-toggle="dropdown" class="nav-link">
+                                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fp7.hiclipart.com%2Fpreview%2F142%2F76%2F939%2Fsymbol-yellow-orange-logo-ibooks.jpg&f=1&nofb=1">
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown">
+                                    <li class="dropdown-item"><a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
+        </div>
     </nav>
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/popper.js}"></script>

@@ -1,7 +1,6 @@
 package com.project.bookstore.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name="user_book")
@@ -19,25 +18,33 @@ public class UserBookInfo {
     @JoinColumn(name = "book_id")
     Book book;
 
-    @Column(name="user_rating")
+    @Column(name = "user_rating")
     Float userRating;
 
-    @Column(name="progress_pages")
+    @Column(name = "progress_pages")
     Long progressPage;
 
-    @Column(name="date_bought")
-    Date boughtDate;
+    @Column(name = "book_state")
+    Integer bookState;
 
     public UserBookInfo() {
     }
 
-    public UserBookInfo(UserBookKey userBookKey, User user, Book book, Float userRating, Long progressPage, Date boughtDate) {
+
+    public UserBookInfo(UserBookKey userBookKey, User user, Book book, Integer bookState) {
+        this.userBookKey = userBookKey;
+        this.user = user;
+        this.book = book;
+        this.bookState = bookState;
+    }
+
+    public UserBookInfo(UserBookKey userBookKey, User user, Book book, Float userRating, Long progressPage, Integer bookState) {
         this.userBookKey = userBookKey;
         this.user = user;
         this.book = book;
         this.userRating = userRating;
         this.progressPage = progressPage;
-        this.boughtDate = boughtDate;
+        this.bookState = bookState;
     }
 
     public UserBookKey getUserBookKey() {
@@ -80,23 +87,11 @@ public class UserBookInfo {
         this.progressPage = progressPage;
     }
 
-    public Date getBoughtDate() {
-        return boughtDate;
+    public Integer getBookState() {
+        return bookState;
     }
 
-    public void setBoughtDate(Date boughtDate) {
-        this.boughtDate = boughtDate;
-    }
-
-    @Override
-    public String toString() {
-        return "UserBookInfo{" +
-                "userBookKey=" + userBookKey +
-                ", user=" + user +
-                ", book=" + book +
-                ", userRating=" + userRating +
-                ", progressPage=" + progressPage +
-                ", boughtDate=" + boughtDate +
-                '}';
+    public void setBookState(Integer bookState) {
+        this.bookState = bookState;
     }
 }

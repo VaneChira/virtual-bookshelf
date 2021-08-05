@@ -7,65 +7,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 
 </head>
 <body>
-    <div th:insert="header :: header"></div>
-    <br>
-    <br>
+<div th:insert="header :: header"></div>
+<br>
+<br>
 
-    <br><br>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Description</th>
-            <th>Genre</th>
-            <th>Rating</th>
-            <th>Number of ratings</th>
-            <th>Pages</th>
-            <th>Stock</th>
-            <th>Price</th>
+<br><br>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Description</th>
+        <th>Rating</th>
+        <th>Number of ratings</th>
+        <th>Pages</th>
+        <th>Stock</th>
+        <th>Price</th>
 
-        </tr>
-        </thead>
+    </tr>
+    </thead>
 
-        <tbody>
-        <tr th:each="book: ${books}">
+    <tbody>
+    <tr th:each="book: ${books}">
 
-                <td>
-                    <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px" width="230px"/> </a>
-                </td>
-                <td th:text="${book.bookTitle}" />
-                <td th:text="${book.author}"/>
-                <td th:text="${book.description}"/>
-                <td th:text="${book.rating}"/>
-                <td th:text="${book.numberOfRatings}"/>
-                <td th:text="${book.pages}"/>
-                <td th:text="${book.stock}"/>
-                <td th:text="@{${book.price} + '$'}"/>
-                <td>
-                    <form th:action="@{/wishlist/add-to-wishlist}" th:object="${book}" method="POST">
-                        <input type="hidden" th:value="${book.id}" name="id"/>
-                        <input type="hidden" th:value="${book.bookTitle}" name="bookTitle"/>
-                        <input type="hidden" th:value="${book.author}" name="author"/>
-                        <input type="hidden" th:value="${book.description}" name="description"/>
-                        <input type="hidden" th:value="${book.rating}" name="rating"/>
-                        <input type="hidden" th:value="${book.numberOfRatings}" name="numberOfRatings"/>
-                        <input type="hidden" th:value="${book.pages}" name="pages"/>
-                        <input type="hidden" th:value="${book.stock}" name="stock"/>
-                        <input type="hidden" th:value="${book.price}" name="price"/>
-                        <button type="submit" class="btn btn-info col-2">Add to wishlist</button>
-                    </form>
-                </td>
+        <td>
+            <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px" width="230px"/>
+            </a>
+        </td>
+        <td th:text="${book.bookTitle}"/>
+        <td th:text="${book.author}"/>
+        <td th:text="${book.description}"/>
+        <td th:text="${book.rating}"/>
+        <td th:text="${book.numberOfRatings}"/>
+        <td th:text="${book.pages}"/>
+        <td th:text="${book.stock}"/>
+        <td th:text="@{${book.price} + '$'}"/>
+        <td>
+            <form th:action="@{/user-book/add-to-wishlist}" th:object="${book}" method="POST">
+                <input type="hidden" th:value="${book.id}" name="id"/>
+                <button type="submit" class="btn btn-info col-2">Add to wishlist</button>
+            </form>
+        </td>
 
-        </tr>
-        </tbody>
-    </table>
+    </tr>
+    </tbody>
+</table>
 
 
 </body>
