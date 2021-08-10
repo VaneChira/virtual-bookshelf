@@ -1,22 +1,23 @@
 package com.project.bookstore.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Embeddable
-public class UserBookKey implements Serializable {
+public class FeedbackKey implements Serializable {
+
     @Column(name = "user_id")
     Long userId;
 
     @Column(name = "book_id")
     Long bookId;
 
-    public UserBookKey() {
+    public FeedbackKey() {
     }
 
-    public UserBookKey(Long userId, Long bookId) {
+    public FeedbackKey(Long userId, Long bookId) {
         this.userId = userId;
         this.bookId = bookId;
     }
@@ -38,16 +39,12 @@ public class UserBookKey implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserBookKey that = (UserBookKey) o;
-        return Objects.equals(userId, that.userId) &&
-                Objects.equals(bookId, that.bookId);
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(userId, bookId);
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

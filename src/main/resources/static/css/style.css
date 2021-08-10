@@ -5,6 +5,9 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --star-size: 60px;
+  --star-color: #fff;
+  --star-background: #fc0;
   --blue: #007bff;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -51,6 +54,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
+  margin-left: 10%;
+  margin-right: 10%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
@@ -3427,6 +3432,8 @@ input[type="button"].btn-block {
   display: block; }
 
 .navbar {
+  margin-left: -15%;
+  margin-right: -15%;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -8405,4 +8412,40 @@ h1, h2, h3, h4, h5,
          width: 15px;
          border:2px solid white;
          border-radius: 50%;
+       }
+
+        .rating {
+           float:left;
+           border:none;
+       }
+       .rating:not(:checked) > input {
+           position:absolute;
+           clip:rect(0, 0, 0, 0);
+       }
+       .rating:not(:checked) > label {
+           float:right;
+           width:1em;
+           padding:0 .1em;
+           overflow:hidden;
+           white-space:nowrap;
+           cursor:pointer;
+           font-size:200%;
+           line-height:1.2;
+           color:#ddd;
+
+       }
+       .rating:not(:checked) > label:before {
+           content:'★ ';
+       }
+       .rating > input:checked ~ label {
+           color: #f70;
+       }
+       .rating:not(:checked) > label:hover, .rating:not(:checked) > label:hover ~ label {
+           color: gold;
+       }
+       .rating > input:checked + label:hover, .rating > input:checked + label:hover ~ label, .rating > input:checked ~ label:hover, .rating > input:checked ~ label:hover ~ label, .rating > label:hover ~ input:checked ~ label {
+           color: #ea0;
+       }
+       .rating > label:active {
+           position:relative;
        }

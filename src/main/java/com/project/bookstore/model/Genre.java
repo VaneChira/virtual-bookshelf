@@ -56,9 +56,6 @@ public class Genre {
 
     @Override
     public String toString() {
-        return "Genre{" +
-                "id=" + id +
-                ", type='" + type + '\'' +
-                '}';
+        return type.substring(0,1).toUpperCase() + type.substring(1).toLowerCase();
     }
 }

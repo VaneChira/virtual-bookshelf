@@ -3,7 +3,7 @@ package com.project.bookstore.service;
 import com.project.bookstore.exception.PreconditionFailedException;
 import com.project.bookstore.model.*;
 import com.project.bookstore.repository.BookRepository;
-import com.project.bookstore.repository.UserBookRepository;
+import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserBookInfoServiceImpl implements UserBookInfoService {
+public class BookProgressServiceImpl implements BookProgressService {
 
     @Autowired
-    UserBookRepository userBookRepository;
+    BookProgressRepository bookProgressRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -25,29 +25,29 @@ public class UserBookInfoServiceImpl implements UserBookInfoService {
     BookRepository bookRepository;
 
     @Override
-    public List<UserBookInfo> findAll() {
-        return userBookRepository.findAll();
+    public List<BookProgress> findAll() {
+        return bookProgressRepository.findAll();
     }
 
     @Override
     public List<Book> findAllBooksByUserEmail(String email) {
-        List<UserBookInfo> userBooks = userBookRepository.findAllByUserEmail(email);
+        List<BookProgress> progresses = bookProgressRepository.findAllByUserEmail(email);
         List<Book> bookList = new ArrayList<>();
-        for (UserBookInfo userBookInfo : userBooks) {
-            bookList.add(userBookInfo.getBook());
+        for (BookProgress bookProgress : progresses) {
+            bookList.add(bookProgress.getBook());
         }
         return bookList;
     }
 
     @Override
-    public UserBookInfo save(Long userId, Long bookId, BookStateEnum bookStateEnum) {
-        UserBookKey userBookKey = new UserBookKey(userId, bookId);
+    public BookProgress save(Long userId, Long bookId, BookStateEnum bookStateEnum) {
+        BookProgressKey bookProgressKey = new BookProgressKey(userId, bookId);
         Optional<User> optUser = userRepository.findById(userId);
         Optional<Book> optBook = bookRepository.findById(bookId);
         if (optUser.isPresent() && optBook.isPresent()) {
-            UserBookInfo userBookInfo = new UserBookInfo(userBookKey, optUser.get(),
+            BookProgress bookProgress = new BookProgress(bookProgressKey, optUser.get(),
                     optBook.get(), BookStateEnum.fromEnumToInt(bookStateEnum));
-            return userBookRepository.save(userBookInfo);
+            return bookProgressRepository.save(bookProgress);
 
         } else {
             throw new PreconditionFailedException("User or book id invalid", "");

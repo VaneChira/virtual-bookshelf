@@ -3,7 +3,7 @@ package com.project.bookstore.rest.mvc;
 import com.project.bookstore.model.Book;
 import com.project.bookstore.model.BookStateEnum;
 import com.project.bookstore.repository.UserRepository;
-import com.project.bookstore.service.UserBookInfoService;
+import com.project.bookstore.service.BookProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("user-book")
-public class UserBookViewController {
+@RequestMapping("book-progress")
+public class BookProgressViewController {
     @Autowired
-    UserBookInfoService userBookInfoService;
+    BookProgressService bookProgressService;
 
     @Autowired
     UserRepository userRepository;
@@ -25,21 +25,21 @@ public class UserBookViewController {
     @PostMapping("/add-to-wishlist")
     public String addToWishlist(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        userBookInfoService.save(loggedUser.getId(), book.getId(), BookStateEnum.WISHLIST);
+        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.WISHLIST);
         return "redirect:/";
     }
 
     @PostMapping("/add-to-currently-reading")
     public String addToCurrentlyReading(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        userBookInfoService.save(loggedUser.getId(), book.getId(), BookStateEnum.CURRENTLY_READING);
+        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.CURRENTLY_READING);
         return "redirect:/";
     }
 
     @PostMapping("/add-to-read")
     public String addToRead(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        userBookInfoService.save(loggedUser.getId(), book.getId(), BookStateEnum.READ);
+        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.READ);
         return "redirect:/";
     }
 
