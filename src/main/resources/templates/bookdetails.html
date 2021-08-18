@@ -3,54 +3,170 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Registration and Login App</title>
+    <title th:text="${book.bookTitle}"></title>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+
 </head>
 <body>
 <div th:insert="header :: header"></div>
+
 <br>
 <br>
 
-<div class="container">
+<section class="mb-5">
 
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+
+            <div class="mdb-lightbox">
+
+                <div class="row product-gallery mx-1">
+
+                    <div class="col-12 mb-0">
+                        <figure class="view overlay rounded z-depth-1 main-img">
+                            <div class="text-center">
+                                <img th:src="${book.imageUrl}" width="400px" height="540px"
+                                     class="img-fluid z-depth-1">
+                            </div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h5 th:text="${book.bookTitle}"></h5>
+            <p class="small text-muted text-uppercase mb-2" th:text="${book.author}"></p>
+
+            <p class="pt-1" th:text="${book.description}"></p>
+            <div class="table-responsive">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Genres</strong></th>
+                        <td><span th:each="a, iterStat : ${genres}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Pages</strong></th>
+                        <td th:text="${book.pages}"/>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Average rating</strong></th>
+                        <td th:text="@{${averageRating} + ' / 5'}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="table-responsive mb-2">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="classic-tabs border rounded px-4 pt-1">
+
+    <ul class="nav tabs-primary nav-justified" id="advancedTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active show" id="description-tab" data-toggle="tab" href="#description" role="tab"
+               aria-controls="description" aria-selected="true">Description</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
+               aria-selected="false" th:text="@{'Reviews (' + ${numberOfRatings} + ')'}"></a>
+        </li>
+    </ul>
+    <div class="tab-content" id="advancedTabContent">
+        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+            <h5>Product Description</h5>
+            <p class="small text-muted text-uppercase mb-2">placeholder1</p>
+            <h6>placeholder2</h6>
+            <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
+                error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
+                officia quis dolore quos sapiente tempore alias.</p>
+        </div>
+
+        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+            <h5><span>Reviews for <span th:text="${book.bookTitle}"/></span></h5>
+            <div class="media mt-3 mb-4" th:each="feedback:${feedbacks}">
+                <img class="d-flex mr-3 z-depth-1" src="https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg"
+                     width="62" alt="Generic placeholder image">
+                <div class="media-body">
+                    <div class="d-sm-flex justify-content-between">
+                        <p class="mt-1 mb-2">
+                            <strong th:text="@{${feedback.user.name} + ' ' + ${feedback.user.lastName}}"></strong>
+                            <span> wrote on </span><span th:text="${feedback.date}"></span>
+                            <span> rated: </span><span th:text="@{${feedback.rating} + ' / 5'}"></span>
+                        </p>
+                    </div>
+                    <p class="mb-0" th:text="${feedback.comment}"></p>
+                </div>
+            </div>
+            <hr>
+            <h5 class="mt-4">Add a review and rating</h5>
+            <div>
+                <!-- Your review -->
+
+                <form th:action="@{/bookdetails}" th:object="${newrating}" method="POST">
+                    <div class="form-group">
+                        <fieldset class="rating">
+                            <input type="radio" id="star5" name="rating" value="5.0" th:field="*{rating}"/>
+                            <label for="star5">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4.0" th:field="*{rating}"/>
+                            <label for="star4">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3.0" th:field="*{rating}"/>
+                            <label for="star3">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2.0" th:field="*{rating}"/>
+                            <label for="star2">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1.0" th:field="*{rating}"/>
+                            <label for="star1">1 star</label>
+                        </fieldset>
+                        <br><br>
+                        <label class="control-label" for="comment"> What are your thoughts on this book? </label>
+                        <input id="comment" class="form-control"
+                               th:placeholder="${existingComment} ?:''"
+                               th:field="*{comment}" required autofocus="autofocus"/>
+                    </div>
+
+                    <div class="form-group" th:if="${commentExists}">
+                        <button type="submit" class="btn btn-primary">Update review</button>
+                    </div>
+                    <div class="form-group" th:unless="${commentExists}">
+                        <button type="submit" class="btn btn-primary">Add a review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 <br>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Description</th>
-        <th>Rating</th>
-        <th>Number of ratings</th>
-        <th>Pages</th>
-        <th>Stock</th>
-        <th>Price</th>
-
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="book: ${book}">
-        <td>
-            <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px" width="230px"/> </a>
-        </td>
-        <td th:text="${book.bookTitle}"/>
-        <td th:text="${book.author}"/>
-        <td th:text="${book.description}"/>
-        <td th:text="${book.rating}"/>
-        <td th:text="${book.numberOfRatings}"/>
-        <td th:text="${book.pages}"/>
-        <td th:text="${book.stock}"/>
-        <td th:text="@{${book.price} + '$'}"/>
-
-    </tr>
-    </tbody>
-</table>
-
+<h5>Related books</h5>
+<br>
+<section class="text-center">
+    <div class="row">
+        <div class="col-md-6 col-lg-3 mb-5" th:each="related:${relatedBooks}">
+            <div class="">
+                <div class="mask">
+                    <a th:href="@{'/bookdetails/' + ${related.id}}">
+                        <img th:src="${related.imageUrl}" width="200px" height="270px">
+                    </a>
+                </div>
+                <div class="pt-4">
+                    <h5 th:text="${related.bookTitle}"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

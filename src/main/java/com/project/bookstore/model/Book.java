@@ -32,40 +32,36 @@ public class Book {
     @JsonIgnoreProperties("booksForGenre")
     Set<Genre> genresInBooks;
 
-    @Column(name="rating")
-    private Float rating;
-
-    @Column(name="number_of_ratings")
-    private Integer numberOfRatings;
-
     @Column(name="image_url")
     private String imageUrl;
 
     @Column(name="pages")
     private Integer pages;
 
-    @Column(name="stock")
-    private Integer stock;
-
-    @Column(name="price")
-    private Float price;
-
     public Book() {
     }
 
-    public Book(Long id, String bookTitle, String author, String description, Set<Genre> genresInBooks, Float rating,
-                Integer numberOfRatings, String imageUrl, Integer pages, Integer stock, Float price) {
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", bookTitle='" + bookTitle + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", genresInBooks=" + genresInBooks +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", pages=" + pages +
+                '}';
+    }
+
+    public Book(Long id, String bookTitle, String author, String description, Set<Genre> genresInBooks, String imageUrl, Integer pages) {
         this.id = id;
         this.bookTitle = bookTitle;
         this.author = author;
         this.description = description;
         this.genresInBooks = genresInBooks;
-        this.rating = rating;
-        this.numberOfRatings = numberOfRatings;
         this.imageUrl = imageUrl;
         this.pages = pages;
-        this.stock = stock;
-        this.price = price;
     }
 
     public Long getId() {
@@ -108,22 +104,6 @@ public class Book {
         this.genresInBooks = genresInBooks;
     }
 
-    public Float getRating() {
-        return rating;
-    }
-
-    public void setRating(Float rating) {
-        this.rating = rating;
-    }
-
-    public Integer getNumberOfRatings() {
-        return numberOfRatings;
-    }
-
-    public void setNumberOfRatings(Integer numberOfRatings) {
-        this.numberOfRatings = numberOfRatings;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -140,35 +120,4 @@ public class Book {
         this.pages = pages;
     }
 
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", bookTitle='" + bookTitle + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'' +
-                ", rating=" + rating +
-                ", numberOfRatings=" + numberOfRatings +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", pages=" + pages +
-                ", stock=" + stock +
-                ", price=" + price +
-                '}';
-    }
 }

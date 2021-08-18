@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
@@ -15,5 +16,5 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
             "ON g.id = gib.genre_id\n" +
             "INNER JOIN book b\n" +
             "ON b.id = gib.book_id;\n", nativeQuery = true)
-    List<Genre> getAllUsedGenres();
+    Set<Genre> getAllUsedGenres();
 }

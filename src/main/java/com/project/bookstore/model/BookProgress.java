@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="user_book")
-public class UserBookInfo {
+public class BookProgress {
     @EmbeddedId
-    UserBookKey userBookKey;
+    BookProgressKey bookProgressKey;
 
     @ManyToOne
     @MapsId("userId")
@@ -18,41 +18,37 @@ public class UserBookInfo {
     @JoinColumn(name = "book_id")
     Book book;
 
-    @Column(name = "user_rating")
-    Float userRating;
-
     @Column(name = "progress_pages")
     Long progressPage;
 
     @Column(name = "book_state")
     Integer bookState;
 
-    public UserBookInfo() {
+    public BookProgress() {
     }
 
 
-    public UserBookInfo(UserBookKey userBookKey, User user, Book book, Integer bookState) {
-        this.userBookKey = userBookKey;
+    public BookProgress(BookProgressKey bookProgressKey, User user, Book book, Integer bookState) {
+        this.bookProgressKey = bookProgressKey;
         this.user = user;
         this.book = book;
         this.bookState = bookState;
     }
 
-    public UserBookInfo(UserBookKey userBookKey, User user, Book book, Float userRating, Long progressPage, Integer bookState) {
-        this.userBookKey = userBookKey;
+    public BookProgress(BookProgressKey bookProgressKey, User user, Book book, Long progressPage, Integer bookState) {
+        this.bookProgressKey = bookProgressKey;
         this.user = user;
         this.book = book;
-        this.userRating = userRating;
         this.progressPage = progressPage;
         this.bookState = bookState;
     }
 
-    public UserBookKey getUserBookKey() {
-        return userBookKey;
+    public BookProgressKey getBookProgressKey() {
+        return bookProgressKey;
     }
 
-    public void setUserBookKey(UserBookKey userBookKey) {
-        this.userBookKey = userBookKey;
+    public void setBookProgressKey(BookProgressKey bookProgressKey) {
+        this.bookProgressKey = bookProgressKey;
     }
 
     public User getUser() {
@@ -69,14 +65,6 @@ public class UserBookInfo {
 
     public void setBook(Book book) {
         this.book = book;
-    }
-
-    public Float getUserRating() {
-        return userRating;
-    }
-
-    public void setUserRating(Float userRating) {
-        this.userRating = userRating;
     }
 
     public Long getProgressPage() {

@@ -25,11 +25,7 @@
         <th>Title</th>
         <th>Author</th>
         <th>Description</th>
-        <th>Rating</th>
-        <th>Number of ratings</th>
         <th>Pages</th>
-        <th>Stock</th>
-        <th>Price</th>
 
     </tr>
     </thead>
@@ -42,12 +38,7 @@
         <td th:text="${book.bookTitle}"/>
         <td th:text="${book.author}"/>
         <td th:text="${book.description}"/>
-        <td th:text="${book.rating}"/>
-        <td th:text="${book.numberOfRatings}"/>
         <td th:text="${book.pages}"/>
-        <td th:text="${book.stock}"/>
-        <td th:text="@{${book.price} + '$'}"/>
-
         <td>
             <form th:action="@{/wishlist/delete}" th:object="${book}" method="POST">
                 <input type="hidden" th:value="${book.id}" name="id"/>

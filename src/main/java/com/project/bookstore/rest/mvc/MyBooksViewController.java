@@ -1,7 +1,7 @@
 package com.project.bookstore.rest.mvc;
 
-import com.project.bookstore.model.UserBookInfo;
-import com.project.bookstore.repository.UserBookRepository;
+import com.project.bookstore.model.BookProgress;
+import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,13 +21,13 @@ public class MyBooksViewController {
     UserRepository userRepository;
 
     @Autowired
-    UserBookRepository userBookRepository;
+    BookProgressRepository bookProgressRepository;
 
     @GetMapping("/mybooks")
     public String homeBooks(Model model) {
         com.project.bookstore.model.User modelUser = getUser();
-        List<UserBookInfo> userBooks = userBookRepository.findAllCurrentlyReadingAndReadByUser(modelUser.getId());
-        model.addAttribute("books", userBooks.stream().map(UserBookInfo::getBook).collect(Collectors.toList())); // get all book fields from userBooks list
+        List<BookProgress> progresses = bookProgressRepository.findAllCurrentlyReadingAndReadByUser(modelUser.getId());
+        model.addAttribute("books", progresses.stream().map(BookProgress::getBook).collect(Collectors.toList())); // get all book fields from the list
         return "mybooks";
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
+import java.util.Set;
 
 //This controller is used for giving to the thymeleaf model the authentificated user first name when requested
 
@@ -37,7 +38,7 @@ public class ModelAttributesController {
 
 
     @ModelAttribute("usedGenres")
-    public List<Genre> getAllGenres(){
+    public Set<Genre> getAllGenres(){
        return genreRepository.getAllUsedGenres();
     }
 }

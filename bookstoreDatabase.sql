@@ -44,7 +44,7 @@ CREATE TABLE `book` (
 	PRIMARY KEY (`id`)
 );
 TRUNCATE TABLE `user_book`; /*sterge datale din tabel*/
-
+DROP TABLE `user_book`;
 CREATE TABLE `user_book` (
 	`user_id` INT(11),
 	`book_id` INT(11),
@@ -52,17 +52,10 @@ CREATE TABLE `user_book` (
 	 FOREIGN KEY (`book_id`) REFERENCES `book`(`id`),
 	`user_rating` float(11),
 	`progress_pages` INT(11),
-	`date_bought` DATETIME(6),
+    `book_state` TINYINT,
 	 PRIMARY KEY(user_id, book_id)
 );
-TRUNCATE TABLE `wish_list`;
-CREATE TABLE `wish_list` (
-	`user_id` INT(11),
-	`book_id` INT(11),
-    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
-	FOREIGN KEY (`book_id`) REFERENCES `book`(`id`),
-    PRIMARY KEY(user_id, book_id)
-);
+
 
 
 CREATE TABLE `genres`(

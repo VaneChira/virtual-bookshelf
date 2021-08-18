@@ -1,9 +1,9 @@
 package com.project.bookstore.rest.mvc;
 
 import com.project.bookstore.model.Book;
-import com.project.bookstore.model.UserBookInfo;
-import com.project.bookstore.model.UserBookKey;
-import com.project.bookstore.repository.UserBookRepository;
+import com.project.bookstore.model.BookProgress;
+import com.project.bookstore.model.BookProgressKey;
+import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class WishListViewController {
 
     @Autowired
-    UserBookRepository userBookRepository;
+    BookProgressRepository bookProgressRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -31,8 +31,8 @@ public class WishListViewController {
     @GetMapping("/wishlist")
     public String wishlist(Model model) {
         com.project.bookstore.model.User modelUser = getUser();
-        List<UserBookInfo> userBooks = userBookRepository.findAllWishlistByUser(modelUser.getId());
-        model.addAttribute("books", userBooks.stream().map(UserBookInfo::getBook).collect(Collectors.toList()));
+        List<BookProgress> bookProgresses = bookProgressRepository.findAllWishlistByUser(modelUser.getId());
+        model.addAttribute("books", bookProgresses.stream().map(BookProgress::getBook).collect(Collectors.toList()));
 
         return "wishlist";
     }
@@ -42,8 +42,8 @@ public class WishListViewController {
     public String delete(@ModelAttribute Book book) {
         com.project.bookstore.model.User modelUser = getUser();
 
-        UserBookKey userBookKey = new UserBookKey(modelUser.getId(), book.getId());
-        userBookRepository.deleteById(userBookKey);
+        BookProgressKey bookProgressKey = new BookProgressKey(modelUser.getId(), book.getId());
+        bookProgressRepository.deleteById(bookProgressKey);
 
         return "redirect:/wishlist";
     }
