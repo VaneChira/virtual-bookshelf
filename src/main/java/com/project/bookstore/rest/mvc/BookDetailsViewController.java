@@ -56,11 +56,15 @@ public class BookDetailsViewController {
 
         model.addAttribute("commentExists", commentExists);
         model.addAttribute("book", book);
+        model.addAttribute("authors", book.getAuthorInBooks());
         model.addAttribute("genres", bookService.findBookById(id).getGenresInBooks());
         model.addAttribute("averageRating", feedbackRepository.getAverageRating(id));
         model.addAttribute("feedbacks", feedbackRepository.getFeedbacksByBook(id));
         model.addAttribute("numberOfRatings", feedbackRepository.getNumberOfRatings(id));
-        model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));
+
+        if(bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
+            model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));
+        }
         return "bookdetails";
     }
 

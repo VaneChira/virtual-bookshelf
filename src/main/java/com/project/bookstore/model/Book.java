@@ -18,8 +18,13 @@ public class Book {
     @Column(name="book_title")
     private String bookTitle;
 
-    @Column(name="author")
-    private String author;
+    @ManyToMany
+    @JoinTable(
+            name="books_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name="author_id"))
+    @JsonIgnoreProperties("booksForAuthors")
+    Set<Author> authorInBooks;
 
     @Column(name="description")
     private String description;
@@ -38,6 +43,12 @@ public class Book {
     @Column(name="pages")
     private Integer pages;
 
+    @Column(name="year")
+    private Integer year;
+
+    @Column(name="language")
+    private String language;
+
     public Book() {
     }
 
@@ -46,22 +57,25 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", bookTitle='" + bookTitle + '\'' +
-                ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
                 ", genresInBooks=" + genresInBooks +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", pages=" + pages +
+                ", year=" + year +
+                ", language='" + language + '\'' +
                 '}';
     }
 
-    public Book(Long id, String bookTitle, String author, String description, Set<Genre> genresInBooks, String imageUrl, Integer pages) {
+    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Integer pages, Integer year, String language) {
         this.id = id;
         this.bookTitle = bookTitle;
-        this.author = author;
+        this.authorInBooks = authorInBooks;
         this.description = description;
         this.genresInBooks = genresInBooks;
         this.imageUrl = imageUrl;
         this.pages = pages;
+        this.year = year;
+        this.language = language;
     }
 
     public Long getId() {
@@ -76,16 +90,16 @@ public class Book {
         return bookTitle;
     }
 
+    public Set<Author> getAuthorInBooks() {
+        return authorInBooks;
+    }
+
+    public void setAuthorInBooks(Set<Author> authorInBooks) {
+        this.authorInBooks = authorInBooks;
+    }
+
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getDescription() {
@@ -120,4 +134,19 @@ public class Book {
         this.pages = pages;
     }
 
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 }

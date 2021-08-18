@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository <Book, Long>{
     //This is JPA Repository for books.
 
-    @Query(value = "SELECT * FROM book b WHERE CONCAT(b.book_title,' ', b.author) LIKE %:keyword%", nativeQuery = true)
+    @Query(value = "SELECT * FROM book b WHERE CONCAT(b.book_title,' ') LIKE %:keyword%", nativeQuery = true)
     List<Book> search(String keyword);
 
     @Query(value = "SELECT * from book b\n" +

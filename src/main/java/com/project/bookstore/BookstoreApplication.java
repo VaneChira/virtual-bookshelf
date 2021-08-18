@@ -14,6 +14,5 @@ BookstoreApplication {
 }
 
 
-//sa poti da un rating cand faci review, nu doar text
 //vazut cu description/information de la book details
 //descriere mai lunga la carti

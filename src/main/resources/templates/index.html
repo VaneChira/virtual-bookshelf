@@ -18,12 +18,15 @@
 <br>
 
 <br><br>
+
+
+<div th:if="${!books.empty}">
 <table border="1">
     <thead>
     <tr>
         <th>Image</th>
         <th>Title</th>
-        <th>Author</th>
+        <th>Author(s)</th>
         <th>Description</th>
         <th>Pages</th>
     </tr>
@@ -37,7 +40,7 @@
             </a>
         </td>
         <td th:text="${book.bookTitle}"/>
-        <td th:text="${book.author}"/>
+        <td> <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
         <td th:text="${book.description}"/>
         <td th:text="${book.pages}"/>
         <td>
@@ -50,6 +53,10 @@
     </tr>
     </tbody>
 </table>
+</div>
+<div th:if="${books.empty}">
+    <h2>NO books</h2>
+</div>
 
 
 </body>
