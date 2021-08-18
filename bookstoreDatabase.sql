@@ -31,6 +31,10 @@ SELECT * FROM book b WHERE CONCAT(b.book_title, b.author) LIKE '%Blood%';
 ALTER TABLE `book`
 DROP COLUMN `genre`;
 
+ALTER TABLE `book`
+ADD `price` FLOAT;
+
+
 CREATE TABLE `book` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`book_title` VARCHAR(100),
@@ -56,6 +60,17 @@ CREATE TABLE `user_book` (
 	 PRIMARY KEY(user_id, book_id)
 );
 
+CREATE TABLE `feedback` (
+	`user_id` INT,
+	`book_id` INT,
+     FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+	 FOREIGN KEY (`book_id`) REFERENCES `book`(`id`),
+	`rating` FLOAT,
+	`comment` VARCHAR(255),
+    `date` DATE,
+	 PRIMARY KEY(user_id, book_id)
+);
+
 
 
 CREATE TABLE `genres`(
@@ -78,4 +93,12 @@ CREATE TABLE `genres_in_books` (
 	 PRIMARY KEY(genre_id, book_id)
 );
 
+
+SELECT * from book b
+INNER JOIN genres_in_books gib
+ON b.id = gib.book_id
+INNER JOIN genres g
+ON gib.genre_id=g.id
+WHERE g.type IN("History") AND b.id != 1
+LIMIT 4;
 
