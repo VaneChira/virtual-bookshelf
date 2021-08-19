@@ -12,7 +12,3 @@ BookstoreApplication {
 	}
 
 }
-
-
-//vazut cu description/information de la book details
-//descriere mai lunga la carti

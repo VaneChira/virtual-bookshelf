@@ -3357,8 +3357,19 @@ input[type="button"].btn-block {
       -webkit-transition: none;
       -o-transition: none;
       transition: none; } }
-
+.nav-theme{
+display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
 .nav {
+/* comentat pentru ca for some reason e nevoie de class="nav" la butoanele d ela my books
+daca styling-ul se strica, decomneteaza, vezi daca ajuta
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3366,7 +3377,8 @@ input[type="button"].btn-block {
   flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
-  list-style: none; }
+  list-style: none; */
+  }
 
 
 .nav-link {
@@ -8452,7 +8464,7 @@ h1, h2, h3, h4, h5,
 
 
        .row-books {
-         display: inline;
+         display: inline; !important;
        }
 
 
@@ -8476,29 +8488,30 @@ button1{
   text-align: center;
 }
 .custom-btn {
-  width: 140px;
-  height: 50px;
-  padding: 10px 25px;
-  border: 2px solid #000;
-  font-family: 'Lato', sans-serif;
-  font-weight: 500;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  display: inline-block;
+
+  width: 140px;!important;
+  height: 50px;!important;
+  padding: 10px 25px;!important;
+  border: 2px solid #000;!important;
+  font-family: 'Lato', sans-serif;!important;
+  font-weight: 500;!important;
+  background: transparent;!important;
+  cursor: pointer;!important;
+  transition: all 0.3s ease;!important;
+  position: relative;!important;
+  display: inline-block;!important;
 }
 
 /* 1 */
 .btn-1 {
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; !important;
 }
 .btn-1:hover {
    box-shadow:
    -7px -7px 20px 0px #fff9,
    -4px -4px 5px 0px #fff9,
    7px 7px 20px 0px #0002,
-   4px 4px 5px 0px #0001;
+   4px 4px 5px 0px #0001; !important;
 }
 
 

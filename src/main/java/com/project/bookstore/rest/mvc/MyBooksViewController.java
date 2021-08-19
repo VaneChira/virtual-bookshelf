@@ -26,8 +26,15 @@ public class MyBooksViewController {
     @GetMapping("/mybooks")
     public String homeBooks(Model model) {
         com.project.bookstore.model.User modelUser = getUser();
-        List<BookProgress> progresses = bookProgressRepository.findAllCurrentlyReadingAndReadByUser(modelUser.getId());
-        model.addAttribute("books", progresses.stream().map(BookProgress::getBook).collect(Collectors.toList())); // get all book fields from the list
+        List<BookProgress> allCurrentlyReadingAndReadByUser = bookProgressRepository.findAllCurrentlyReadingAndReadByUser(modelUser.getId());
+        model.addAttribute("allbooks", allCurrentlyReadingAndReadByUser.stream().map(BookProgress::getBook).collect(Collectors.toList())); // get all book fields from the list
+
+        List<BookProgress> readBooks = bookProgressRepository.findAllReadByUser(modelUser.getId());
+        model.addAttribute("readbooks", readBooks.stream().map(BookProgress::getBook).collect(Collectors.toList()));
+
+        List<BookProgress> readingBooks = bookProgressRepository.findAllCurrentlyReadingByUser(modelUser.getId());
+        model.addAttribute("readingbooks", readingBooks.stream().map(BookProgress::getBook).collect(Collectors.toList()));
+
         return "mybooks";
     }
 

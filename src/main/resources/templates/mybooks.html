@@ -6,7 +6,8 @@
     <title>Registration and Login App</title>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 
 
@@ -18,26 +19,61 @@
 
 <h1>My bookshelf</h1>
 
-<div class ="frame">
-    <button class="custom-btn btn-1" >All books</button>
-    <button class="custom-btn btn-1"><span>Read</span></button>
-    <button class="custom-btn btn-1">Reading</button>
-    <button class="custom-btn btn-1">Wishlist</button>
-</div>
-<hr>
-
-
-<div class="container">
-    <div class="row-books" th:each="book: ${books}">
-        <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery" class="col-md-4">
-            <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
+<div class="frame">
+    <div class="nav" id="advancedTab" role="tablist">
+        <a href="#allbooks" id="allbooks-tab" data-toggle="tab" role="tab" aria-controls="allbooks"
+           aria-selected="true">
+            <button class="custom-btn btn-1">All books</button>
+        </a>
+        <a id="readbooks-tab" data-toggle="tab" href="#readbooks" role="tab" aria-controls="readbooks"
+           aria-selected="false">
+            <button class="custom-btn btn-1">Read</button>
+        </a>
+        <a href="#readingbooks" id="readingbooks-tab" data-toggle="tab" role="tab" aria-controls="readingbooks"
+           aria-selected="false">
+            <button class="custom-btn btn-1">Reading</button>
         </a>
     </div>
+
+    <br>
+    <hr>
+    <br>
+
+    <div class="tab-content" id="advancedTabContent">
+        <div class="tab-pane fade show active" id="allbooks" role="tabpanel" aria-labelledby="allbooks-tab">
+            <div class="container">
+                <div class="row-books" th:each="book: ${allbooks}">
+                    <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
+                       class="col-md-4">
+                        <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="readbooks" role="tabpanel" aria-labelledby="readbooks-tab">
+            <div class="container">
+                <div class="row-books" th:each="book: ${readbooks}">
+                    <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
+                       class="col-md-4">
+                        <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="readingbooks" role="tabpanel" aria-labelledby="readingbooks-tab">
+            <div class="container">
+                <div class="row-books" th:each="book: ${readingbooks}">
+                    <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
+                       class="col-md-4">
+                        <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
-<br><br>
 
 
 </body>
