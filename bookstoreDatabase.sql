@@ -28,23 +28,28 @@ CREATE TABLE `user_role`(
 
 SELECT * FROM book b WHERE CONCAT(b.book_title, b.author) LIKE '%Blood%';
 
-ALTER TABLE `book`
-DROP COLUMN `genre`;
 
 ALTER TABLE `book`
-ADD `price` FLOAT;
+ADD COLUMN `year` INT;
+
+ALTER TABLE `book`
+ADD COLUMN`language` VARCHAR(70);
+
+
+DROP TABLE `book`;
+
+ALTER TABLE `book`
+DROP COLUMN `author`;
 
 
 CREATE TABLE `book` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`book_title` VARCHAR(100),
-	`author` VARCHAR(70),
-	`description` VARCHAR(500),
+	`description` VARCHAR(1000),
 	`rating` float(11),
 	`number_of_ratings` INT(11),
 	`image_url` VARCHAR(255),
 	`pages` INT(11),
-	`stock` INT(11),
 	PRIMARY KEY (`id`)
 );
 TRUNCATE TABLE `user_book`; /*sterge datale din tabel*/
@@ -60,6 +65,7 @@ CREATE TABLE `user_book` (
 	 PRIMARY KEY(user_id, book_id)
 );
 
+DROP TABLE `feedback`;
 CREATE TABLE `feedback` (
 	`user_id` INT,
 	`book_id` INT,
@@ -85,6 +91,8 @@ ON g.id = gib.genre_id
 INNER JOIN book b
 ON b.id = gib.book_id;
 
+
+DROP TABLE `genres_in_books`;
 CREATE TABLE `genres_in_books` (
 	`genre_id` INT(11),
 	`book_id` INT(11),
@@ -101,4 +109,19 @@ INNER JOIN genres g
 ON gib.genre_id=g.id
 WHERE g.type IN("History") AND b.id != 1
 LIMIT 4;
+
+CREATE TABLE `author`(
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(250),
+    `description` VARCHAR(1000),
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `books_author` (
+	`author_id` INT(11),
+	`book_id` INT(11),
+     FOREIGN KEY (`author_id`) REFERENCES `author`(`id`),
+	 FOREIGN KEY (`book_id`) REFERENCES `book`(`id`),
+	 PRIMARY KEY(author_id, book_id)
+);
 

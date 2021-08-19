@@ -8406,8 +8406,8 @@ h1, h2, h3, h4, h5,
        .image_outer_container .green_icon{
          background-color: #4cd137;
          position: absolute;
-         right: 5px;
-         bottom: 5px;
+         right: 7px;
+         bottom: 7px;
          height: 15px;
          width: 15px;
          border:2px solid white;
@@ -8449,3 +8449,76 @@ h1, h2, h3, h4, h5,
        .rating > label:active {
            position:relative;
        }
+
+
+       .row-books {
+         display: inline;
+       }
+
+
+h1 {
+  position: relative;
+  text-align: center;
+  color: #353535;
+  font-size: 40px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+
+.frame {
+  width: 100%;
+  margin: 40px auto;
+  text-align: center;
+}
+button1{
+  margin: 24px;
+  outline: none;
+  text-align: center;
+}
+.custom-btn {
+  width: 140px;
+  height: 50px;
+  padding: 10px 25px;
+  border: 2px solid #000;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+/* 1 */
+.btn-1 {
+  transition: all 0.3s ease;
+}
+.btn-1:hover {
+   box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

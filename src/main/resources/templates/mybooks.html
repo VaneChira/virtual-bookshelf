@@ -8,40 +8,37 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+
 </head>
 <body>
 <div th:insert="header :: header"></div>
 <br>
 <br>
 
-<div class="container">
+<h1>My bookshelf</h1>
 
-
+<div class ="frame">
+    <button class="custom-btn btn-1" >All books</button>
+    <button class="custom-btn btn-1"><span>Read</span></button>
+    <button class="custom-btn btn-1">Reading</button>
+    <button class="custom-btn btn-1">Wishlist</button>
 </div>
+<hr>
+
+
+<div class="container">
+    <div class="row-books" th:each="book: ${books}">
+        <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery" class="col-md-4">
+            <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
+        </a>
+    </div>
+</div>
+
+
+
 <br><br>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Author(s)</th>
-        <th>Description</th>
-        <th>Pages</th>
 
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="book: ${books}">
-        <td> <a th:href="@{'/bookdetails/' + ${book.id}}">
-            <img th:src="${book.imageUrl}" height="300px" width="230px"> </a></td>
-        <td th:text="${book.bookTitle}"/>
-        <td> <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
-        <td th:text="${book.description}"/>
-        <td th:text="${book.pages}"/>
-    </tr>
-    </tbody>
-</table>
 
 </body>
 </html>
