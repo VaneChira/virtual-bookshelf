@@ -3,12 +3,13 @@ package com.project.bookstore.rest.mvc;
 
 import com.project.bookstore.exception.ResourceNotFoundException;
 import com.project.bookstore.model.Book;
+import com.project.bookstore.model.BookProgressKey;
 import com.project.bookstore.model.Feedback;
 import com.project.bookstore.model.FeedbackKey;
+import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.BookRepository;
 import com.project.bookstore.repository.FeedbackRepository;
 import com.project.bookstore.repository.UserRepository;
-import com.project.bookstore.security.UserRegistrationFormEntity;
 import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,9 @@ public class BookDetailsViewController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BookProgressRepository bookProgressRepository;
+
     Optional<Book> currentBook = Optional.empty();
 
 
@@ -46,7 +50,9 @@ public class BookDetailsViewController {
         Book book = bookService.findBookById(id);
         currentBook = Optional.of(book);
 
-        FeedbackKey feedbackKey = new FeedbackKey(getUser().getId(),id);
+        Long userId = getUser().getId();
+
+        FeedbackKey feedbackKey = new FeedbackKey(userId ,id);
         boolean commentExists = feedbackRepository.existsById(feedbackKey);
 
         if(commentExists){
@@ -61,6 +67,31 @@ public class BookDetailsViewController {
         model.addAttribute("averageRating", feedbackRepository.getAverageRating(id));
         model.addAttribute("feedbacks", feedbackRepository.getFeedbacksByBook(id));
         model.addAttribute("numberOfRatings", feedbackRepository.getNumberOfRatings(id));
+
+        BookProgressKey bookProgressKey = new BookProgressKey(userId, book.getId());
+        String bookProgressState;
+        if(bookProgressRepository.findById(bookProgressKey).isPresent()) {
+            Integer bookProgress = bookProgressRepository.findById(bookProgressKey).get().getBookState();
+            switch(bookProgress){
+                case 1:
+                    bookProgressState = "Wishlist";
+                    break;
+                case 2:
+                    bookProgressState = "Currently reading";
+                    break;
+                case 3:
+                    bookProgressState = "Read";
+                    break;
+                default:
+                    bookProgressState = "Set Progress";
+                    break;
+            }
+            model.addAttribute("progress", bookProgressState);
+        }
+        else{
+            bookProgressState = "Set Progress";
+            model.addAttribute("progress", bookProgressState);
+        }
 
         if(bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
             model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));

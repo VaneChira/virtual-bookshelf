@@ -26,21 +26,21 @@ public class BookProgressViewController {
     public String addToWishlist(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
         bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.WISHLIST);
-        return "redirect:/";
+        return "redirect:/bookdetails/" + book.getId();
     }
 
     @PostMapping("/add-to-currently-reading")
     public String addToCurrentlyReading(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
         bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.CURRENTLY_READING);
-        return "redirect:/";
+        return "redirect:/bookdetails/" + book.getId();
     }
 
     @PostMapping("/add-to-read")
     public String addToRead(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
         bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.READ);
-        return "redirect:/";
+        return "redirect:/bookdetails/" + book.getId();
     }
 
     private com.project.bookstore.model.User getLoggedUser() {

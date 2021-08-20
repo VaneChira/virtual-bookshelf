@@ -21,41 +21,52 @@
 
 
 <div th:if="${!books.empty}">
-<table border="1">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Author(s)</th>
-        <th>Description</th>
-        <th>Pages</th>
-    </tr>
-    </thead>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Titlee</th>
+            <th>Author(s)</th>
+            <th>Description</th>
+            <th>Pages</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each="book: ${books}">
+        <tbody>
+        <tr th:each="book: ${books}">
 
-        <td>
-            <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px" width="230px"/>
-            </a>
-        </td>
-        <td th:text="${book.bookTitle}"/>
-        <td> <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
-        <td th:text="${book.description}"/>
-        <td th:text="${book.pages}"/>
-        <td>
-            <form th:action="@{/book-progress/add-to-wishlist}" th:object="${book}" method="POST">
-                <input type="hidden" th:value="${book.id}" name="id"/>
-                <button type="submit" class="btn btn-info col-2">Add to wishlist</button>
-            </form>
-        </td>
+            <td>
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px"
+                                                                   width="230px"/>
+                </a>
+            </td>
+            <td th:text="${book.bookTitle}"/>
+            <td><span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}"
+                      th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
+            <td th:text="${book.description}"/>
+            <td th:text="${book.pages}"/>
+            <td>
+                <form th:action="@{/book-progress/add-to-wishlist}" th:object="${book}" method="POST">
+                    <input type="hidden" th:value="${book.id}" name="id"/>
+                    <button type="submit" class="btn btn-info col-2">Add to wishlist</button>
+                </form>
+            </td>
 
-    </tr>
-    </tbody>
-</table>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+
+
 <div th:if="${books.empty}">
-    <h2>NO books</h2>
+    <h5>No results found.</h5>
+    <hr>
+    <h5> Looking for a book?</h5>
+    <ul class ="nav" id="loadBooks "type="circle">
+        <li> Search by title and double-check the spelling.</li>
+        <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
+    </ul>
 </div>
 
 

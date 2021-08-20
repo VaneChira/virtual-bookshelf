@@ -33,6 +33,35 @@
                                 <img th:src="${book.imageUrl}" width="400px" height="540px"
                                      class="img-fluid z-depth-1">
                             </div>
+
+                            <div class="dropdown-btn">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" th:text="${progress}">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+
+                                    <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
+                                          method="POST">
+                                        <input type="hidden" th:value="${book.id}" name="id"/>
+                                        <button type="submit" class="dropdown-item">Read</button>
+                                    </form>
+
+                                    <form th:action="@{/book-progress/add-to-currently-reading}" th:object="${book}"
+                                          method="POST">
+                                        <input type="hidden" th:value="${book.id}" name="id"/>
+                                        <button type="submit" class="dropdown-item">Currently reading</button>
+                                    </form>
+
+                                    <form th:action="@{/book-progress/add-to-wishlist}" th:object="${book}"
+                                          method="POST">
+                                        <input type="hidden" th:value="${book.id}" name="id"/>
+                                        <button type="submit" class="dropdown-item">Add to wishlist</button>
+                                    </form>
+
+                                </div>
+                            </div>
                         </figure>
                     </div>
                 </div>
@@ -41,7 +70,8 @@
 
         <div class="col-md-6">
             <h5 th:text="${book.bookTitle}"></h5>
-            <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
+            <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}"
+                  th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
 
             <p class="pt-1" th:text="${book.description}"></p>
             <div class="table-responsive">
@@ -96,15 +126,16 @@
     <div class="tab-content" id="advancedTabContent">
         <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
             <div th:each="author : ${book.authorInBooks}">
-            <p th:text="${author.name}" class="small text-muted text-uppercase mb-2"></p>
-            <p th:text="${author.description}" class="pt-1"></p>
+                <p th:text="${author.name}" class="small text-muted text-uppercase mb-2"></p>
+                <p th:text="${author.description}" class="pt-1"></p>
             </div>
         </div>
 
         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
             <h5><span>Reviews for <span th:text="${book.bookTitle}"/></span></h5>
             <div class="media mt-3 mb-4" th:each="feedback:${feedbacks}">
-                <img class="d-flex mr-3 z-depth-1" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fhamzasaleem%2Fstock-style-3%2F512%2FiBooks-S3-icon.png&f=1&nofb=1"
+                <img class="d-flex mr-3 z-depth-1"
+                     src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fhamzasaleem%2Fstock-style-3%2F512%2FiBooks-S3-icon.png&f=1&nofb=1"
                      width="62" alt="Generic placeholder image">
                 <div class="media-body">
                     <div class="d-sm-flex justify-content-between">
@@ -165,7 +196,7 @@
             <div class="">
                 <div class="mask">
                     <a th:href="@{'/bookdetails/' + ${related.id}}">
-                        <img th:src="${related.imageUrl}" width="200px" height="270px">
+                        <img th:src="${related.imageUrl}" width="200px" height="280px">
                     </a>
                 </div>
                 <div class="pt-4">
