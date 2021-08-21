@@ -125,6 +125,8 @@ public class BookDetailsViewController {
         throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
     }
 
+// post method for pages
+
 
     private com.project.bookstore.model.User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

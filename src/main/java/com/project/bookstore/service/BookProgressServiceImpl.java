@@ -53,4 +53,20 @@ public class BookProgressServiceImpl implements BookProgressService {
             throw new PreconditionFailedException("User or book id invalid", "");
         }
     }
+
+    @Override
+    public BookProgress updatePages(Long userId, Long bookId, Long pages) {
+        BookProgressKey bookProgressKey = new BookProgressKey(userId, bookId);
+        Optional<User> optUser = userRepository.findById(userId);
+        Optional<Book> optBook = bookRepository.findById(bookId);
+        if (optUser.isPresent() && optBook.isPresent()) {
+            if (pages < 0 || pages > optBook.get().getPages()){
+                throw new PreconditionFailedException("Number of pages not in range for this book", "Pages error");
+            }
+            BookProgress bookPagesProgress = new BookProgress(bookProgressKey, optUser.get(),
+                    optBook.get(), pages, BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
+            return bookProgressRepository.save(bookPagesProgress);
+        }
+        return null;
+    }
 }

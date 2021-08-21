@@ -41,6 +41,8 @@ DROP TABLE `book`;
 ALTER TABLE `book`
 DROP COLUMN `author`;
 
+ALTER TABLE `user_book`
+DROP COLUMN `user_rating`;
 
 CREATE TABLE `book` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -59,7 +61,6 @@ CREATE TABLE `user_book` (
 	`book_id` INT(11),
      FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
 	 FOREIGN KEY (`book_id`) REFERENCES `book`(`id`),
-	`user_rating` float(11),
 	`progress_pages` INT(11),
     `book_state` TINYINT,
 	 PRIMARY KEY(user_id, book_id)

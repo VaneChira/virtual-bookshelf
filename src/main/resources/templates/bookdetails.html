@@ -33,35 +33,6 @@
                                 <img th:src="${book.imageUrl}" width="400px" height="540px"
                                      class="img-fluid z-depth-1">
                             </div>
-
-                            <div class="dropdown-btn">
-                                <button class="btn btn-outline-dark dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" th:text="${progress}">
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-
-                                    <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
-                                          method="POST">
-                                        <input type="hidden" th:value="${book.id}" name="id"/>
-                                        <button type="submit" class="dropdown-item">Read</button>
-                                    </form>
-
-                                    <form th:action="@{/book-progress/add-to-currently-reading}" th:object="${book}"
-                                          method="POST">
-                                        <input type="hidden" th:value="${book.id}" name="id"/>
-                                        <button type="submit" class="dropdown-item">Currently reading</button>
-                                    </form>
-
-                                    <form th:action="@{/book-progress/add-to-wishlist}" th:object="${book}"
-                                          method="POST">
-                                        <input type="hidden" th:value="${book.id}" name="id"/>
-                                        <button type="submit" class="dropdown-item">Add to wishlist</button>
-                                    </form>
-
-                                </div>
-                            </div>
                         </figure>
                     </div>
                 </div>
@@ -101,6 +72,62 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <br>
+
+            <div class="dropdown-btn">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" th:text="${progress}">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+
+                    <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
+                          method="POST">
+                        <input type="hidden" th:value="${book.id}" name="id"/>
+                        <button type="submit" class="dropdown-item">Read</button>
+                    </form>
+
+                    <form th:action="@{/book-progress/add-to-currently-reading}" th:object="${book}"
+                          method="POST">
+                        <input type="hidden" th:value="${book.id}" name="id"/>
+                        <button type="submit" class="dropdown-item">Currently reading</button>
+                    </form>
+
+                    <form th:action="@{/book-progress/add-to-wishlist}" th:object="${book}"
+                          method="POST">
+                        <input type="hidden" th:value="${book.id}" name="id"/>
+                        <button type="submit" class="dropdown-item">Add to wishlist</button>
+                    </form>
+
+                </div>
+            </div>
+
+
+            <div  class="dropdown-btn">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                        id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Update progress</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+
+                    <form class="mx-4">
+
+                        <!--  input -->
+                        <div class="form-inline mb-1">
+                            <label class="form-label mr-1" for="form1Example1">On page</label>
+                            <input id="form1Example1" class="form-control-sm w-25" maxlength="4" type="number" />
+                            <label class="form-label ml-1" for="form1Example1" th:text="@{' out of ' + ${book.pages}}"></label>
+                        </div>
+                    </form>
+
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
+                          method="POST">
+                        <input type="hidden" th:value="${book.id}" name="id"/>
+                        <button type="submit" class="dropdown-item">Finished book?</button>
+                    </form>
+                </div>
             </div>
             <hr>
             <div class="table-responsive mb-2">

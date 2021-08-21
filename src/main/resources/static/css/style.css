@@ -6504,6 +6504,9 @@ button.bg-dark:focus {
   -webkit-box-shadow: none !important;
   box-shadow: none !important; }
 
+.w-15 {
+  width: 15% !important; }
+
 .w-25 {
   width: 25% !important; }
 
@@ -8514,27 +8517,7 @@ button1{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.dropdown-btn{
+margin-left:0px;
+display:inline;
+}

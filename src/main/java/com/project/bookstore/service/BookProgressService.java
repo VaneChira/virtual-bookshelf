@@ -16,4 +16,6 @@ public interface BookProgressService {
 
     BookProgress save(Long userId, Long bookId, BookStateEnum bookStateEnum);
 
+    BookProgress updatePages(Long userId, Long bookId, Long pages);
+
 }

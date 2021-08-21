@@ -43,6 +43,8 @@ public class BookProgressViewController {
         return "redirect:/bookdetails/" + book.getId();
     }
 
+
+
     private com.project.bookstore.model.User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal(); // user from spring security (not model)

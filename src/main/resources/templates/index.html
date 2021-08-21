@@ -60,7 +60,7 @@
 
 
 <div th:if="${books.empty}">
-    <h5>No results found.</h5>
+    <h5>No results found for "<span th:text="${keyword}"/>". </h5>
     <hr>
     <h5> Looking for a book?</h5>
     <ul class ="nav" id="loadBooks "type="circle">

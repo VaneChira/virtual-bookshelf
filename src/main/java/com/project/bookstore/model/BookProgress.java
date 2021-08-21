@@ -35,6 +35,8 @@ public class BookProgress {
         this.bookState = bookState;
     }
 
+
+
     public BookProgress(BookProgressKey bookProgressKey, User user, Book book, Long progressPage, Integer bookState) {
         this.bookProgressKey = bookProgressKey;
         this.user = user;
