@@ -41,7 +41,7 @@ public class Book {
     private String imageUrl;
 
     @Column(name="pages")
-    private Integer pages;
+    private Long pages;
 
     @Column(name="year")
     private Integer year;
@@ -66,7 +66,7 @@ public class Book {
                 '}';
     }
 
-    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Integer pages, Integer year, String language) {
+    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Long pages, Integer year, String language) {
         this.id = id;
         this.bookTitle = bookTitle;
         this.authorInBooks = authorInBooks;
@@ -126,11 +126,11 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getPages() {
+    public Long getPages() {
         return pages;
     }
 
-    public void setPages(Integer pages) {
+    public void setPages(Long pages) {
         this.pages = pages;
     }
 

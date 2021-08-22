@@ -1,7 +1,10 @@
 package com.project.bookstore.rest.mvc;
 
 import com.project.bookstore.model.Book;
+import com.project.bookstore.model.BookProgress;
+import com.project.bookstore.model.BookProgressKey;
 import com.project.bookstore.model.BookStateEnum;
+import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.UserRepository;
 import com.project.bookstore.service.BookProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("book-progress")
 public class BookProgressViewController {
@@ -20,26 +25,49 @@ public class BookProgressViewController {
     BookProgressService bookProgressService;
 
     @Autowired
+    BookProgressRepository bookProgressRepository;
+
+    @Autowired
     UserRepository userRepository;
 
     @PostMapping("/add-to-wishlist")
     public String addToWishlist(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.WISHLIST);
+        BookProgressKey bookProgressKey = new BookProgressKey(loggedUser.getId(), book.getId());
+        Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
+        if (bookProgressOpt.isPresent()){
+            BookProgress bookProgress = bookProgressOpt.get();
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST));
+            bookProgress.setProgressPage(0L);
+            bookProgressRepository.save(bookProgress);
+        }
         return "redirect:/bookdetails/" + book.getId();
     }
 
     @PostMapping("/add-to-currently-reading")
     public String addToCurrentlyReading(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.CURRENTLY_READING);
+        BookProgressKey bookProgressKey = new BookProgressKey(loggedUser.getId(), book.getId());
+        Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
+        if (bookProgressOpt.isPresent()){
+            BookProgress bookProgress = bookProgressOpt.get();
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
+            bookProgressRepository.save(bookProgress);
+        }
         return "redirect:/bookdetails/" + book.getId();
     }
 
     @PostMapping("/add-to-read")
     public String addToRead(@ModelAttribute("book") Book book) {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
-        bookProgressService.save(loggedUser.getId(), book.getId(), BookStateEnum.READ);
+        BookProgressKey bookProgressKey = new BookProgressKey(loggedUser.getId(), book.getId());
+        Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
+        if (bookProgressOpt.isPresent()){
+            BookProgress bookProgress = bookProgressOpt.get();
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
+            bookProgress.setProgressPage(book.getPages());
+            bookProgressRepository.save(bookProgress);
+        }
         return "redirect:/bookdetails/" + book.getId();
     }
 

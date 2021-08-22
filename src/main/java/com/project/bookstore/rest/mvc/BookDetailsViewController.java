@@ -1,15 +1,14 @@
 package com.project.bookstore.rest.mvc;
 
 
+import com.project.bookstore.exception.PreconditionFailedException;
 import com.project.bookstore.exception.ResourceNotFoundException;
-import com.project.bookstore.model.Book;
-import com.project.bookstore.model.BookProgressKey;
-import com.project.bookstore.model.Feedback;
-import com.project.bookstore.model.FeedbackKey;
+import com.project.bookstore.model.*;
 import com.project.bookstore.repository.BookProgressRepository;
 import com.project.bookstore.repository.BookRepository;
 import com.project.bookstore.repository.FeedbackRepository;
 import com.project.bookstore.repository.UserRepository;
+import com.project.bookstore.service.BookProgressService;
 import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -42,6 +41,9 @@ public class BookDetailsViewController {
     @Autowired
     BookProgressRepository bookProgressRepository;
 
+    @Autowired
+    BookProgressService bookProgressService;
+
     Optional<Book> currentBook = Optional.empty();
 
 
@@ -54,10 +56,28 @@ public class BookDetailsViewController {
 
         FeedbackKey feedbackKey = new FeedbackKey(userId ,id);
         boolean commentExists = feedbackRepository.existsById(feedbackKey);
-
         if(commentExists){
             Optional<Feedback> optionalFeedback = feedbackRepository.findById(feedbackKey);
             optionalFeedback.ifPresent(feedback -> model.addAttribute("existingComment", feedback.getComment()));
+        }
+
+        boolean isCurrentlyReading = false;
+        boolean isCurrentlyReadingOrRead = false;
+        BookProgressKey bookProgressKey = new BookProgressKey(userId, book.getId());
+
+        Long currentPagesRead = 0L;
+        if(bookProgressRepository.findById(bookProgressKey).isPresent()){
+            BookProgress bookProgress = bookProgressRepository.findById(bookProgressKey).get();
+            if (bookProgress.getProgressPage() != null)
+                currentPagesRead = bookProgress.getProgressPage();
+            if (bookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING)) {
+                isCurrentlyReading = true;
+                isCurrentlyReadingOrRead = true;
+            }
+            if (bookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.READ)){
+                isCurrentlyReadingOrRead = true;
+            }
+
         }
 
         model.addAttribute("commentExists", commentExists);
@@ -67,8 +87,11 @@ public class BookDetailsViewController {
         model.addAttribute("averageRating", feedbackRepository.getAverageRating(id));
         model.addAttribute("feedbacks", feedbackRepository.getFeedbacksByBook(id));
         model.addAttribute("numberOfRatings", feedbackRepository.getNumberOfRatings(id));
+        model.addAttribute("isCurrentlyReading", isCurrentlyReading);
+        model.addAttribute("isCurrentlyReadingOrRead", isCurrentlyReadingOrRead);
+        float percentRead = (currentPagesRead * 100 / book.getPages() );
+        model.addAttribute("percentageRead", (int) percentRead);
 
-        BookProgressKey bookProgressKey = new BookProgressKey(userId, book.getId());
         String bookProgressState;
         if(bookProgressRepository.findById(bookProgressKey).isPresent()) {
             Integer bookProgress = bookProgressRepository.findById(bookProgressKey).get().getBookState();
@@ -86,12 +109,11 @@ public class BookDetailsViewController {
                     bookProgressState = "Set Progress";
                     break;
             }
-            model.addAttribute("progress", bookProgressState);
         }
         else{
             bookProgressState = "Set Progress";
-            model.addAttribute("progress", bookProgressState);
         }
+        model.addAttribute("progress", bookProgressState);
 
         if(bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
             model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));
@@ -125,7 +147,27 @@ public class BookDetailsViewController {
         throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
     }
 
-// post method for pages
+
+    @ModelAttribute("bookProgress")
+    public BookProgress pages() {
+        return new BookProgress();
+    }
+
+    @PostMapping("/update-pages")
+    public String updatePages(@ModelAttribute("bookProgress") BookProgress bookProgress){
+        if(currentBook.isPresent()){
+
+            Book book = currentBook.get();
+            com.project.bookstore.model.User user = getUser();
+
+            try {
+                bookProgressService.updatePages(user.getId(), book.getId(), bookProgress.getProgressPage());
+            }catch (PreconditionFailedException e){
+
+            }
+        }
+        return "redirect:/bookdetails/" + currentBook.get().getId();
+    }
 
 
     private com.project.bookstore.model.User getUser() {

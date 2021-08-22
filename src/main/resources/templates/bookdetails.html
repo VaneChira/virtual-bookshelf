@@ -87,6 +87,7 @@
                     <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
                           method="POST">
                         <input type="hidden" th:value="${book.id}" name="id"/>
+                        <input type="hidden" th:value="${book.pages}" name="pages"/>
                         <button type="submit" class="dropdown-item">Read</button>
                     </form>
 
@@ -106,18 +107,20 @@
             </div>
 
 
-            <div  class="dropdown-btn">
+            <div class="dropdown-btn" th:if="${isCurrentlyReading}">
                 <button class="btn btn-outline-dark dropdown-toggle" type="button"
                         id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Update progress</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
 
-                    <form class="mx-4">
+                    <form class="mx-4" th:action="@{/bookdetails/update-pages}" th:object="${bookProgress}"
+                          method="POST">
 
                         <!--  input -->
                         <div class="form-inline mb-1">
                             <label class="form-label mr-1" for="form1Example1">On page</label>
-                            <input id="form1Example1" class="form-control-sm w-25" maxlength="4" type="number" />
+                            <input id="form1Example1" class="form-control-sm w-25" th:field="*{progressPage}" maxlength="4" type="number"/>
                             <label class="form-label ml-1" for="form1Example1" th:text="@{' out of ' + ${book.pages}}"></label>
+                            <input type="submit" style="display: none" th:placeholder="${progressPage}"/>
                         </div>
                     </form>
 
@@ -125,11 +128,25 @@
                     <form th:action="@{/book-progress/add-to-read}" th:object="${book}"
                           method="POST">
                         <input type="hidden" th:value="${book.id}" name="id"/>
+                        <input type="hidden" th:value="${book.pages}" name="pages"/>
                         <button type="submit" class="dropdown-item">Finished book?</button>
                     </form>
                 </div>
             </div>
+            <div class="dropdown-btn" th:unless="${isCurrentlyReading}">
+                <input type="hidden">
+            </div>
+
             <hr>
+
+            <div class="progress" th:if="${isCurrentlyReadingOrRead}">
+                <div class="progress-bar bg-warning"
+                     th:style="'width:' + @{${percentageRead}} + '%;'"
+                    th:text="${percentageRead} + '% done'">
+                </div>
+            </div>
+
+
             <div class="table-responsive mb-2">
             </div>
         </div>

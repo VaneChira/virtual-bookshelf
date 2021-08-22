@@ -1,4 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `bookstore` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `bookstore`;
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: bookstore
 -- ------------------------------------------------------
@@ -124,7 +126,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (1,1,5,'Amazing writing','2021-08-18');
+INSERT INTO `feedback` VALUES (1,1,5,'great','2021-08-22'),(1,3,4,'Intriguing story. Unexpected end','2021-08-21');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +192,7 @@ CREATE TABLE `roles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,7 +201,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'ROLE_USER'),(2,'ROLE_USER');
+INSERT INTO `roles` VALUES (1,'ROLE_USER'),(2,'ROLE_USER'),(3,'ROLE_USER');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +219,7 @@ CREATE TABLE `user` (
   `email` varchar(45) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +228,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Vanessa','Chira','vanechira@gmail.com','$2a$10$CHt5f6X5HOJesdWxIbeFQeci5JW5ZQ9Whn9vYdeztZgjuAi595yw2'),(2,'Anne','Smith','anne@yahoo.com','$2a$10$jYtEdsFsP1OuL9nKHGfzHujXz/Tad7R2r5v98O2F9buyn9ejAS6Z.');
+INSERT INTO `user` VALUES (1,'Vanessa','Chira','vanechira@gmail.com','$2a$10$CHt5f6X5HOJesdWxIbeFQeci5JW5ZQ9Whn9vYdeztZgjuAi595yw2'),(2,'Anne','Smith','anne@yahoo.com','$2a$10$jYtEdsFsP1OuL9nKHGfzHujXz/Tad7R2r5v98O2F9buyn9ejAS6Z.'),(3,'Jessica','Anderson','jessica@gmail.com','$2a$10$l/qa/IgAjqzwyGW2Cv/XHeBjOH.2gDaRIlxvTWuqFYJg0MDAJLl/W');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +242,6 @@ DROP TABLE IF EXISTS `user_book`;
 CREATE TABLE `user_book` (
   `user_id` int NOT NULL,
   `book_id` int NOT NULL,
-  `user_rating` float DEFAULT NULL,
   `progress_pages` int DEFAULT NULL,
   `book_state` tinyint DEFAULT NULL,
   PRIMARY KEY (`user_id`,`book_id`),
@@ -256,7 +257,7 @@ CREATE TABLE `user_book` (
 
 LOCK TABLES `user_book` WRITE;
 /*!40000 ALTER TABLE `user_book` DISABLE KEYS */;
-INSERT INTO `user_book` VALUES (1,1,NULL,NULL,1),(1,4,NULL,NULL,3),(1,5,NULL,NULL,1),(1,7,NULL,NULL,3),(1,9,NULL,NULL,2),(1,10,NULL,NULL,2);
+INSERT INTO `user_book` VALUES (1,1,23,2),(1,2,487,3),(1,3,NULL,2),(1,4,NULL,3),(1,5,NULL,3),(1,6,NULL,1),(1,7,NULL,3),(1,9,NULL,2),(1,10,NULL,2);
 /*!40000 ALTER TABLE `user_book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +277,7 @@ CREATE TABLE `user_role` (
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +286,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,1,1),(2,2,2);
+INSERT INTO `user_role` VALUES (1,1,1),(2,2,2),(3,3,3);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -298,4 +299,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-20 15:45:02
+-- Dump completed on 2021-08-22 18:00:39
