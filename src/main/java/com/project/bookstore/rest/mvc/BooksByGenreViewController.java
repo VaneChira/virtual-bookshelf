@@ -23,6 +23,8 @@ public class BooksByGenreViewController {
         if (optionalGenre.isPresent()){
             Genre genre = optionalGenre.get();
             model.addAttribute("books", genre.getBooksForGenre());
+            model.addAttribute("genre", genre.getType());
+            model.addAttribute("genreDescription", genre.getDescription());
             return "books-by-genre";
         }
         else{

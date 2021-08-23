@@ -77,9 +77,7 @@ public class BookDetailsViewController {
             if (bookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.READ)){
                 isCurrentlyReadingOrRead = true;
             }
-
         }
-
         model.addAttribute("commentExists", commentExists);
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthorInBooks());

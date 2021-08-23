@@ -17,6 +17,9 @@ public class Genre {
     @Column(name="type")
     private String type;
 
+    @Column(name="description")
+    private String description;
+
     @ManyToMany(mappedBy = "genresInBooks")
     @JsonIgnoreProperties("genresInBooks")
     Set<Book> booksForGenre;
@@ -24,9 +27,10 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(Long id, String type, Set<Book> booksForGenre) {
+    public Genre(Long id, String type, String description, Set<Book> booksForGenre) {
         this.id = id;
         this.type = type;
+        this.description = description;
         this.booksForGenre = booksForGenre;
     }
 
@@ -44,6 +48,14 @@ public class Genre {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Book> getBooksForGenre() {

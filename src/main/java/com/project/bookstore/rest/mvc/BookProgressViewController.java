@@ -5,8 +5,8 @@ import com.project.bookstore.model.BookProgress;
 import com.project.bookstore.model.BookProgressKey;
 import com.project.bookstore.model.BookStateEnum;
 import com.project.bookstore.repository.BookProgressRepository;
+import com.project.bookstore.repository.BookRepository;
 import com.project.bookstore.repository.UserRepository;
-import com.project.bookstore.service.BookProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("book-progress")
 public class BookProgressViewController {
     @Autowired
-    BookProgressService bookProgressService;
+    BookRepository bookRepository;
 
     @Autowired
     BookProgressRepository bookProgressRepository;
@@ -41,6 +41,16 @@ public class BookProgressViewController {
             bookProgress.setProgressPage(0L);
             bookProgressRepository.save(bookProgress);
         }
+        else{
+            BookProgress bookProgress = new BookProgress();
+            bookProgress.setBookProgressKey(bookProgressKey);
+            bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
+            bookProgress.setUser(loggedUser);
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST));
+            bookProgress.setProgressPage(0L);
+            bookProgressRepository.save(bookProgress);
+
+        }
         return "redirect:/bookdetails/" + book.getId();
     }
 
@@ -54,6 +64,15 @@ public class BookProgressViewController {
             bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
             bookProgressRepository.save(bookProgress);
         }
+        else{
+            BookProgress bookProgress = new BookProgress();
+            bookProgress.setBookProgressKey(bookProgressKey);
+            bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
+            bookProgress.setUser(loggedUser);
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
+            bookProgressRepository.save(bookProgress);
+        }
+
         return "redirect:/bookdetails/" + book.getId();
     }
 
@@ -64,6 +83,15 @@ public class BookProgressViewController {
         Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
         if (bookProgressOpt.isPresent()){
             BookProgress bookProgress = bookProgressOpt.get();
+            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
+            bookProgress.setProgressPage(book.getPages());
+            bookProgressRepository.save(bookProgress);
+        }
+        else{
+            BookProgress bookProgress = new BookProgress();
+            bookProgress.setBookProgressKey(bookProgressKey);
+            bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
+            bookProgress.setUser(loggedUser);
             bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
             bookProgress.setProgressPage(book.getPages());
             bookProgressRepository.save(bookProgress);

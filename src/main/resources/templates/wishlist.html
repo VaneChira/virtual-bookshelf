@@ -6,7 +6,8 @@
     <title>Registration and Login App</title>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -14,41 +15,56 @@
 <br>
 <br>
 
-<div class="container">
+<h1>My wishlist</h1>
 
+<hr>
+
+
+<div class="container-wishlist" th:unless="${books.empty}">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-image">
+                <thead>
+                <tr>
+                    <th scope="col">Book</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Pages</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="book: ${books}">
+                    <td class="w-15">
+                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="250px" width="180px"/> </a>
+
+                    </td>
+                    <td th:text="${book.bookTitle}"/>
+                    <td><span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
+                    <td th:text="${book.description}"/>
+                    <td th:text="${book.pages}"/>
+                    <td>
+                        <form th:action="@{/wishlist/delete}" th:object="${book}" method="POST">
+                            <input type="hidden" th:value="${book.id}" name="id"/>
+                            <button type="submit" class="btn btn-outline-dark">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<br>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Author(s)</th>
-        <th>Description</th>
-        <th>Pages</th>
 
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="book: ${books}">
-        <td>
-            <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="300px" width="230px"/> </a>
-        </td>
-        <td th:text="${book.bookTitle}"/>
-        <td> <span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
-        <td th:text="${book.description}"/>
-        <td th:text="${book.pages}"/>
-        <td>
-            <form th:action="@{/wishlist/delete}" th:object="${book}" method="POST">
-                <input type="hidden" th:value="${book.id}" name="id"/>
-                <button type="submit" class="btn btn-info col-2">Delete</button>
-            </form>
-        </td>
-
-    </tr>
-    </tbody>
-</table>
+<div th:if="${books.empty}">
+    <h5>No wishlist books added.</h5>
+    <hr>
+    <h5> Looking for a book?</h5>
+    <ul class ="nav" id="loadBooks "type="circle">
+        <li><a th:href="@{/}"> Explore</a> and add a book to wishlist.</li>
+    </ul>
+</div>
 
 </body>
 </html>
