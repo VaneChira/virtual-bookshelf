@@ -19,4 +19,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackKey>
 
     @Query(value="SELECT COUNT(*) FROM Feedback f WHERE book_id = :bookId", nativeQuery = true)
     public Integer getNumberOfRatings(Long bookId);
+
 }

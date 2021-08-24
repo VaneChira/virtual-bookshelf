@@ -23,4 +23,13 @@ public interface BookProgressRepository extends JpaRepository<BookProgress, Book
     @Query(value = "SELECT * FROM user_book WHERE book_state=2 OR book_state=3 AND user_id=:userId", nativeQuery = true)
     List<BookProgress> findAllCurrentlyReadingAndReadByUser(Long userId);
 
+    @Query(value="SELECT COUNT(*) FROM user_book f WHERE book_state=1 AND user_id=:userId", nativeQuery = true)
+    public Integer getNumberOfWishlistBooks(Long userId);
+
+    @Query(value="SELECT COUNT(*) FROM user_book f WHERE book_state=2 AND user_id=:userId", nativeQuery = true)
+    public Integer getNumberOfCurrentlyReadingBooks(Long userId);
+
+    @Query(value="SELECT COUNT(*) FROM user_book f WHERE book_state=3 AND user_id=:userId", nativeQuery = true)
+    public Integer getNumberOfReadBooks(Long userId);
+
 }
