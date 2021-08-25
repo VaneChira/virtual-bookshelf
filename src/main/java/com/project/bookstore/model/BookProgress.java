@@ -1,5 +1,6 @@
 package com.project.bookstore.model;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +19,7 @@ public class BookProgress {
     @JoinColumn(name = "book_id")
     Book book;
 
-    @Column(name = "progress_pages")
+    @Column(name="progress_pages")
     Long progressPage;
 
     @Column(name = "book_state")

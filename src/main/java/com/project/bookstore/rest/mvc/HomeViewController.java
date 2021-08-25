@@ -3,7 +3,7 @@ package com.project.bookstore.rest.mvc;
 import com.project.bookstore.model.Book;
 import com.project.bookstore.model.BookProgress;
 import com.project.bookstore.repository.BookProgressRepository;
-import com.project.bookstore.repository.FeedbackRepository;
+import com.project.bookstore.repository.BookRepository;
 import com.project.bookstore.repository.UserRepository;
 import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,7 @@ public class HomeViewController {
     UserRepository userRepository;
 
     @Autowired
-    FeedbackRepository feedbackRepository;
-
+    BookRepository bookRepository;
 
 
 
@@ -54,6 +53,7 @@ public class HomeViewController {
         model.addAttribute("numberOfReadBooks", bookProgressRepository.getNumberOfReadBooks(modelUser.getId()));
         List<BookProgress> readingBooks = bookProgressRepository.findAllCurrentlyReadingByUser(modelUser.getId());
         model.addAttribute("readingbooks", readingBooks.stream().map(BookProgress::getBook).collect(Collectors.toList()));
+//        model.addAttribute("recommendationsBooks", bookRepository.booksForRecommendations(modelUser.getId()));
 
 
 

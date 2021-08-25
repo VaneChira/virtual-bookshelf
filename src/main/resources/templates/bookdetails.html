@@ -105,6 +105,12 @@
                         <button type="submit" class="dropdown-item">Add to wishlist</button>
                     </form>
 
+                    <form th:action="@{/book-progress/reset-progress}" th:object="${book}" th:if="${bookStateExists}"
+                          method="POST">
+                        <input type="hidden" th:value="${book.id}" name="id"/>
+                        <button type="submit" class="dropdown-item">Reset progress</button>
+                    </form>
+
                 </div>
             </div>
 
@@ -251,5 +257,6 @@
         </div>
     </div>
 </section>
+
 </body>
 </html>

@@ -21,4 +21,12 @@ public interface BookRepository extends JpaRepository <Book, Long>{
             "ON gib.genre_id=g.id\n" +
             "WHERE g.type=:genre AND b.id!=:bookId LIMIT 4", nativeQuery = true)
     List<Book> relatedBooksBasedOnGender(Long bookId, String genre);
+
+
+    @Query(value = "SELECT * from book b\n" +
+            "LEFT JOIN user_book ub\n" +
+            "ON ub.book_id = b.id OR NOT EXISTS (SELECT * FROM user_book ub WHERE ub.book_id = b.id)\n" +
+            "WHERE ub.book_state is null AND ub.user_id=:userId\n" +
+            "LIMIT 4;", nativeQuery = true)
+    List<Book> getStatelessBooks(Long userId);
 }

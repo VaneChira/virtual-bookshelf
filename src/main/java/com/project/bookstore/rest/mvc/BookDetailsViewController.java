@@ -65,19 +65,38 @@ public class BookDetailsViewController {
         boolean isCurrentlyReadingOrRead = false;
         BookProgressKey bookProgressKey = new BookProgressKey(userId, book.getId());
 
+
+        String bookProgressState = "Set Progress";
+        boolean bookHasState = false;
         Long currentPagesRead = 0L;
         if(bookProgressRepository.findById(bookProgressKey).isPresent()){
             BookProgress bookProgress = bookProgressRepository.findById(bookProgressKey).get();
             if (bookProgress.getProgressPage() != null)
                 currentPagesRead = bookProgress.getProgressPage();
-            if (bookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING)) {
-                isCurrentlyReading = true;
-                isCurrentlyReadingOrRead = true;
-            }
-            if (bookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.READ)){
-                isCurrentlyReadingOrRead = true;
+            if (bookProgress.getBookState() != null) {
+                bookHasState = true;
+                Integer state = bookProgressRepository.findById(bookProgressKey).get().getBookState();
+                switch(state){
+                    case 1:
+                        bookProgressState = "Wishlist";
+                        break;
+                    case 2:
+                        bookProgressState = "Currently reading";
+                        isCurrentlyReading = true;
+                        isCurrentlyReadingOrRead = true;
+                        break;
+                    case 3:
+                        bookProgressState = "Read";
+                        isCurrentlyReadingOrRead = true;
+                        break;
+                    default:
+                        bookProgressState = "Set Progress";
+                        break;
+                }
             }
         }
+        model.addAttribute("bookStateExists", bookHasState);
+        model.addAttribute("progress", bookProgressState);
         model.addAttribute("commentExists", commentExists);
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthorInBooks());
@@ -89,29 +108,6 @@ public class BookDetailsViewController {
         model.addAttribute("isCurrentlyReadingOrRead", isCurrentlyReadingOrRead);
         float percentRead = (currentPagesRead * 100 / book.getPages() );
         model.addAttribute("percentageRead", (int) percentRead);
-
-        String bookProgressState;
-        if(bookProgressRepository.findById(bookProgressKey).isPresent()) {
-            Integer bookProgress = bookProgressRepository.findById(bookProgressKey).get().getBookState();
-            switch(bookProgress){
-                case 1:
-                    bookProgressState = "Wishlist";
-                    break;
-                case 2:
-                    bookProgressState = "Currently reading";
-                    break;
-                case 3:
-                    bookProgressState = "Read";
-                    break;
-                default:
-                    bookProgressState = "Set Progress";
-                    break;
-            }
-        }
-        else{
-            bookProgressState = "Set Progress";
-        }
-        model.addAttribute("progress", bookProgressState);
 
         if(bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
             model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));

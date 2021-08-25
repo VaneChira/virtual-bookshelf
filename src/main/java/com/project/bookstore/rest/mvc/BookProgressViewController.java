@@ -99,6 +99,28 @@ public class BookProgressViewController {
         return "redirect:/bookdetails/" + book.getId();
     }
 
+    @PostMapping("/reset-progress")
+    public String resetProgress(@ModelAttribute("book") Book book) {
+        com.project.bookstore.model.User loggedUser = getLoggedUser();
+        BookProgressKey bookProgressKey = new BookProgressKey(loggedUser.getId(), book.getId());
+        Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
+        if (bookProgressOpt.isPresent()){
+            BookProgress bookProgress = bookProgressOpt.get();
+            bookProgress.setBookState(null);
+            bookProgress.setProgressPage(null);
+            bookProgressRepository.save(bookProgress);
+        }
+//        else{
+//            BookProgress bookProgress = new BookProgress();
+//            bookProgress.setBookProgressKey(bookProgressKey);
+//            bookProgress.setBook(bookRepository.findById(book.getId()).get());
+//            bookProgress.setUser(loggedUser);
+//            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
+//            bookProgress.setProgressPage(book.getPages());
+//            bookProgressRepository.save(bookProgress);
+//        }
+        return "redirect:/bookdetails/" + book.getId();
+    }
 
 
     private com.project.bookstore.model.User getLoggedUser() {
