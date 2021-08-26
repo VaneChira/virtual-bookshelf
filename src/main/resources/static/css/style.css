@@ -8536,9 +8536,6 @@ h4 {
   }
 }
 
-
-
-
 .carousel .carousel-indicators li {
     display: inline-block;
     width: 10px;
@@ -8589,6 +8586,17 @@ color: #333333;
     font-size: 12px;
     font-family: "Merriweather", "Georgia", serif;
     }
+
+h3 {
+  position: relative;
+  text-align: center;
+  color: #353535;
+  font-size: 25px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+
+
 
 
 

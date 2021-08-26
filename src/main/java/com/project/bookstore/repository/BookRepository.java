@@ -27,6 +27,6 @@ public interface BookRepository extends JpaRepository <Book, Long>{
             "LEFT JOIN user_book ub\n" +
             "ON ub.book_id = b.id OR NOT EXISTS (SELECT * FROM user_book ub WHERE ub.book_id = b.id)\n" +
             "WHERE ub.book_state is null AND ub.user_id=:userId\n" +
-            "LIMIT 4;", nativeQuery = true)
+            "LIMIT 6;", nativeQuery = true)
     List<Book> getStatelessBooks(Long userId);
 }

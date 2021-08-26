@@ -53,7 +53,7 @@ public class HomeViewController {
         model.addAttribute("numberOfReadBooks", bookProgressRepository.getNumberOfReadBooks(modelUser.getId()));
         List<BookProgress> readingBooks = bookProgressRepository.findAllCurrentlyReadingByUser(modelUser.getId());
         model.addAttribute("readingbooks", readingBooks.stream().map(BookProgress::getBook).collect(Collectors.toList()));
-//        model.addAttribute("recommendationsBooks", bookRepository.booksForRecommendations(modelUser.getId()));
+        model.addAttribute("recommendationBooks", bookRepository.getStatelessBooks(modelUser.getId()));
 
 
 

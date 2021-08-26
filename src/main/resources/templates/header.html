@@ -26,8 +26,7 @@
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a th:href="@{/}" class="nav-link">Login</a></li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a th:href="@{/registration}" class="nav-link">Register</a></li>
                     <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/}" class="nav-link">Home</a></li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My
-                        Books</a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My Books</a></li>
                     <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a>
                     </li>
 

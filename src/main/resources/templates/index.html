@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Bookstore</title>
+    <title>Home</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,7 @@
 <br>
 
 
-<div class="container-fluid">
+<div class="container-fluid" th:unless="${keyword}">
 
     <hr>
     <div class="row">
@@ -30,28 +30,34 @@
             <hr>
             <h6>Bookshelves</h6>
             <div class="userShelvesBookCounts">
-                <li><a th:href="@{/wishlist}" style="color:black" th:text="@{'Wishlist (' + ${numberOfWishlistBooks} + ')'}"></a></li>
-                <li><a th:href="@{/mybooks}" style="color:black" th:text="@{'Currently Reading (' + ${numberOfCurrentlyReadingBooks} + ')'}"></a></li>
-                <li><a th:href="@{/mybooks}" style="color:black" th:text="@{'Read (' + ${numberOfReadBooks} + ')'}"></a></li>
+                <li><a th:href="@{/wishlist}" style="color:black"
+                       th:text="@{'Wishlist (' + ${numberOfWishlistBooks} + ')'}"></a></li>
+                <li><a th:href="@{/mybooks}" style="color:black"
+                       th:text="@{'Currently Reading (' + ${numberOfCurrentlyReadingBooks} + ')'}"></a></li>
+                <li><a th:href="@{/mybooks}" style="color:black" th:text="@{'Read (' + ${numberOfReadBooks} + ')'}"></a>
+                </li>
             </div>
 
             <hr>
             <h6>Currently reading</h6>
-            <div class="readingShelfDisplay"  th:each="book: ${readingbooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="100px" width="70px"/> </a>
+            <div class="readingShelfDisplay" th:each="book: ${readingbooks}">
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="100px"
+                                                                   width="70px"/> </a>
 
                 <div class="bookBox">
                     <a th:href="@{'/bookdetails/' + ${book.id}}" th:text="${book.bookTitle}" style="color:black"></a>
                 </div>
                 <div class="bookAuthor">
-                    <span>by </span><span th:each="a, iterStat : ${book.authorInBooks}"  th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
+                    <span>by </span><span th:each="a, iterStat : ${book.authorInBooks}"
+                                          th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
                 </div>
             </div>
 
             <hr>
             <h6>Wishlist</h6>
             <div class="shelfDisplay" th:each="book: ${wishlistBooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="130px" width="90px"/> </a>
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="130px"
+                                                                   width="90px"/> </a>
             </div>
             <div>
                 <a th:href="@{/wishlist}" style="color:black"> View all books</a>
@@ -64,42 +70,44 @@
         <!-- col 2 -->
         <div class="col-sm-6"><h6>Explore</h6>
             <hr>
-            <!--            <div class="container mt-70">-->
-            <div class="row">
-                <div class="col-md-8 mr-auto ml-auto">
-                    <div class="card card-raised card-carousel">
-                        <div id="carouselindicators" class="carousel slide" data-ride="carousel" data-interval="3000">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carouselindicators" data-slide-to="0" class=""></li>
-                                <li data-target="#carouselindicators" data-slide-to="1" class="active"></li>
-                                <li data-target="#carouselindicators" data-slide-to="2" class=""></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active carousel-item-left">
-                                    <img class="d-block w-100"
-                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fhip2save.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fyoung-adult-kindle-books.jpg&f=1&nofb=1"
-                                         alt="First slide"></div>
-                                <div class="carousel-item carousel-item-next carousel-item-left">
-                                    <img class="d-block w-100"
-                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimgix.bustle.com%2Fuploads%2Fimage%2F2018%2F12%2F14%2Fb3997daa-9d0d-41f8-bb8d-95b33a7afb80-yamostanticipated2019.jpg%3Fw%3D1200%26h%3D630%26q%3D70%26fit%3Dcrop%26crop%3Dfaces%26fm%3Djpg&f=1&nofb=1"
-                                         alt="Second slide">
-                                </div>
-                                <div class="carousel-item">
-                                    <img class="d-block w-100"
-                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimgix.bustle.com%2Fuploads%2Fimage%2F2018%2F11%2F26%2Feb390b8d-6885-497a-8c02-0c529c4ea53b-youngadultbest.jpg%3Fw%3D1200%26h%3D630%26q%3D70%26fit%3Dcrop%26crop%3Dfaces%26fm%3Djpg&f=1&nofb=1"
-                                         alt="Third slide">
-                                </div>
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselindicators" role="button" data-slide="prev"
-                               data-abc="true"> <i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span>
-                            </a> <a class="carousel-control-next" href="#carouselindicators" role="button"
-                                    data-slide="next" data-abc="true"> <i class="fa fa-chevron-right"></i> <span
-                                class="sr-only">Next</span> </a>
-                        </div>
+            <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
+
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-1z" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-1z" data-slide-to="2"></li>
+                </ol>
+
+                <div class="carousel-inner" role="listbox">
+
+                    <div class="carousel-item active">
+                        <img class="d-block w-100"
+                             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwritingessayeast.com%2Fwp-content%2Fuploads%2F2018%2F07%2F101-Essays-That-Can-Change-The-Way-You-Think-About-Life-by-Brianna-Wiest-1-820x350.jpg&f=1&nofb=1"
+                             alt="First slide">
+                    </div>
+
+                    <div class="carousel-item">
+                        <img class="d-block w-100"
+                             src="https://writingessayeast.com/wp-content/uploads/2018/11/nong-vang-577609-unsplash-820x350.jpg"
+                             alt="Second slide">
+                    </div>
+
+                    <div class="carousel-item">
+                        <img class="d-block w-100"
+                             src="https://writingessayeast.com/wp-content/uploads/2018/01/Experience-of-Being-an-Editor-and-Its-Effect-on-Writing-1-820x350.jpg"
+                             alt="Third slide">
                     </div>
                 </div>
+
+                <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <!--            </div>-->
         </div>
 
         <!-- col 3 -->
@@ -107,10 +115,50 @@
             <h6>Recommendations</h6>
             <hr>
 
-
+            <div class="shelfDisplay" th:each="book: ${recommendationBooks}">
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="100px" width="70px"/> </a>
+            </div>
         </div>
     </div>
 </div>
+
+
+<div class="container-search" th:if="${keyword}" th:unless="${books.empty}">
+    <h3>Results</h3>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-image">
+                <thead>
+                <tr>
+                    <th scope="col">Book</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Pages</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="book: ${books}">
+                    <td class="w-15">
+                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="250px" width="180px"/> </a>
+
+                    </td>
+                    <td th:text="${book.bookTitle}"/>
+                    <td><span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}"
+                              th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
+                    <td th:text="${book.description}"/>
+                    <td th:text="${book.pages}"/>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
+</div>
+
 
 
 <div th:if="${books.empty}">
@@ -122,6 +170,5 @@
         <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
     </ul>
 </div>
-
 </body>
 </html>
