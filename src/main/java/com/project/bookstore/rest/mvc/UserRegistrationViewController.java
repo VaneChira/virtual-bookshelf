@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/registration")
 public class UserRegistrationViewController {
-    private UserSecurityService userSecurityService;
+    private final UserSecurityService userSecurityService;
 
     public UserRegistrationViewController(UserSecurityService userSecurityService) {
         super();

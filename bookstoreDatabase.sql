@@ -79,10 +79,14 @@ CREATE TABLE `feedback` (
 );
 
 
+ALTER TABLE `user_book` DROP FOREIGN KEY `user_book_ibfk_2`;
+ALTER TABLE `user_book` ADD CONSTRAINT `user_book_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE;
+
 
 CREATE TABLE `genres`(
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`type` VARCHAR(250),
+    `description` VARCHAR(1000),
     PRIMARY KEY (`id`)
 );
 
@@ -126,3 +130,8 @@ CREATE TABLE `books_author` (
 	 PRIMARY KEY(author_id, book_id)
 );
 
+SELECT book_id from user_book ub
+INNER JOIN book b
+ON ub.book_id = b.id
+WHERE ub.book_state is null AND ub.user_id=1
+LIMIT 4;

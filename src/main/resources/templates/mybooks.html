@@ -13,7 +13,7 @@
 
 </head>
 <body>
-<div th:insert="header :: header"></div>
+<div th:insert="/fragments/header.html :: header"></div>
 <br>
 <br>
 
@@ -42,11 +42,14 @@
     <div class="tab-content" id="advancedTabContent">
         <div class="tab-pane fade show active" id="allbooks" role="tabpanel" aria-labelledby="allbooks-tab">
             <div class="container">
-                <div class="row-books" th:each="book: ${allbooks}">
+                <div class="row-books" th:each="book: ${allbooks}" th:if="${allbooks}" th:unless="${allbooks.empty}">
                     <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
                        class="col-md-4">
                         <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
                     </a>
+                </div>
+                <div th:if="${allbooks.empty}">
+                    <h5>No read or currently reading books to display</h5>
                 </div>
             </div>
 
@@ -54,21 +57,28 @@
 
         <div class="tab-pane fade" id="readbooks" role="tabpanel" aria-labelledby="readbooks-tab">
             <div class="container">
-                <div class="row-books" th:each="book: ${readbooks}">
+                <div class="row-books" th:each="book: ${readbooks}" th:unless="${readbooks.empty}">
                     <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
                        class="col-md-4">
                         <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
                     </a>
                 </div>
+                <div th:if="${readbooks.empty}">
+                    <h5>You haven't read any books yet</h5>
+                </div>
             </div>
+
         </div>
         <div class="tab-pane fade" id="readingbooks" role="tabpanel" aria-labelledby="readingbooks-tab">
             <div class="container">
-                <div class="row-books" th:each="book: ${readingbooks}">
+                <div class="row-books" th:each="book: ${readingbooks}" th:unless="${readingbooks.empty}">
                     <a th:href="@{'/bookdetails/' + ${book.id}}" data-toggle="lightbox" data-gallery="gallery"
                        class="col-md-4">
                         <img th:src="${book.imageUrl}" height="200px" width="130px" class="img-fluid rounded">
                     </a>
+                </div>
+                <div th:if="${readingbooks.empty}">
+                    <h5>You are not currently reading any books</h5>
                 </div>
             </div>
         </div>

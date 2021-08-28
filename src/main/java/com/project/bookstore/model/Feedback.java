@@ -22,7 +22,7 @@ public class Feedback {
     Book book;
 
     @Column(name = "rating")
-    Float rating;
+    Integer rating;
 
     @Column(name = "comment")
     String comment;
@@ -33,7 +33,7 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(FeedbackKey feedbackKey, User user, Book book, Float rating, String comment, LocalDate date) {
+    public Feedback(FeedbackKey feedbackKey, User user, Book book, Integer rating, String comment, LocalDate date) {
         this.feedbackKey = feedbackKey;
         this.user = user;
         this.book = book;
@@ -66,11 +66,11 @@ public class Feedback {
         this.book = book;
     }
 
-    public Float getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

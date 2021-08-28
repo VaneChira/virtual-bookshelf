@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<div th:insert="header :: header"></div>
+<div th:insert="/fragments/header.html :: header"></div>
 <br>
 <br>
 
@@ -41,7 +41,8 @@
 
                     </td>
                     <td th:text="${book.bookTitle}"/>
-                    <td><span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}" th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
+                    <td><span th:each="a, iterStat : ${book.authorInBooks}"
+                              th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span></td>
                     <td th:text="${book.description}"/>
                     <td th:text="${book.pages}"/>
                     <td>

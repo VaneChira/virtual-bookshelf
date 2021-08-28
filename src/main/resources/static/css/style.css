@@ -41,13 +41,15 @@
 *::before,
 *::after {
   -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  }
 
 html {
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
@@ -62,7 +64,8 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff; }
+  background-color: #fff;
+  }
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -6540,6 +6543,9 @@ button.bg-dark:focus {
 .mw-100 {
   max-width: 100% !important; }
 
+  .mw-18 {
+    max-width: 18% !important; }
+
 .mh-100 {
   max-height: 100% !important; }
 
@@ -8595,6 +8601,17 @@ h3 {
   font-family: "Cormorant Garamond", serif;
 }
 
+.close:focus {
+    outline: none
+}
+
+.modal-header {
+    border: none
+}
+
+.modal-footer {
+    border: none
+}
 
 
 

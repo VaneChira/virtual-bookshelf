@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="deletebook">
+    <!-- Window cu confirmare stergere -->
+    <div aria-hidden="true" aria-labelledby="deleteBookWindowLabel" class="modal fade" id="deleteBookWindow"
+         role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="container d-flex pl-0">
+                        <h5 class="modal-title ml-2" id="deleteBookWindowLabel"
+                            th:text="'Delete ' + ${book.bookTitle} + '?'"/>
+                    </div>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">If you delete this book, it will be gone forever. Are you
+                        sure you want to proceed?</p>
+                </div>
+                <form method="POST" th:action="@{'/bookdetails/deletebook'}">
+                    <div class="modal-footer">
+                        <button class="btn btn-light" data-dismiss="modal" type="button">
+                            Cancel
+                        </button>
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

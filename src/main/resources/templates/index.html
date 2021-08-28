@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<div th:insert="header :: header"></div>
+<div th:insert="/fragments/header.html :: header"></div>
 <br>
 <br>
 
@@ -55,7 +55,8 @@
 
             <hr>
             <h6>Wishlist</h6>
-            <div class="shelfDisplay" th:each="book: ${wishlistBooks}">
+
+            <div class="shelfDisplay" th:each="book,iterStat: ${wishlistBooks}" th:if="${iterStat.index} < 6">
                 <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="130px"
                                                                    width="90px"/> </a>
             </div>
@@ -108,6 +109,21 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+            <br> <br>
+            <div th:each="genre:${usedGenres}">
+                <p th:text="${genre.type}"></p>
+                <div class="row-books" th:each="book,iterStat: ${genre.booksForGenre}" th:if="${iterStat.index} < 4">
+                    <a class="col-md-3" data-gallery="gallery" data-toggle="lightbox"
+                       th:href="@{'/bookdetails/' + ${book.id}}">
+                        <img class="img-fluid rounded mw-18" height="170px" th:src="${book.imageUrl}">
+                    </a>
+                </div>
+
+                <a class="text-right" th:href="@{'/books-by-genre/' + ${genre.id}}">
+                    <p>See more</p>
+                </a>
+                <hr>
+            </div>
         </div>
 
         <!-- col 3 -->
@@ -116,7 +132,8 @@
             <hr>
 
             <div class="shelfDisplay" th:each="book: ${recommendationBooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="100px" width="70px"/> </a>
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img height="100px" th:src="${book.imageUrl}"
+                                                                   width="70px"/> </a>
             </div>
         </div>
     </div>
@@ -142,7 +159,8 @@
                 <tbody>
                 <tr th:each="book: ${books}">
                     <td class="w-15">
-                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="250px" width="180px"/> </a>
+                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img height="250px" th:src="${book.imageUrl}"
+                                                                           width="180px"/> </a>
 
                     </td>
                     <td th:text="${book.bookTitle}"/>
@@ -158,7 +176,6 @@
     <hr>
     <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
 </div>
-
 
 
 <div th:if="${books.empty}">

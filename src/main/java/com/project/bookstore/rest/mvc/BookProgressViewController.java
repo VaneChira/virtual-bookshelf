@@ -81,21 +81,18 @@ public class BookProgressViewController {
         com.project.bookstore.model.User loggedUser = getLoggedUser();
         BookProgressKey bookProgressKey = new BookProgressKey(loggedUser.getId(), book.getId());
         Optional<BookProgress> bookProgressOpt = bookProgressRepository.findById(bookProgressKey);
-        if (bookProgressOpt.isPresent()){
-            BookProgress bookProgress = bookProgressOpt.get();
-            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
-            bookProgress.setProgressPage(book.getPages());
-            bookProgressRepository.save(bookProgress);
-        }
-        else{
-            BookProgress bookProgress = new BookProgress();
+        BookProgress bookProgress;
+        if (bookProgressOpt.isPresent()) {
+            bookProgress = bookProgressOpt.get();
+        } else {
+            bookProgress = new BookProgress();
             bookProgress.setBookProgressKey(bookProgressKey);
             bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
             bookProgress.setUser(loggedUser);
-            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
-            bookProgress.setProgressPage(book.getPages());
-            bookProgressRepository.save(bookProgress);
         }
+        bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
+        bookProgress.setProgressPage(book.getPages());
+        bookProgressRepository.save(bookProgress);
         return "redirect:/bookdetails/" + book.getId();
     }
 
@@ -110,15 +107,6 @@ public class BookProgressViewController {
             bookProgress.setProgressPage(null);
             bookProgressRepository.save(bookProgress);
         }
-//        else{
-//            BookProgress bookProgress = new BookProgress();
-//            bookProgress.setBookProgressKey(bookProgressKey);
-//            bookProgress.setBook(bookRepository.findById(book.getId()).get());
-//            bookProgress.setUser(loggedUser);
-//            bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));
-//            bookProgress.setProgressPage(book.getPages());
-//            bookProgressRepository.save(bookProgress);
-//        }
         return "redirect:/bookdetails/" + book.getId();
     }
 

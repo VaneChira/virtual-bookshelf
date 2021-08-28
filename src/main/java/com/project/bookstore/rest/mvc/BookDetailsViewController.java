@@ -54,9 +54,9 @@ public class BookDetailsViewController {
 
         Long userId = getUser().getId();
 
-        FeedbackKey feedbackKey = new FeedbackKey(userId ,id);
+        FeedbackKey feedbackKey = new FeedbackKey(userId, id);
         boolean commentExists = feedbackRepository.existsById(feedbackKey);
-        if(commentExists){
+        if (commentExists) {
             Optional<Feedback> optionalFeedback = feedbackRepository.findById(feedbackKey);
             optionalFeedback.ifPresent(feedback -> model.addAttribute("existingComment", feedback.getComment()));
         }
@@ -69,14 +69,14 @@ public class BookDetailsViewController {
         String bookProgressState = "Set Progress";
         boolean bookHasState = false;
         Long currentPagesRead = 0L;
-        if(bookProgressRepository.findById(bookProgressKey).isPresent()){
+        if (bookProgressRepository.findById(bookProgressKey).isPresent()) {
             BookProgress bookProgress = bookProgressRepository.findById(bookProgressKey).get();
             if (bookProgress.getProgressPage() != null)
                 currentPagesRead = bookProgress.getProgressPage();
             if (bookProgress.getBookState() != null) {
                 bookHasState = true;
                 Integer state = bookProgressRepository.findById(bookProgressKey).get().getBookState();
-                switch(state){
+                switch (state) {
                     case 1:
                         bookProgressState = "Wishlist";
                         break;
@@ -106,10 +106,10 @@ public class BookDetailsViewController {
         model.addAttribute("numberOfRatings", feedbackRepository.getNumberOfRatings(id));
         model.addAttribute("isCurrentlyReading", isCurrentlyReading);
         model.addAttribute("isCurrentlyReadingOrRead", isCurrentlyReadingOrRead);
-        float percentRead = (currentPagesRead * 100 / book.getPages() );
+        float percentRead = (currentPagesRead * 100 / book.getPages());
         model.addAttribute("percentageRead", (int) percentRead);
 
-        if(bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
+        if (bookService.findBookById(id).getGenresInBooks().stream().findFirst().isPresent()) {
             model.addAttribute("relatedBooks", bookRepository.relatedBooksBasedOnGender(id, bookService.findBookById(id).getGenresInBooks().stream().findFirst().get().getType()));
         }
         return "bookdetails";
@@ -120,8 +120,34 @@ public class BookDetailsViewController {
         return new Feedback();
     }
 
+    @ModelAttribute("feedbackkey")
+    public FeedbackKey feedbackKey() {
+        return new FeedbackKey();
+    }
 
-    @PostMapping
+    @PostMapping("/deletebook")
+    public String deleteBook() {
+        if (currentBook.isPresent()) {
+            bookRepository.deleteById(currentBook.get().getId());
+            return "redirect:/";
+        }
+        throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
+    }
+
+
+    @PostMapping("/deletereview")
+    public String deleteReview(@ModelAttribute("feedbackkey") FeedbackKey feedbackKey) {
+        if (feedbackKey.getUserId() != null && feedbackKey.getBookId() != null && currentBook.isPresent()) {
+            if (feedbackRepository.findById(feedbackKey).isPresent()) {
+                Feedback feedbackToDelete = feedbackRepository.findById(feedbackKey).get();
+                feedbackRepository.delete(feedbackToDelete);
+                return "redirect:/bookdetails/" + currentBook.get().getId();
+            } else throw new ResourceNotFoundException("Error in getting the feedback", Feedback.class.getSimpleName());
+        }
+        throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
+    }
+
+    @PostMapping("/addreview")
     public String addReview(@ModelAttribute("newrating") Feedback feedback) {
         if (currentBook.isPresent()) {
 
@@ -130,7 +156,6 @@ public class BookDetailsViewController {
 
             FeedbackKey feedbackKey = new FeedbackKey(user.getId(), book.getId());
             feedback.setFeedbackKey(feedbackKey);
-
             feedback.setBook(book);
             feedback.setDate(LocalDate.now());
             feedback.setUser(user);
@@ -148,16 +173,16 @@ public class BookDetailsViewController {
     }
 
     @PostMapping("/update-pages")
-    public String updatePages(@ModelAttribute("bookProgress") BookProgress bookProgress){
-        if(currentBook.isPresent()){
+    public String updatePages(@ModelAttribute("bookProgress") BookProgress bookProgress) {
+        if (currentBook.isPresent()) {
 
             Book book = currentBook.get();
             com.project.bookstore.model.User user = getUser();
 
             try {
                 bookProgressService.updatePages(user.getId(), book.getId(), bookProgress.getProgressPage());
-            }catch (PreconditionFailedException e){
-
+            } catch (PreconditionFailedException e) {
+                // arata ceva alerta?
             }
         }
         return "redirect:/bookdetails/" + currentBook.get().getId();

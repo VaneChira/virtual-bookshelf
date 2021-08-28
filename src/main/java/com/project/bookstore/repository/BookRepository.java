@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
-public interface BookRepository extends JpaRepository <Book, Long>{
+public interface BookRepository extends JpaRepository<Book, Long> {
     //This is JPA Repository for books.
 
     @Query(value = "SELECT * FROM book b WHERE CONCAT(b.book_title,' ') LIKE %:keyword%", nativeQuery = true)
-    List<Book> search(String keyword);
+    Set<Book> search(String keyword);
 
     @Query(value = "SELECT * from book b\n" +
             "INNER JOIN genres_in_books gib\n" +
@@ -22,11 +23,24 @@ public interface BookRepository extends JpaRepository <Book, Long>{
             "WHERE g.type=:genre AND b.id!=:bookId LIMIT 4", nativeQuery = true)
     List<Book> relatedBooksBasedOnGender(Long bookId, String genre);
 
+    @Query(value = "SELECT * FROM book b\n" +
+            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=1 AND ub.user_id=:userId", nativeQuery = true)
+    List<Book> findAllWishlistByUser(Long userId);
 
-    @Query(value = "SELECT * from book b\n" +
-            "LEFT JOIN user_book ub\n" +
-            "ON ub.book_id = b.id OR NOT EXISTS (SELECT * FROM user_book ub WHERE ub.book_id = b.id)\n" +
-            "WHERE ub.book_state is null AND ub.user_id=:userId\n" +
-            "LIMIT 6;", nativeQuery = true)
-    List<Book> getStatelessBooks(Long userId);
+    @Query(value = "SELECT * FROM book b\n" +
+            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=2 AND ub.user_id=:userId", nativeQuery = true)
+    List<Book> findAllCurrentlyReadingByUser(Long userId);
+
+    @Query(value = "SELECT * FROM book b\n" +
+            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=3 AND ub.user_id=:userId", nativeQuery = true)
+    List<Book> findAllReadByUser(Long userId);
+
+    @Query(value = "SELECT * FROM book b\n" +
+            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE (ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
+    List<Book> findAllCurrentlyReadingAndReadByUser(Long userId);
+
+    @Query(value = "SELECT * FROM book b\n" +
+            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE (ub.book_state=1 OR ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
+    List<Book> findAllStatedBooksByUser(Long userId);
+
 }
