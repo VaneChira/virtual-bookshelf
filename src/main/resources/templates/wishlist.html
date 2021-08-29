@@ -37,7 +37,9 @@
                 <tbody>
                 <tr th:each="book: ${books}">
                     <td class="w-15">
-                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="250px" width="180px"/> </a>
+                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="250px"
+                                                                           th:src="${book.imageUrl}" width="180px"/>
+                        </a>
 
                     </td>
                     <td th:text="${book.bookTitle}"/>

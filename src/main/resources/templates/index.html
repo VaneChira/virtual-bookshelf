@@ -20,12 +20,10 @@
 
 
 <div class="container-fluid" th:unless="${keyword}">
-
-    <hr>
     <div class="row">
 
         <!-- col 1-->
-        <div class="col-sm-3" style="background-color:#E8E8E8;">
+        <div class="col-sm-3">
             <h6>My activity</h6>
             <hr>
             <h6>Bookshelves</h6>
@@ -41,9 +39,8 @@
             <hr>
             <h6>Currently reading</h6>
             <div class="readingShelfDisplay" th:each="book: ${readingbooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="100px"
-                                                                   width="70px"/> </a>
-
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="100px"
+                                                                   th:src="${book.imageUrl}" width="70px"/> </a>
                 <div class="bookBox">
                     <a th:href="@{'/bookdetails/' + ${book.id}}" th:text="${book.bookTitle}" style="color:black"></a>
                 </div>
@@ -57,8 +54,8 @@
             <h6>Wishlist</h6>
 
             <div class="shelfDisplay" th:each="book,iterStat: ${wishlistBooks}" th:if="${iterStat.index} < 6">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img th:src="${book.imageUrl}" height="130px"
-                                                                   width="90px"/> </a>
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="130px"
+                                                                   th:src="${book.imageUrl}" width="90px"/> </a>
             </div>
             <div>
                 <a th:href="@{/wishlist}" style="color:black"> View all books</a>
@@ -69,7 +66,7 @@
 
 
         <!-- col 2 -->
-        <div class="col-sm-6"><h6>Explore</h6>
+        <div class="col-sm-6" style="background-color:#E8E8E8"><h6>Explore</h6>
             <hr>
             <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
 
@@ -126,14 +123,14 @@
             </div>
         </div>
 
-        <!-- col 3 -->
-        <div class="col-sm-3" style="background-color:#E8E8E8;">
+        <!-- col 3  style="background-color:#E8E8E8;-->
+        <div class="col-sm-3">
             <h6>Recommendations</h6>
             <hr>
 
-            <div class="shelfDisplay" th:each="book: ${recommendationBooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img height="100px" th:src="${book.imageUrl}"
-                                                                   width="70px"/> </a>
+            <div class="shelfDisplay" th:each="book,iterStat: ${recommendationBooks}" th:if="${iterStat.index} < 12">
+                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="130px"
+                                                                   th:src="${book.imageUrl}" width="90px"/> </a>
             </div>
         </div>
     </div>
