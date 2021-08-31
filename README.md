@@ -10,10 +10,10 @@ Main functionalities:
 * Admin functionalities for admin users.
 
 Main Page:
-![main](https://github.com/VaneChira/virtual-bookshelf/blob/main/main.png?raw=true)
+![main](https://github.com/VaneChira/virtual-bookshelf/blob/main/screenshots/main.png?raw=true)
 
 Book information:
-![BookDetails](https://github.com/VaneChira/virtual-bookshelf/blob/main/bookdetails.png?raw=true)
+![BookDetails](https://github.com/VaneChira/virtual-bookshelf/blob/main/screenshots/bookdetails.png?raw=true)
 
 ER Diagram of DB:
 ![ER Diagram](https://github.com/VaneChira/virtual-bookshelf/blob/main/db_export/ER_diagram.png?raw=true)
