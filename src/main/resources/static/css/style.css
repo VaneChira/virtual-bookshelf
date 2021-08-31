@@ -8613,15 +8613,12 @@ h3 {
     border: none
 }
 
+.cover {
+    background-image: url(https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallpaperswide.com%2Fdownload%2Fatlas_book-wallpaper-2160x1440.jpg&f=1&nofb=1);
+    background-size: cover;
+    background-repeat: no-repeat
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.profile-head {
+    transform: translateY(7.2rem)
+}

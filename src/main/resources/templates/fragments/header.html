@@ -46,6 +46,8 @@
                                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fp7.hiclipart.com%2Fpreview%2F142%2F76%2F939%2Fsymbol-yellow-orange-logo-ibooks.jpg&f=1&nofb=1">
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown">
+                                    <li class="dropdown-item"><a class="dropdown-item"
+                                                                 th:href="@{'/user/' + ${loggedUserId}}">My Profile</a>
                                     <li class="dropdown-item"><a th:href="@{/logout}" class="dropdown-item">Logout</a>
                                     </li>
                                 </ul>

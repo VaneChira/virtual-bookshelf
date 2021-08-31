@@ -38,18 +38,22 @@
 
             <hr>
             <h6>Currently reading</h6>
-            <div class="readingShelfDisplay" th:each="book: ${readingbooks}">
-                <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="100px"
-                                                                   th:src="${book.imageUrl}" width="70px"/> </a>
-                <div class="bookBox">
-                    <a th:href="@{'/bookdetails/' + ${book.id}}" th:text="${book.bookTitle}" style="color:black"></a>
-                </div>
-                <div class="bookAuthor">
-                    <span>by </span><span th:each="a, iterStat : ${book.authorInBooks}"
-                                          th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
+            <div class="readingShelfDisplay row" th:each="book: ${readingbooks}">
+                <div class="col-md-5">
+                    <a th:href="@{'/bookdetails/' + ${book.id}}">
+                        <img class="img-fluid rounded" height="100px"
+                             th:src="${book.imageUrl}"/> </a></div>
+                <div class="col-md-7">
+                    <div class="bookBox">
+                        <a style="color:black" th:href="@{'/bookdetails/' + ${book.id}}"
+                           th:text="${book.bookTitle}"></a>
+                    </div>
+                    <div class="bookAuthor">
+                        <span>by </span><span th:each="a, iterStat : ${book.authorInBooks}"
+                                              th:text="!${iterStat.last} ? ${a} + ', ': ${a}"></span>
+                    </div>
                 </div>
             </div>
-
             <hr>
             <h6>Wishlist</h6>
 
