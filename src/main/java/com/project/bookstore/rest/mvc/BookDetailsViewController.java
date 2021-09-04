@@ -77,21 +77,17 @@ public class BookDetailsViewController {
                 bookHasState = true;
                 Integer state = bookProgressRepository.findById(bookProgressKey).get().getBookState();
                 switch (state) {
-                    case 1:
-                        bookProgressState = "Wishlist";
-                        break;
-                    case 2:
+                    case 1 -> bookProgressState = "Wishlist";
+                    case 2 -> {
                         bookProgressState = "Currently reading";
                         isCurrentlyReading = true;
                         isCurrentlyReadingOrRead = true;
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         bookProgressState = "Read";
                         isCurrentlyReadingOrRead = true;
-                        break;
-                    default:
-                        bookProgressState = "Set Progress";
-                        break;
+                    }
+                    default -> bookProgressState = "Set Progress";
                 }
             }
         }
@@ -182,7 +178,7 @@ public class BookDetailsViewController {
             try {
                 bookProgressService.updatePages(user.getId(), book.getId(), bookProgress.getProgressPage());
             } catch (PreconditionFailedException e) {
-                // arata ceva alerta?
+                System.out.println("Pages not set");
             }
         }
         return "redirect:/bookdetails/" + currentBook.get().getId();

@@ -67,7 +67,7 @@ public class BookProgressViewController {
         else{
             BookProgress bookProgress = new BookProgress();
             bookProgress.setBookProgressKey(bookProgressKey);
-            bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
+            bookProgress.setBook(bookRepository.findById(book.getId()).get());
             bookProgress.setUser(loggedUser);
             bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
             bookProgressRepository.save(bookProgress);
@@ -87,7 +87,7 @@ public class BookProgressViewController {
         } else {
             bookProgress = new BookProgress();
             bookProgress.setBookProgressKey(bookProgressKey);
-            bookProgress.setBook(bookRepository.findById(book.getId()).get()); // we need to get the book from the repository like this because the Book param only has ID
+            bookProgress.setBook(bookRepository.findById(book.getId()).get());
             bookProgress.setUser(loggedUser);
         }
         bookProgress.setBookState(BookStateEnum.fromEnumToInt(BookStateEnum.READ));

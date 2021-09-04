@@ -13,7 +13,7 @@ public class Feedback {
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // - foreign key
     User user;
 
     @ManyToOne

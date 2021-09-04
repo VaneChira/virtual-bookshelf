@@ -7,7 +7,7 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUserName}?:'guest'"></span></a>
+            <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUserName}?:'reader'"></span></a>
             <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
                 <div class="form-group d-flex">
                     <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3"

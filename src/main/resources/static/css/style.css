@@ -8622,3 +8622,20 @@ h3 {
 .profile-head {
     transform: translateY(7.2rem)
 }
+
+.bg-image {
+    background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F34%2F25%2Fba%2F3425baae5208366016cecb54cc16da61.jpg&f=1&nofb=1');
+    background-size: cover;
+    background-position: center center
+}
+
+.login,
+.image {
+    max-height: 400vh;
+}
+
+h5{
+font-size: 17px;
+}
+
+

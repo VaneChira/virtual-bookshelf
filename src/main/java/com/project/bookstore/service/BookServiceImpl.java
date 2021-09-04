@@ -60,10 +60,9 @@ public class BookServiceImpl implements BookService {
     public void deleteBookById(Long id) {
         Optional<Book> result = bookRepository.findById(id);
 
-        if (!result.isPresent()) {
+        if (result.isEmpty()) {
             throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
-        }
-        else {
+        } else {
             bookRepository.deleteById(id);
         }
     }
