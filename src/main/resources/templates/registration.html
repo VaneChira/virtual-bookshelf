@@ -50,15 +50,20 @@
                 <div class="form-group">
                     <label class="control-label" for="password"> Password </label> <input
                         id="password" class="form-control" type="password"
-                        th:field="*{password}" required autofocus="autofocus" />
+                        th:field="*{password}" required autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Register</button>
-                    <span>Already registered? <a href="/" th:href="@{/login}">Login
-        here</a></span>
+                </div>
+                <div>
+                    <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
                 </div>
             </form>
+        </div>
+        <div class="col-md-8 col-lg-7 col-xl-6">
+            <img alt="Phone image" class="img-fluid"
+                 src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-login-form/draw2.png">
         </div>
     </div>
 </div>

@@ -7,6 +7,9 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
+            <img class="img-nav"
+                 src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs-media-cache-ak0.pinimg.com%2Foriginals%2F6a%2F93%2F2c%2F6a932ce2d58dc66ecd6a74a843495e80.jpg&f=1&nofb=1">
+
             <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUserName}?:'reader'"></span></a>
             <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
                 <div class="form-group d-flex">
