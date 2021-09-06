@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
                         inner join user_book ub on
                         ub.book_id = gib.book_id
                         where ub.user_id = :userId and ub.book_state = 3
-                        group by g.description
+                        group by g.type
                         ORDER BY count_books DESC
                         LIMIT 5;""")
                 .setParameter("userId", userId).getResultList();
