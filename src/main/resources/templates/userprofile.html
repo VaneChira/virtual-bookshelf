@@ -24,7 +24,7 @@
 <br>
 
 <div class="row px-4">
-    <div class="col-md-7 mx-auto">
+    <div class="col-md-9 mx-auto">
         <!-- Profile widget -->
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 cover">
@@ -95,7 +95,7 @@
             </div>
             <div th:if="${readBooks.empty} or ${currentlyReadingBooks.empty}">
                 <hr>
-                <h5 style="margin-left: 12px"> No activity to show for <span .th:text="${user.name}"></span></h5>
+                <h5 style="margin-left: 12px"> No activity to show for <span th:text="${user.name} + '.'"></span></h5>
             </div>
         </div>
     </div>
