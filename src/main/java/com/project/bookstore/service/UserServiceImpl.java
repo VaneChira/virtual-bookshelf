@@ -53,8 +53,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Integer> getMostReadGenres(Long userId) {
-        List<Object[]> results = entityManager.createNativeQuery("""
+    public Map<String, Integer> getMostReadGenres(Long userId) { // native query = query tip SQL, query simplu in context hibernate = query tip hibernate
+        List<Object[]> results = entityManager.createNativeQuery(""" 
                         SELECT COUNT(*) as count_books, g.type from genres g
                         inner join genres_in_books gib on
                         g.id = gib.genre_id
@@ -67,8 +67,11 @@ public class UserServiceImpl implements UserService {
                 .setParameter("userId", userId).getResultList();
         Map<String, Integer> countByGenrePopularity = new HashMap<>();
 
-        for (Object[] record : results) {
+        for (Object[] record : results) { // iterez manualrezultatul query-ului (count books si genre type) pentru a creea map-ul
             countByGenrePopularity.put(String.valueOf(record[1]), Integer.valueOf(String.valueOf(record[0])));
+            //.put(key, value)
+            //record[1] = a 2-a coloana
+            // record[0] = prima coloana
         }
 
         return countByGenrePopularity;

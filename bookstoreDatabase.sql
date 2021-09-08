@@ -1,6 +1,8 @@
 CREATE DATABASE  IF NOT EXISTS `bookstore`;
 USE `bookstore`;
 
+USE `bookstore-test`;
+
 
 CREATE TABLE `user` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -78,6 +80,8 @@ CREATE TABLE `feedback` (
 	 PRIMARY KEY(user_id, book_id)
 );
 
+ALTER TABLE `genres_in_books` DROP FOREIGN KEY `genres_in_books_ibfk_2`;
+ALTER TABLE `genres_in_books` ADD CONSTRAINT `genres_in_books_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE;
 
 ALTER TABLE `user_book` DROP FOREIGN KEY `user_book_ibfk_2`;
 ALTER TABLE `user_book` ADD CONSTRAINT `user_book_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`) ON DELETE CASCADE;
@@ -139,3 +143,10 @@ INNER JOIN book b
 ON ub.book_id = b.id
 WHERE ub.book_state is null AND ub.user_id=1
 LIMIT 4;
+
+SELECT COUNT(*) as count_books, u.id as 'user_id' from user u
+                        inner join user_book ub on
+                        ub.user_id = u.id
+                        where ub.book_state = 3
+                        group by ub.user_id
+                        ORDER BY count_books DESC;

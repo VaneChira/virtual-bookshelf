@@ -9,20 +9,17 @@ import java.util.Set;
 @Table(name = "genres")
 public class Genre {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
-
-    @Column(name="type")
-    private String type;
-
-    @Column(name="description")
-    private String description;
-
-    @ManyToMany(mappedBy = "genresInBooks")
+    @ManyToMany(mappedBy = "genresInBooks", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("genresInBooks")
     Set<Book> booksForGenre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "description")
+    private String description;
 
     public Genre() {
     }
@@ -68,6 +65,6 @@ public class Genre {
 
     @Override
     public String toString() {
-        return type.substring(0,1).toUpperCase() + type.substring(1).toLowerCase();
+        return type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
     }
 }
