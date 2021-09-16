@@ -17,5 +17,7 @@ public interface UserService {
 
     Map<String, Integer> getMostReadGenres(Long userId);
 
+    Map<String, Integer> getTopUsers(Long userId);
+
     User updateUser(User user, Long id);
 }

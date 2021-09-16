@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 .setParameter("userId", userId).getResultList();
         Map<String, Integer> countByGenrePopularity = new HashMap<>();
 
-        for (Object[] record : results) { // iterez manualrezultatul query-ului (count books si genre type) pentru a creea map-ul
+        for (Object[] record : results) { // iterez manual rezultatul query-ului (count books si genre type) pentru a creea map-ul
             countByGenrePopularity.put(String.valueOf(record[1]), Integer.valueOf(String.valueOf(record[0])));
             //.put(key, value)
             //record[1] = a 2-a coloana
@@ -75,6 +75,24 @@ public class UserServiceImpl implements UserService {
         }
 
         return countByGenrePopularity;
+    }
+
+    @Override
+    public Map<String, Integer> getTopUsers(Long userId) {
+        List<Object[]> results = entityManager.createNativeQuery("""
+                SELECT COUNT(*) as count_books, u.name from user u
+                                        inner join user_book ub on
+                                        ub.user_id = u.id
+                                        where ub.book_state = 3
+                                        group by ub.user_id
+                                        ORDER BY count_books DESC;""").getResultList();
+        Map<String, Integer> countByBooksReadPopularity = new HashMap<>();
+
+        for (Object[] record : results) {
+            countByBooksReadPopularity.put(String.valueOf(record[1]), Integer.valueOf(String.valueOf(record[0])));
+        }
+
+        return countByBooksReadPopularity;
     }
 
     @Override

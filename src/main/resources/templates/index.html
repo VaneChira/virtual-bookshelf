@@ -127,7 +127,7 @@
             </div>
         </div>
 
-        <!-- col 3  style="background-color:#E8E8E8;-->
+        <!-- col 3 -->
         <div class="col-sm-3">
             <h6>Recommendations</h6>
             <hr>
@@ -135,6 +135,25 @@
             <div class="shelfDisplay" th:each="book,iterStat: ${recommendationBooks}" th:if="${iterStat.index} < 12">
                 <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="130px"
                                                                    th:src="${book.imageUrl}" width="90px"/> </a>
+            </div>
+
+            <hr>
+            <h6>Top Users
+                <span><img class="top-celeb"
+                           src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn3.iconfinder.com%2Fdata%2Ficons%2Fobject-emoji%2F50%2FCelebration-512.png&f=1&nofb=1"></span>
+            </h6>
+            <div class="top">
+                <ol>
+                    <div class="user-name" th:each="users: ${topUsersByBooksRead}">
+                        <li>
+                            <img alt="Generic placeholder image"
+                                 class="img-topUser"
+                                 src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fhamzasaleem%2Fstock-style-3%2F512%2FiBooks-S3-icon.png&f=1&nofb=1"
+                                 width="62">
+                            <span th:text="${users.key} + ' has read: ' + ${users.value} + ' book/s'"></span>
+                        </li>
+                    </div>
+                </ol>
             </div>
         </div>
     </div>
