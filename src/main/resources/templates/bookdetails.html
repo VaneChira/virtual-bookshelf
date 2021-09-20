@@ -163,8 +163,6 @@
                      th:text="${percentageRead} + '% done'">
                 </div>
             </div>
-
-
             <div class="table-responsive mb-2">
             </div>
         </div>
@@ -202,10 +200,11 @@
                 <div class="media-body">
                     <div class="d-sm-flex justify-content-between">
                         <p class="mt-1 mb-2">
-                            <a th:href="@{'/user/' + ${feedback.user.id}}"><strong
-                                    th:text="@{${feedback.user.name} + ' ' + ${feedback.user.lastName}}"></strong> </a>
-                            <span th:if="${feedback.rating}"><span> rated: </span><span
-                                    th:text="@{${feedback.rating} + ' / 5'}"></span></span>
+                            <a th:href="@{'/user/' + ${feedback.user.id}}">
+                                <strong th:text="@{${feedback.user.name} + ' ' + ${feedback.user.lastName}}"></strong>
+                            </a>
+                            <span th:if="${feedback.rating}"><span> rated: </span>
+                                <span th:text="@{${feedback.rating} + ' / 5'}"></span></span>
                             <span> on </span><span th:text="${feedback.date}"></span>
                         </p>
                         <div th:if="${isAdmin or (loggedUserId==feedback.user.id)}">
@@ -260,7 +259,7 @@
                         <button type="submit" class="btn btn-primary">Update review</button>
                     </div>
                     <div class="form-group" th:unless="${commentExists}">
-                        <button type="submit" class="btn btn-primary">Add a review</button>
+                        <button class="btn btn-outline-dark" type="submit">Add a review</button>
                     </div>
                 </form>
             </div>
@@ -277,7 +276,7 @@
             <div class="">
                 <div class="mask">
                     <a th:href="@{'/bookdetails/' + ${related.id}}">
-                        <img height="224px" th:src="${related.imageUrl}" width="160px">
+                        <img class="img-fluid rounded" height="224px" th:src="${related.imageUrl}" width="160px">
                     </a>
                 </div>
                 <div class="pt-4">

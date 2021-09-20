@@ -55,7 +55,7 @@ public class HomeViewController {
         model.addAttribute("recommendationBooks", bookService.getStatelessBooksByUserId(userId));
 
 
-        model.addAttribute("topUsersByBooksRead", userService.getTopUsers(userId).entrySet()
+        model.addAttribute("topUsersByBooksRead", userService.getTopUsers().entrySet()
                 .stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
 

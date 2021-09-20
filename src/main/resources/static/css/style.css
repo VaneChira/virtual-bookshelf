@@ -8649,8 +8649,13 @@ user-name{
    }
 
    .top-celeb{
-   width: 33px;
-   height: 33px;
+   width: 30px;
+   height: 30px;
+
+   }
+
+   .top-users{
+   padding: 0px;
    }
 
 

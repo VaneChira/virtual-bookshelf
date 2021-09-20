@@ -12,12 +12,15 @@ public class Genre {
     @ManyToMany(mappedBy = "genresInBooks", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("genresInBooks")
     Set<Book> booksForGenre;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "type")
     private String type;
+
     @Column(name = "description")
     private String description;
 

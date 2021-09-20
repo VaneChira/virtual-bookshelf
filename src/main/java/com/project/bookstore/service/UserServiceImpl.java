@@ -78,18 +78,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Integer> getTopUsers(Long userId) {
+    public Map<User, Integer> getTopUsers() {
         List<Object[]> results = entityManager.createNativeQuery("""
-                SELECT COUNT(*) as count_books, u.name from user u
+                SELECT   u.id, u.name, COUNT(*) as count_books from user u
                                         inner join user_book ub on
                                         ub.user_id = u.id
                                         where ub.book_state = 3
                                         group by ub.user_id
                                         ORDER BY count_books DESC;""").getResultList();
-        Map<String, Integer> countByBooksReadPopularity = new HashMap<>();
+        Map<User, Integer> countByBooksReadPopularity = new HashMap<>();
 
         for (Object[] record : results) {
-            countByBooksReadPopularity.put(String.valueOf(record[1]), Integer.valueOf(String.valueOf(record[0])));
+            User user = new User();
+            user.setId(Long.valueOf(String.valueOf(record[0])));
+            user.setName(String.valueOf(record[1]));
+
+            Integer countOfBooks = Integer.valueOf(String.valueOf(record[2]));
+
+            countByBooksReadPopularity.put(user, countOfBooks);
         }
 
         return countByBooksReadPopularity;
