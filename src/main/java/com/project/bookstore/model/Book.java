@@ -1,13 +1,18 @@
 package com.project.bookstore.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name="book")
+@Table(name = "book")
 public class Book {
 
     @Id
@@ -40,16 +45,25 @@ public class Book {
     @Column(name="image_url")
     private String imageUrl;
 
-    @Column(name="pages")
+    @Column(name = "pages")
     private Long pages;
 
-    @Column(name="year")
+    @Column(name = "year")
     private Integer year;
 
-    @Column(name="language")
+    @Column(name = "language")
     private String language;
 
-    public Book() {
+    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Long pages, Integer year, String language) {
+        this.id = id;
+        this.bookTitle = bookTitle;
+        this.authorInBooks = authorInBooks;
+        this.description = description;
+        this.genresInBooks = genresInBooks;
+        this.imageUrl = imageUrl;
+        this.pages = pages;
+        this.year = year;
+        this.language = language;
     }
 
     @Override
@@ -64,89 +78,5 @@ public class Book {
                 ", year=" + year +
                 ", language='" + language + '\'' +
                 '}';
-    }
-
-    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Long pages, Integer year, String language) {
-        this.id = id;
-        this.bookTitle = bookTitle;
-        this.authorInBooks = authorInBooks;
-        this.description = description;
-        this.genresInBooks = genresInBooks;
-        this.imageUrl = imageUrl;
-        this.pages = pages;
-        this.year = year;
-        this.language = language;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public Set<Author> getAuthorInBooks() {
-        return authorInBooks;
-    }
-
-    public void setAuthorInBooks(Set<Author> authorInBooks) {
-        this.authorInBooks = authorInBooks;
-    }
-
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Genre> getGenresInBooks() {
-        return genresInBooks;
-    }
-
-    public void setGenresInBooks(Set<Genre> genresInBooks) {
-        this.genresInBooks = genresInBooks;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Long getPages() {
-        return pages;
-    }
-
-    public void setPages(Long pages) {
-        this.pages = pages;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 }

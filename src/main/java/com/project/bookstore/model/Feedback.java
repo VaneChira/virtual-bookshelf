@@ -1,11 +1,17 @@
 package com.project.bookstore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name="feedback")
+@Table(name = "feedback")
 public class Feedback {
 
     @EmbeddedId
@@ -13,7 +19,7 @@ public class Feedback {
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "user_id") // - foreign key
+    @JoinColumn(name = "user_id")
     User user;
 
     @ManyToOne
@@ -30,63 +36,12 @@ public class Feedback {
     @Column(name = "date")
     LocalDate date;
 
-    public Feedback() {
-    }
-
     public Feedback(FeedbackKey feedbackKey, User user, Book book, Integer rating, String comment, LocalDate date) {
         this.feedbackKey = feedbackKey;
         this.user = user;
         this.book = book;
         this.rating = rating;
         this.comment = comment;
-        this.date = date;
-    }
-
-    public FeedbackKey getFeedbackKey() {
-        return feedbackKey;
-    }
-
-    public void setFeedbackKey(FeedbackKey feedbackKey) {
-        this.feedbackKey = feedbackKey;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

@@ -1,10 +1,17 @@
 package com.project.bookstore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Embeddable
 public class BookProgressKey implements Serializable {
     @Column(name = "user_id")
@@ -13,27 +20,8 @@ public class BookProgressKey implements Serializable {
     @Column(name = "book_id")
     Long bookId;
 
-    public BookProgressKey() {
-    }
-
     public BookProgressKey(Long userId, Long bookId) {
         this.userId = userId;
-        this.bookId = bookId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 
