@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class BookIntegrationTest extends BaseTest {
 
@@ -29,20 +28,18 @@ public class BookIntegrationTest extends BaseTest {
 
     @Test
     void findById_givenExistingGenre_returnBooksByGenre() {
-        Book book = new Book();
+        final var genres = new HashSet<Genre>();
+        genres.add(genreRepository.findById(HISTORY_GENRE_ID).get());
 
-        Genre testGenre = genreRepository.findById(HISTORY_GENRE_ID).get();
-        Set<Genre> genres = new HashSet<>();
-        genres.add(testGenre);
-
+        final var book = new Book();
         book.setGenresInBooks(genres);
-        Book addedBook = bookRepository.save(book);
+        final var addedBook = bookRepository.save(book);
 
-        Genre postBookInsert = genreRepository.findById(HISTORY_GENRE_ID).get();
+        final var postBookInsert = genreRepository.findById(HISTORY_GENRE_ID).get();
 
         Hibernate.initialize(postBookInsert.getBooksForGenre());
 
-        Set<Book> booksForGivenGenre = postBookInsert.getBooksForGenre();
+        final var booksForGivenGenre = postBookInsert.getBooksForGenre();
         boolean foundBook = false;
 
         for (Book b : booksForGivenGenre) {
@@ -51,30 +48,26 @@ public class BookIntegrationTest extends BaseTest {
                 break;
             }
         }
-        bookRepository.deleteById(addedBook.getId()); // cleanup
+        bookRepository.deleteById(addedBook.getId());
         assert (foundBook);
     }
 
 
     @Test
     void when_userUpdatesFeedback_then_feedbackGetsUpdated() {
-        FeedbackKey feedbackKey = new FeedbackKey(USER_ID, BOOK_ID);
-
-        User user = userRepository.findById(USER_ID).get();
-        Book book = bookRepository.findById(BOOK_ID).get();
-
-        Feedback feedback = new Feedback(feedbackKey,
-                user,
-                book,
+        final var feedback = new Feedback(
+                new FeedbackKey(USER_ID, BOOK_ID),
+                userRepository.findById(USER_ID).get(),
+                bookRepository.findById(BOOK_ID).get(),
                 RATING,
                 COMMENT,
                 LOCAL_DATE);
 
-        Feedback preUpdateFeedback = feedbackRepository.save(feedback);
+        final var preUpdateFeedback = feedbackRepository.save(feedback);
 
-        int preUpdateFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
+        final var preUpdateFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
         preUpdateFeedback.setComment("Updated comment");
-        Feedback savedFeedback = feedbackRepository.save(preUpdateFeedback);
+        final var savedFeedback = feedbackRepository.save(preUpdateFeedback);
 
         int postFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
         try {
@@ -90,20 +83,16 @@ public class BookIntegrationTest extends BaseTest {
 
     @Test
     void when_givingFeedbackToABookById_then_feedbackGetsCreated() {
-        FeedbackKey feedbackKey = new FeedbackKey(USER_ID, BOOK_ID);
-
-        User user = userRepository.findById(USER_ID).get();
-        Book book = bookRepository.findById(BOOK_ID).get();
-
-        Feedback feedback = new Feedback(feedbackKey,
-                user,
-                book,
+        final var feedback = new Feedback(
+                new FeedbackKey(USER_ID, BOOK_ID),
+                userRepository.findById(USER_ID).get(),
+                bookRepository.findById(BOOK_ID).get(),
                 RATING,
                 COMMENT,
                 LOCAL_DATE);
 
-        int preFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
-        Feedback savedFeedback = feedbackRepository.save(feedback);
+        final var preFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
+        final var savedFeedback = feedbackRepository.save(feedback);
 
         int postFeedbackCount = feedbackRepository.getFeedbacksByBook(BOOK_ID).size();
         try {
@@ -116,24 +105,22 @@ public class BookIntegrationTest extends BaseTest {
         }
     }
 
-
     @Test
     void when_addingBookToCurrentlyReading_then_statusChanges() {
-        BookProgressKey bookProgressKey = new BookProgressKey(USER_ID, BOOK_ID);
+        final var user = userRepository.findById(USER_ID).get();
+        final var book = bookRepository.findById(BOOK_ID).get();
 
-        User user = userRepository.findById(USER_ID).get();
-        Book book = bookRepository.findById(BOOK_ID).get();
-
-        BookProgress bookProgress = new BookProgress(bookProgressKey,
+        final var bookProgress = new BookProgress(
+                new BookProgressKey(USER_ID, BOOK_ID),
                 user,
                 book,
                 PROGRESS_PAGE,
                 BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
 
-        long preInsertionCount = bookProgressRepository.count();
-        BookProgress savedBookProgress = bookProgressRepository.save(bookProgress);
+        final var preInsertionCount = bookProgressRepository.count();
+        final var savedBookProgress = bookProgressRepository.save(bookProgress);
 
-        long postInsertionCount = bookProgressRepository.count();
+        final var postInsertionCount = bookProgressRepository.count();
         try {
             assert (preInsertionCount == postInsertionCount - 1);
             assert (savedBookProgress.getProgressPage() == PROGRESS_PAGE);
@@ -148,21 +135,20 @@ public class BookIntegrationTest extends BaseTest {
 
     @Test
     void when_addingBookToWishlist_then_accessIt() {
-        BookProgressKey bookProgressKey = new BookProgressKey(USER_ID, BOOK_ID);
+        final var user = userRepository.findById(USER_ID).get();
+        final var book = bookRepository.findById(BOOK_ID).get();
 
-        User user = userRepository.findById(USER_ID).get();
-        Book book = bookRepository.findById(BOOK_ID).get();
-
-        BookProgress bookProgress = new BookProgress(bookProgressKey,
+        final var bookProgress = new BookProgress(
+                new BookProgressKey(USER_ID, BOOK_ID),
                 user,
                 book,
                 PROGRESS_PAGE,
                 BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST));
 
-        long preInsertionCount = bookProgressRepository.count();
-        BookProgress savedBookProgress = bookProgressRepository.save(bookProgress);
+        final var preInsertionCount = bookProgressRepository.count();
+        final var savedBookProgress = bookProgressRepository.save(bookProgress);
 
-        long postInsertionCount = bookProgressRepository.count();
+        final var postInsertionCount = bookProgressRepository.count();
         try {
             assert (preInsertionCount == postInsertionCount - 1);
             assert (savedBookProgress.getProgressPage() == PROGRESS_PAGE);
