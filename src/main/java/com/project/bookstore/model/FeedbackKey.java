@@ -1,10 +1,16 @@
 package com.project.bookstore.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Embeddable
 public class FeedbackKey implements Serializable {
 
@@ -14,27 +20,8 @@ public class FeedbackKey implements Serializable {
     @Column(name = "book_id")
     Long bookId;
 
-    public FeedbackKey() {
-    }
-
     public FeedbackKey(Long userId, Long bookId) {
         this.userId = userId;
-        this.bookId = bookId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 

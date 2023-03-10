@@ -1,10 +1,16 @@
 package com.project.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(name = "genres")
 @Table(name = "genres")
 public class Genre {
@@ -24,45 +30,10 @@ public class Genre {
     @Column(name = "description")
     private String description;
 
-    public Genre() {
-    }
-
     public Genre(Long id, String type, String description, Set<Book> booksForGenre) {
         this.id = id;
         this.type = type;
         this.description = description;
-        this.booksForGenre = booksForGenre;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Book> getBooksForGenre() {
-        return booksForGenre;
-    }
-
-    public void setBooksForGenre(Set<Book> booksForGenre) {
         this.booksForGenre = booksForGenre;
     }
 

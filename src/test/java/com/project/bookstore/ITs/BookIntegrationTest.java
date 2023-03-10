@@ -27,7 +27,6 @@ public class BookIntegrationTest extends BaseTest {
     @Autowired
     GenreRepository genreRepository;
 
-
     @Test
     void findById_givenExistingGenre_returnBooksByGenre() {
         Book book = new Book();
@@ -41,7 +40,7 @@ public class BookIntegrationTest extends BaseTest {
 
         Genre postBookInsert = genreRepository.findById(HISTORY_GENRE_ID).get();
 
-        Hibernate.initialize(postBookInsert.getBooksForGenre()); // pentru intializare getBooksForGenre, alfel linia urmatoare da eroare (field ne initalizat)
+        Hibernate.initialize(postBookInsert.getBooksForGenre());
 
         Set<Book> booksForGivenGenre = postBookInsert.getBooksForGenre();
         boolean foundBook = false;
@@ -119,7 +118,7 @@ public class BookIntegrationTest extends BaseTest {
 
 
     @Test
-    void when_addingBookToCurrentlyReading_then_statusChanges() { //integration test
+    void when_addingBookToCurrentlyReading_then_statusChanges() {
         BookProgressKey bookProgressKey = new BookProgressKey(USER_ID, BOOK_ID);
 
         User user = userRepository.findById(USER_ID).get();
@@ -173,6 +172,5 @@ public class BookIntegrationTest extends BaseTest {
         } finally {
             bookProgressRepository.deleteById(savedBookProgress.getBookProgressKey());
         }
-
     }
 }

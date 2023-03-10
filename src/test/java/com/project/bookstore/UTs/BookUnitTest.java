@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BookUnitTest extends BaseTest {
-
     @Autowired
     BookRepository bookRepository;
 
@@ -25,7 +24,6 @@ public class BookUnitTest extends BaseTest {
         assert (countAll == countAfterDelete);
     }
 
-
     @Test
     void when_updateBookTitle_then_accessIt() {
         Book book = bookRepository.findById(BOOK_ID).get();
@@ -38,5 +36,4 @@ public class BookUnitTest extends BaseTest {
         updatedBook.setBookTitle("Origin");
         bookRepository.save(updatedBook);
     }
-
 }
