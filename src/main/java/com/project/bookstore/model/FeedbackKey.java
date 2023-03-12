@@ -1,5 +1,6 @@
 package com.project.bookstore.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class FeedbackKey implements Serializable {
 
@@ -19,11 +21,6 @@ public class FeedbackKey implements Serializable {
 
     @Column(name = "book_id")
     Long bookId;
-
-    public FeedbackKey(Long userId, Long bookId) {
-        this.userId = userId;
-        this.bookId = bookId;
-    }
 
     @Override
     public int hashCode() {

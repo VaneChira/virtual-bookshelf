@@ -110,12 +110,13 @@ public class BookIntegrationTest extends BaseTest {
         final var user = userRepository.findById(USER_ID).get();
         final var book = bookRepository.findById(BOOK_ID).get();
 
-        final var bookProgress = new BookProgress(
-                new BookProgressKey(USER_ID, BOOK_ID),
-                user,
-                book,
-                PROGRESS_PAGE,
-                BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
+        final var bookProgress = BookProgress.builder()
+                .bookProgressKey(new BookProgressKey(USER_ID, BOOK_ID))
+                .book(book)
+                .user(user)
+                .progressPage(PROGRESS_PAGE)
+                .bookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING))
+                .build();
 
         final var preInsertionCount = bookProgressRepository.count();
         final var savedBookProgress = bookProgressRepository.save(bookProgress);
@@ -138,12 +139,12 @@ public class BookIntegrationTest extends BaseTest {
         final var user = userRepository.findById(USER_ID).get();
         final var book = bookRepository.findById(BOOK_ID).get();
 
-        final var bookProgress = new BookProgress(
-                new BookProgressKey(USER_ID, BOOK_ID),
-                user,
-                book,
-                PROGRESS_PAGE,
-                BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST));
+        final var bookProgress = BookProgress.builder()
+                .bookProgressKey(new BookProgressKey(USER_ID, BOOK_ID))
+                .book(book)
+                .user(user)
+                .bookState(BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST))
+                .build();
 
         final var preInsertionCount = bookProgressRepository.count();
         final var savedBookProgress = bookProgressRepository.save(bookProgress);
@@ -151,7 +152,6 @@ public class BookIntegrationTest extends BaseTest {
         final var postInsertionCount = bookProgressRepository.count();
         try {
             assert (preInsertionCount == postInsertionCount - 1);
-            assert (savedBookProgress.getProgressPage() == PROGRESS_PAGE);
             assert (savedBookProgress.getBookState() == BookStateEnum.fromEnumToInt(BookStateEnum.WISHLIST));
             assert (savedBookProgress.getBook().getId().equals(book.getId()));
             assert (savedBookProgress.getUser().getId().equals(user.getId()));

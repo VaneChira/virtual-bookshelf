@@ -30,13 +30,6 @@ public class Genre {
     @Column(name = "description")
     private String description;
 
-    public Genre(Long id, String type, String description, Set<Book> booksForGenre) {
-        this.id = id;
-        this.type = type;
-        this.description = description;
-        this.booksForGenre = booksForGenre;
-    }
-
     @Override
     public String toString() {
         return type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();

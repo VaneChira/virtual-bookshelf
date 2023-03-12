@@ -15,7 +15,7 @@
 	<description>Bookstore project using Spring Boot</description>
 
 	<properties>
-	<org.projectlombok.version>1.18.20</org.projectlombok.version>
+	<org.projectlombok.version>1.18.26</org.projectlombok.version>
 	</properties>
 
 	<dependencies>

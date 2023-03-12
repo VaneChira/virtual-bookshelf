@@ -1,6 +1,7 @@
 package com.project.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "book")
 public class Book {
@@ -53,18 +55,6 @@ public class Book {
 
     @Column(name = "language")
     private String language;
-
-    public Book(Long id, String bookTitle, Set<Author> authorInBooks, String description, Set<Genre> genresInBooks, String imageUrl, Long pages, Integer year, String language) {
-        this.id = id;
-        this.bookTitle = bookTitle;
-        this.authorInBooks = authorInBooks;
-        this.description = description;
-        this.genresInBooks = genresInBooks;
-        this.imageUrl = imageUrl;
-        this.pages = pages;
-        this.year = year;
-        this.language = language;
-    }
 
     @Override
     public String toString() {

@@ -45,8 +45,12 @@ public class BookProgressServiceImpl implements BookProgressService {
         final var optUser = userRepository.findById(userId);
         final var optBook = bookRepository.findById(bookId);
         if (optUser.isPresent() && optBook.isPresent()) {
-            final var bookProgress = new BookProgress(new BookProgressKey(userId, bookId), optUser.get(),
-                    optBook.get(), BookStateEnum.fromEnumToInt(bookStateEnum));
+            final var bookProgress = BookProgress.builder()
+                    .bookProgressKey(new BookProgressKey(userId, bookId))
+                    .book(optBook.get())
+                    .user(optUser.get())
+                    .bookState(BookStateEnum.fromEnumToInt(bookStateEnum))
+                    .build();
             return bookProgressRepository.save(bookProgress);
         } else {
             throw new PreconditionFailedException("User or book id invalid", "");
@@ -61,8 +65,13 @@ public class BookProgressServiceImpl implements BookProgressService {
             if (pages < 0 || pages > optBook.get().getPages()) {
                 throw new PreconditionFailedException("Number of pages not in range for this book", "Pages error");
             }
-            final var bookPagesProgress = new BookProgress(new BookProgressKey(userId, bookId), optUser.get(),
-                    optBook.get(), pages, BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
+            final var bookPagesProgress = BookProgress.builder()
+                    .bookProgressKey(new BookProgressKey(userId, bookId))
+                    .book(optBook.get())
+                    .user(optUser.get())
+                    .progressPage(pages)
+                    .bookState(BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING))
+                    .build();
             return bookProgressRepository.save(bookPagesProgress);
         }
         return null;

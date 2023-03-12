@@ -1,14 +1,14 @@
 package com.project.bookstore.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user_book")
 public class BookProgress {
@@ -30,19 +30,4 @@ public class BookProgress {
 
     @Column(name = "book_state")
     Integer bookState;
-
-    public BookProgress(BookProgressKey bookProgressKey, User user, Book book, Integer bookState) {
-        this.bookProgressKey = bookProgressKey;
-        this.user = user;
-        this.book = book;
-        this.bookState = bookState;
-    }
-
-    public BookProgress(BookProgressKey bookProgressKey, User user, Book book, Long progressPage, Integer bookState) {
-        this.bookProgressKey = bookProgressKey;
-        this.user = user;
-        this.book = book;
-        this.progressPage = progressPage;
-        this.bookState = bookState;
-    }
 }

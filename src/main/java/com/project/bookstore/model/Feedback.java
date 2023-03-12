@@ -1,5 +1,6 @@
 package com.project.bookstore.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +11,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "feedback")
 public class Feedback {
-
     @EmbeddedId
     FeedbackKey feedbackKey;
 
@@ -35,13 +36,4 @@ public class Feedback {
 
     @Column(name = "date")
     LocalDate date;
-
-    public Feedback(FeedbackKey feedbackKey, User user, Book book, Integer rating, String comment, LocalDate date) {
-        this.feedbackKey = feedbackKey;
-        this.user = user;
-        this.book = book;
-        this.rating = rating;
-        this.comment = comment;
-        this.date = date;
-    }
 }
