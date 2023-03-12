@@ -10,10 +10,8 @@ import java.util.List;
 
 @Service
 public class GenreServiceImpl implements GenreService{
-
     @Autowired
     GenreRepository genreRepository;
-
 
     @Override
     public List<Genre> findAll() {

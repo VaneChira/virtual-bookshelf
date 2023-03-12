@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-
     @Autowired
     private BookService bookService;
 
@@ -40,6 +39,4 @@ public class BookController {
     public void deleteBookById(@PathVariable Long id){
         bookService.deleteBookById(id);
     }
-
-
 }

@@ -8,17 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.Optional;
-
 @Controller
 public class BooksByGenreViewController {
-
     @Autowired
     GenreRepository genreRepository;
 
     @GetMapping("/books-by-genre/{id}")
     public String bookDetails(@PathVariable("id") Long id, Model model) {
-        Optional<Genre> optionalGenre = genreRepository.findById(id);
+        final var optionalGenre = genreRepository.findById(id);
 
         if (optionalGenre.isPresent()){
             Genre genre = optionalGenre.get();

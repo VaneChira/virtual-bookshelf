@@ -1,6 +1,5 @@
 package com.project.bookstore.service;
 
-
 import com.project.bookstore.exception.ResourceNotFoundException;
 import com.project.bookstore.model.Book;
 import com.project.bookstore.repository.BookRepository;
@@ -9,12 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
-
     @Autowired
     private BookRepository bookRepository;
 
@@ -26,8 +23,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findBookById(Long id) {
-        Optional<Book> result = bookRepository.findById(id);
-
+        final var result = bookRepository.findById(id);
         if (result.isPresent()) {
             return result.get();
         } else {
@@ -45,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Set<Book> getStatelessBooksByUserId(Long userId) {
-        List<Book> allBooks = bookRepository.findAll();
+        final var allBooks = bookRepository.findAll();
         allBooks.removeAll(bookRepository.findAllStatedBooksByUser(userId));
         return new HashSet<>(allBooks);
     }
@@ -58,9 +54,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(Long id) {
-        Optional<Book> result = bookRepository.findById(id);
-
-        if (result.isEmpty()) {
+        if (bookRepository.findById(id).isEmpty()) {
             throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
         } else {
             bookRepository.deleteById(id);
@@ -69,13 +63,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Book book, Long id) {
-        Optional<Book> result = bookRepository.findById(id);
-        if (result.isPresent()) {
-            Book updatedBook = book;
-            updatedBook.setId(id);
-            return bookRepository.save(updatedBook);
-        }
-        else {
+        if (bookRepository.findById(id).isPresent()) {
+            book.setId(id);
+            return bookRepository.save(book);
+        } else {
             throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
         }
     }

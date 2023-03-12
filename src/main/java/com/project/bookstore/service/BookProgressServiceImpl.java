@@ -1,20 +1,21 @@
 package com.project.bookstore.service;
 
 import com.project.bookstore.exception.PreconditionFailedException;
-import com.project.bookstore.model.*;
-import com.project.bookstore.repository.BookRepository;
+import com.project.bookstore.model.Book;
+import com.project.bookstore.model.BookProgress;
+import com.project.bookstore.model.BookProgressKey;
+import com.project.bookstore.model.BookStateEnum;
 import com.project.bookstore.repository.BookProgressRepository;
+import com.project.bookstore.repository.BookRepository;
 import com.project.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookProgressServiceImpl implements BookProgressService {
-
     @Autowired
     BookProgressRepository bookProgressRepository;
 
@@ -31,8 +32,8 @@ public class BookProgressServiceImpl implements BookProgressService {
 
     @Override
     public List<Book> findAllBooksByUserEmail(String email) {
-        List<BookProgress> progresses = bookProgressRepository.findAllByUserEmail(email);
-        List<Book> bookList = new ArrayList<>();
+        final var progresses = bookProgressRepository.findAllByUserEmail(email);
+        final var bookList = new ArrayList<Book>();
         for (BookProgress bookProgress : progresses) {
             bookList.add(bookProgress.getBook());
         }
@@ -41,14 +42,12 @@ public class BookProgressServiceImpl implements BookProgressService {
 
     @Override
     public BookProgress save(Long userId, Long bookId, BookStateEnum bookStateEnum) {
-        BookProgressKey bookProgressKey = new BookProgressKey(userId, bookId);
-        Optional<User> optUser = userRepository.findById(userId);
-        Optional<Book> optBook = bookRepository.findById(bookId);
+        final var optUser = userRepository.findById(userId);
+        final var optBook = bookRepository.findById(bookId);
         if (optUser.isPresent() && optBook.isPresent()) {
-            BookProgress bookProgress = new BookProgress(bookProgressKey, optUser.get(),
+            final var bookProgress = new BookProgress(new BookProgressKey(userId, bookId), optUser.get(),
                     optBook.get(), BookStateEnum.fromEnumToInt(bookStateEnum));
             return bookProgressRepository.save(bookProgress);
-
         } else {
             throw new PreconditionFailedException("User or book id invalid", "");
         }
@@ -56,14 +55,13 @@ public class BookProgressServiceImpl implements BookProgressService {
 
     @Override
     public BookProgress updatePages(Long userId, Long bookId, Long pages) {
-        BookProgressKey bookProgressKey = new BookProgressKey(userId, bookId);
-        Optional<User> optUser = userRepository.findById(userId);
-        Optional<Book> optBook = bookRepository.findById(bookId);
+        final var optUser = userRepository.findById(userId);
+        final var optBook = bookRepository.findById(bookId);
         if (optUser.isPresent() && optBook.isPresent()) {
-            if (pages < 0 || pages > optBook.get().getPages()){
+            if (pages < 0 || pages > optBook.get().getPages()) {
                 throw new PreconditionFailedException("Number of pages not in range for this book", "Pages error");
             }
-            BookProgress bookPagesProgress = new BookProgress(bookProgressKey, optUser.get(),
+            final var bookPagesProgress = new BookProgress(new BookProgressKey(userId, bookId), optUser.get(),
                     optBook.get(), pages, BookStateEnum.fromEnumToInt(BookStateEnum.CURRENTLY_READING));
             return bookProgressRepository.save(bookPagesProgress);
         }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface BookService {
-
      List<Book> findAll();
 
      Book findBookById(Long id);
@@ -20,5 +19,4 @@ public interface BookService {
     Set<Book> listAll(String keyword);
 
     Set<Book> getStatelessBooksByUserId(Long userId);
-
 }

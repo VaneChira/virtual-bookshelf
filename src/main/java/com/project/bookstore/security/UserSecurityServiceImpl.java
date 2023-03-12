@@ -11,13 +11,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import static java.util.List.of;
+
 @Service
 public class UserSecurityServiceImpl implements UserSecurityService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -29,19 +30,19 @@ public class UserSecurityServiceImpl implements UserSecurityService {
 
     @Override
     public User save(UserRegistrationFormEntity userRegistrationFormEntity) {
-        User user = new User();
+        final var user = new User();
         user.setName(userRegistrationFormEntity.getFirstName());
         user.setLastName(userRegistrationFormEntity.getLastName());
         user.setEmail(userRegistrationFormEntity.getEmail());
         user.setPassword(passwordEncoder.encode(userRegistrationFormEntity.getPassword()));
-        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
+        user.setRoles(of(new Role("ROLE_USER")));
 
         return userRepository.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        final var user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid email or password.");
         }
@@ -53,6 +54,4 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         return roles.stream().map(role -> new
                 SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
-
-
 }

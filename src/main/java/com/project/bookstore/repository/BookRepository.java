@@ -10,8 +10,6 @@ import java.util.Set;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    //This is JPA Repository for books.
-
     @Query(value = "SELECT * FROM book b WHERE CONCAT(b.book_title,' ') LIKE %:keyword%", nativeQuery = true)
     Set<Book> search(String keyword);
 

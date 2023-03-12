@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-
     List<User> findAllUsers();
 
     User findUserById(Long id);

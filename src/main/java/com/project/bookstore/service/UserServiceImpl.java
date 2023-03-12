@@ -10,11 +10,9 @@ import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -28,8 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) {
-        Optional<User> result = userRepository.findById(id);
-
+        final var result = userRepository.findById(id);
         if (result.isPresent()) {
             return result.get();
         } else {
@@ -44,8 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
-        Optional<User> result = userRepository.findById(id);
-        if (result.isPresent()) {
+        if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
         } else {
             throw new ResourceNotFoundException("Did not find user id - " + id, User.class.getSimpleName());
@@ -65,7 +61,7 @@ public class UserServiceImpl implements UserService {
                         ORDER BY count_books DESC
                         LIMIT 5;""")
                 .setParameter("userId", userId).getResultList();
-        Map<String, Integer> countByGenrePopularity = new HashMap<>();
+        final var countByGenrePopularity = new HashMap<String, Integer>();
 
         for (Object[] record : results) { // iterez manual rezultatul query-ului (count books si genre type) pentru a creea map-ul
             countByGenrePopularity.put(String.valueOf(record[1]), Integer.valueOf(String.valueOf(record[0])));
@@ -73,7 +69,6 @@ public class UserServiceImpl implements UserService {
             //record[1] = a 2-a coloana
             // record[0] = prima coloana
         }
-
         return countByGenrePopularity;
     }
 
@@ -86,28 +81,22 @@ public class UserServiceImpl implements UserService {
                                         where ub.book_state = 3
                                         group by ub.user_id
                                         ORDER BY count_books DESC;""").getResultList();
-        Map<User, Integer> countByBooksReadPopularity = new HashMap<>();
+        final var countByBooksReadPopularity = new HashMap<User, Integer>();
 
         for (Object[] record : results) {
-            User user = new User();
+            final var user = new User();
             user.setId(Long.valueOf(String.valueOf(record[0])));
             user.setName(String.valueOf(record[1]));
-
-            Integer countOfBooks = Integer.valueOf(String.valueOf(record[2]));
-
-            countByBooksReadPopularity.put(user, countOfBooks);
+            countByBooksReadPopularity.put(user, Integer.valueOf(String.valueOf(record[2])));
         }
-
         return countByBooksReadPopularity;
     }
 
     @Override
     public User updateUser(User user, Long id) {
-        Optional<User> result = userRepository.findById(id);
-        if (result.isPresent()) {
-            User updatedUser = user;
-            updatedUser.setId(id);
-            return userRepository.save(updatedUser);
+        if (userRepository.findById(id).isPresent()) {
+            user.setId(id);
+            return userRepository.save(user);
         } else {
             throw new ResourceNotFoundException("Did not find user id - " + id, User.class.getSimpleName());
         }
