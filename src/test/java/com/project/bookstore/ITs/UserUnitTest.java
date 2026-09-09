@@ -1,4 +1,4 @@
-package com.project.bookstore.UTs;
+package com.project.bookstore.ITs;
 
 import com.project.bookstore.BaseTest;
 import com.project.bookstore.model.User;
