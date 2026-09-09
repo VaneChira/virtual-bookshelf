@@ -8659,4 +8659,150 @@ user-name{
    }
 
 
+/* =======================================================================
+   FIXED DESKTOP LAYOUT
+   -----------------------------------------------------------------------
+   The page used to reflow constantly because (a) <body> had percentage
+   side margins, (b) Bootstrap's responsive grid collapsed the columns at
+   narrow viewports, and (c) book covers were sized with `.img-fluid`
+   (height:auto) + percentage widths, so their height tracked the window
+   width and each image's aspect ratio.
+
+   These rules lock the site to a truly fixed 1200px centred column
+   (LAYOUT_WIDTH). <body> has `min-width: 1200px`, the grid is frozen to
+   desktop proportions, and covers are fixed-size - so resizing the
+   window never moves, restacks or rescales anything inside the page. If
+   the window is narrower than 1200px the overflow is clipped (via
+   `overflow-x: hidden`) rather than shown as a scrollbar. To change the
+   fixed width, edit LAYOUT_WIDTH in three places: `min-width` in
+   section 1 and the two `max-width` values in section 2.
+   ======================================================================= */
+
+/* 1 - kill the fluid body margins. The page never shrinks below the
+       layout width (so nothing inside ever moves or rescales on resize);
+       `overflow-x: hidden` on html+body means the surplus is clipped
+       rather than shown as a horizontal scrollbar. */
+html {
+  overflow-x: hidden;
+}
+body {
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 1200px;
+  overflow-x: hidden;
+}
+
+/* 2 - fixed, centred content column (LAYOUT_WIDTH). Because <body> can
+       never be narrower than 1200px, `max-width: 1200px` here is always
+       exactly 1200px, centred. Overrides Bootstrap's responsive
+       .container max-widths and applies to the navbar too. */
+.container {
+  max-width: 1200px;
+  height: auto;
+  align-content: normal;
+}
+.container-fluid {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3 - freeze the grid: columns keep their desktop fraction at every
+       viewport width, so the 3-column home page never stacks. Rules are
+       ordered widest -> narrowest so that for an element carrying several
+       responsive classes (e.g. `col-md-8 col-lg-7 col-xl-6`) the
+       NARROWEST wins - i.e. the large-screen intent. */
+.col-12                                    { flex: 0 0 100%;        max-width: 100%; }
+.col-md-9                                  { flex: 0 0 75%;         max-width: 75%; }
+.col-md-8                                  { flex: 0 0 66.666667%;  max-width: 66.666667%; }
+.col-md-7, .col-lg-7                       { flex: 0 0 58.333333%;  max-width: 58.333333%; }
+.col-sm-6, .col-md-6, .col-lg-6, .col-xl-6 { flex: 0 0 50%;         max-width: 50%; }
+.col-md-5                                  { flex: 0 0 41.666667%;  max-width: 41.666667%; }
+.col-md-4                                  { flex: 0 0 33.333333%;  max-width: 33.333333%; }
+.col-sm-3, .col-md-3, .col-lg-3            { flex: 0 0 25%;         max-width: 25%; }
+
+/* 4 - Wishlist / Recommendations thumbnail strips: exactly 3 covers per
+       row, each a fixed-ratio box cropped with object-fit so its size
+       never depends on the window or the source image's aspect ratio. */
+.shelfDisplay {
+  display: inline-block;
+  width: 29%;
+  margin: 0 2% 10px 0;
+  vertical-align: top;
+}
+.shelfDisplay > a { display: block; }
+.shelfDisplay img {
+  width: 100%;
+  height: 135px;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* "Currently reading" (cover | text per book) */
+.readingShelfDisplay { align-items: flex-start; }
+.readingShelfDisplay img {
+  width: 100%;
+  height: 120px;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Home page "Explore" genre rows (History / Mystery / ...): 4 covers per
+   row, bigger and closer together than the original `.mw-18` (18%)
+   sizing, and every cover forced to the SAME fixed box (cropped with
+   object-fit) so rows line up regardless of each image's aspect ratio.
+   The `!important` beats `.mw-18 { max-width: 18% !important }`. Scoped
+   to the middle column so the genre / my-books / profile pages that also
+   use `.row-books` are left as they were. */
+.col-sm-6 .row-books {
+  display: inline-block;
+  width: 24%;
+  padding: 0 3px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.col-sm-6 .row-books > a[class*="col-"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  flex: none;
+  padding: 0;
+}
+.col-sm-6 .row-books img,
+.col-sm-6 .row-books img.mw-18 {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 190px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.table-image td,
+.table-image th { vertical-align: middle; }
+.table-image .w-15 { width: 150px !important; }
+.table-image td img {
+  width: 130px;
+  height: 190px;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 5 - navbar avatar back in normal flow (was absolutely positioned
+       with no offsets, so it floated free of the layout). */
+.image_outer_container {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+}
+
+/* 6 - `max-height: 400vh` was four viewport heights and moved on every
+       vertical resize. */
+.login,
+.image { max-height: 100vh; }
+
+
 
