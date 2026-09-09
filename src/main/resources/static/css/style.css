@@ -8749,8 +8749,36 @@ body {
   object-position: center;
 }
 
-/* NOTE: the middle "Explore" genre rows (.row-books) are intentionally
-   left to the original stylesheet rules above - do not restyle them. */
+/* Home page "Explore" genre rows (History / Mystery / ...): 4 covers per
+   row, bigger and closer together than the original `.mw-18` (18%)
+   sizing, and every cover forced to the SAME fixed box (cropped with
+   object-fit) so rows line up regardless of each image's aspect ratio.
+   The `!important` beats `.mw-18 { max-width: 18% !important }`. Scoped
+   to the middle column so the genre / my-books / profile pages that also
+   use `.row-books` are left as they were. */
+.col-sm-6 .row-books {
+  display: inline-block;
+  width: 24%;
+  padding: 0 3px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.col-sm-6 .row-books > a[class*="col-"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  flex: none;
+  padding: 0;
+}
+.col-sm-6 .row-books img,
+.col-sm-6 .row-books img.mw-18 {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 190px;
+  object-fit: cover;
+  object-position: center;
+}
 
 .table-image td,
 .table-image th { vertical-align: middle; }
