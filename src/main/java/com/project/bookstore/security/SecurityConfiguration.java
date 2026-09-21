@@ -25,12 +25,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(
-                "/registration**",
-                "/api/**",
-                "/js/**",
-                "/css/**",
-                "/img/**").permitAll() //unde poti intra oricum
-                .anyRequest().authenticated() //restul -> doar autentificati
+                        "/registration**",
+                        "/api/**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
