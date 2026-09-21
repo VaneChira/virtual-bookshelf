@@ -1,5 +1,6 @@
 package com.project.bookstore.rest.mvc;
 
+import com.project.bookstore.exception.DuplicateEmailException;
 import com.project.bookstore.security.UserRegistrationFormEntity;
 import com.project.bookstore.security.UserSecurityService;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,11 @@ public class UserRegistrationViewController {
 
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationFormEntity userForm) {
-        userSecurityService.save(userForm);
+        try {
+            userSecurityService.save(userForm);
+        } catch (DuplicateEmailException e) {
+            return "redirect:/registration?error";
+        }
         return "redirect:/registration?success";
     }
 }

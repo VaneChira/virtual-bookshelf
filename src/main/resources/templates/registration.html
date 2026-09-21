@@ -26,6 +26,11 @@
                     to our awesome app!</div>
             </div>
 
+            <!-- duplicate email error message -->
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">An account with this email already exists. Try logging in instead.</div>
+            </div>
+
             <h1>Registration</h1>
 
             <form th:action="@{/registration}" method="post" th:object="${user}">

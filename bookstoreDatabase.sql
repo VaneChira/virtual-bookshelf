@@ -10,7 +10,8 @@ CREATE TABLE `user` (
 	`last_name` VARCHAR(45),
 	`email` VARCHAR(45),
     `password` VARCHAR(255),
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `uq_user_email` (`email`)
 );
 
 CREATE TABLE `roles`(

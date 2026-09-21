@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.project.bookstore.exception.DuplicateEmailException;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
@@ -31,6 +33,9 @@ public class UserSecurityServiceImpl implements UserSecurityService {
 
     @Override
     public User save(UserRegistrationFormEntity userRegistrationFormEntity) {
+        if(userRepository.findByEmail(userRegistrationFormEntity.getEmail()) != null) {
+            throw new DuplicateEmailException(userRegistrationFormEntity.getEmail());
+        }
         final var user = new User();
         user.setName(userRegistrationFormEntity.getFirstName());
         user.setLastName(userRegistrationFormEntity.getLastName());

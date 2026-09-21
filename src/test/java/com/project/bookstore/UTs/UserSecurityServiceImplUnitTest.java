@@ -1,5 +1,6 @@
 package com.project.bookstore.UTs;
 
+import com.project.bookstore.exception.DuplicateEmailException;
 import com.project.bookstore.model.Role;
 import com.project.bookstore.model.User;
 import com.project.bookstore.repository.RoleRepository;
@@ -15,8 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,5 +77,18 @@ class UserSecurityServiceImplUnitTest {
         verify(roleRepository).findByName(eq(RoleName.ROLE_USER));
         assertThat(savedUser.getRoles()).containsExactly(existingRoleUser);
         assertThat(savedUser.getRoles()).extracting(Role::getId).containsOnly(1L);
+    }
+
+    @Test
+    void save_throwsDuplicateEmailException_whenEmailAlreadyExists() {
+        final var existingUser = new User();
+        existingUser.setEmail("jane.doe@example.com");
+        when(userRepository.findByEmail("jane.doe@example.com")).thenReturn(existingUser);
+
+        assertThatThrownBy(() -> userSecurityService.save(form))
+                .isInstanceOf(DuplicateEmailException.class);
+
+        verify(userRepository, never()).save(any(User.class));
+        verify(roleRepository, never()).findByName(any());
     }
 }
