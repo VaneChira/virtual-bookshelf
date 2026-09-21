@@ -16,8 +16,13 @@ CREATE TABLE `user` (
 CREATE TABLE `roles`(
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(45),
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `uq_roles_name` (`name`)
 );
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+	(1, 'ROLE_USER'),
+	(2, 'ROLE_ADMIN');
 
 CREATE TABLE `user_role`(
 	`id` INT NOT NULL AUTO_INCREMENT,
