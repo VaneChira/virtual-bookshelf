@@ -2,8 +2,8 @@ package com.project.bookstore.security;
 
 import com.project.bookstore.model.Role;
 import com.project.bookstore.model.User;
+import com.project.bookstore.repository.RoleRepository;
 import com.project.bookstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +19,14 @@ import static java.util.List.of;
 @Service
 public class UserSecurityServiceImpl implements UserSecurityService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    public UserSecurityServiceImpl(UserRepository userRepository) {
+    public UserSecurityServiceImpl(UserRepository userRepo, RoleRepository roleRepo, BCryptPasswordEncoder passwordEncoder) {
         super();
-        this.userRepository = userRepository;
+        this.userRepository = userRepo;
+        this.roleRepository = roleRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         user.setLastName(userRegistrationFormEntity.getLastName());
         user.setEmail(userRegistrationFormEntity.getEmail());
         user.setPassword(passwordEncoder.encode(userRegistrationFormEntity.getPassword()));
-        user.setRoles(of(new Role("ROLE_USER")));
+        user.setRoles(of(roleRepository.findByName("ROLE_USER")));
 
         return userRepository.save(user);
     }

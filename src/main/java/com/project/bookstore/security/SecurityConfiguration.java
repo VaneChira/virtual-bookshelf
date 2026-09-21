@@ -1,6 +1,5 @@
 package com.project.bookstore.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,12 +13,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserSecurityService userSecurityService;
+    private final UserSecurityService userSecurityService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityConfiguration(UserSecurityService userSecurityService, BCryptPasswordEncoder passwordEncoder) {
+        this.userSecurityService = userSecurityService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authenticationProvider() {
         final var auth = new DaoAuthenticationProvider();
         auth.setUserDetailsService(userSecurityService);
-        auth.setPasswordEncoder(passwordEncoder());
+        auth.setPasswordEncoder(passwordEncoder);
         return auth;
     }
 
