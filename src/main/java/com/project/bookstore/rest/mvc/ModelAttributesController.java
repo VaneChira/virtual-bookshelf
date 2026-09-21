@@ -3,6 +3,7 @@ package com.project.bookstore.rest.mvc;
 import com.project.bookstore.model.Genre;
 import com.project.bookstore.repository.GenreRepository;
 import com.project.bookstore.repository.UserRepository;
+import com.project.bookstore.security.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,6 +50,6 @@ public class ModelAttributesController {
     @ModelAttribute("isAdmin")
     private boolean isAdmin() {
         final var auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(RoleName.ROLE_ADMIN));
     }
 }

@@ -36,7 +36,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         user.setLastName(userRegistrationFormEntity.getLastName());
         user.setEmail(userRegistrationFormEntity.getEmail());
         user.setPassword(passwordEncoder.encode(userRegistrationFormEntity.getPassword()));
-        user.setRoles(of(roleRepository.findByName("ROLE_USER")));
+        user.setRoles(of(roleRepository.findByName(RoleName.ROLE_USER)));
 
         return userRepository.save(user);
     }

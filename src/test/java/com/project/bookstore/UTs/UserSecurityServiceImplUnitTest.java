@@ -4,6 +4,7 @@ import com.project.bookstore.model.Role;
 import com.project.bookstore.model.User;
 import com.project.bookstore.repository.RoleRepository;
 import com.project.bookstore.repository.UserRepository;
+import com.project.bookstore.security.RoleName;
 import com.project.bookstore.security.UserRegistrationFormEntity;
 import com.project.bookstore.security.UserSecurityServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +48,8 @@ class UserSecurityServiceImplUnitTest {
 
     @Test
     void save_encodesPasswordAndCopiesFormFieldsOntoUser() {
-        final var existingRoleUser = new Role("ROLE_USER");
-        when(roleRepository.findByName("ROLE_USER")).thenReturn(existingRoleUser);
+        final var existingRoleUser = new Role(RoleName.ROLE_USER);
+        when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(existingRoleUser);
         when(passwordEncoder.encode("plain-password")).thenReturn("encoded-password");
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -62,15 +63,15 @@ class UserSecurityServiceImplUnitTest {
 
     @Test
     void save_attachesExistingRoleUserInsteadOfCreatingANewOne() {
-        final var existingRoleUser = new Role("ROLE_USER");
+        final var existingRoleUser = new Role(RoleName.ROLE_USER);
         existingRoleUser.setId(1L);
-        when(roleRepository.findByName("ROLE_USER")).thenReturn(existingRoleUser);
+        when(roleRepository.findByName(RoleName.ROLE_USER)).thenReturn(existingRoleUser);
         when(passwordEncoder.encode(any())).thenReturn("encoded-password");
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         final var savedUser = userSecurityService.save(form);
 
-        verify(roleRepository).findByName(eq("ROLE_USER"));
+        verify(roleRepository).findByName(eq(RoleName.ROLE_USER));
         assertThat(savedUser.getRoles()).containsExactly(existingRoleUser);
         assertThat(savedUser.getRoles()).extracting(Role::getId).containsOnly(1L);
     }

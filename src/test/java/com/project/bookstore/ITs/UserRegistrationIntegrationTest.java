@@ -3,6 +3,7 @@ package com.project.bookstore.ITs;
 import com.project.bookstore.BaseTest;
 import com.project.bookstore.repository.RoleRepository;
 import com.project.bookstore.repository.UserRepository;
+import com.project.bookstore.security.RoleName;
 import com.project.bookstore.security.UserRegistrationFormEntity;
 import com.project.bookstore.security.UserSecurityService;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class UserRegistrationIntegrationTest extends BaseTest {
 
     private long countRoleUserRows() {
         return roleRepository.findAll().stream()
-                .filter(role -> "ROLE_USER".equals(role.getName()))
+                .filter(role -> RoleName.ROLE_USER.equals(role.getName()))
                 .count();
     }
 }
