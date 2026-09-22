@@ -16,6 +16,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
@@ -53,6 +54,11 @@ class CloudinaryControllerIntegrationTest {
     // SecurityConfiguration is picked up by @WebMvcTest and needs this collaborator.
     @MockBean
     private UserSecurityService userSecurityService;
+
+    // SecurityConfiguration also needs this since it now takes it as a constructor arg;
+    // filters are disabled here so it's never actually invoked.
+    @MockBean
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Test
     void uploadCover_returns200AndTheSecureUrl() throws Exception {

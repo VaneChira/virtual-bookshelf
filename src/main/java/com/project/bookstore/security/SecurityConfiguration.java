@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -17,10 +18,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserSecurityService userSecurityService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationSuccessHandler loginSuccessHandler;
 
-    public SecurityConfiguration(UserSecurityService userSecurityService, BCryptPasswordEncoder passwordEncoder) {
+    public SecurityConfiguration(UserSecurityService userSecurityService, BCryptPasswordEncoder passwordEncoder, AuthenticationSuccessHandler loginSuccessHandler) {
         this.userSecurityService = userSecurityService;
         this.passwordEncoder = passwordEncoder;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+                .successHandler(loginSuccessHandler)
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
