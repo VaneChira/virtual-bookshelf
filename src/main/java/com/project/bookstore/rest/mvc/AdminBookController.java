@@ -6,10 +6,15 @@ import com.project.bookstore.model.Genre;
 import com.project.bookstore.repository.AuthorRepository;
 import com.project.bookstore.repository.GenreRepository;
 import com.project.bookstore.service.BookService;
+import com.project.bookstore.service.CloudinaryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,11 +30,23 @@ public class AdminBookController {
     private final BookService bookService;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
+    private final CloudinaryService cloudinaryService;
 
-    public AdminBookController(BookService bookService, AuthorRepository authorRepository, GenreRepository genreRepository) {
+    public AdminBookController(BookService bookService, AuthorRepository authorRepository, GenreRepository genreRepository, CloudinaryService cloudinaryService) {
         this.bookService = bookService;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
+        this.cloudinaryService = cloudinaryService;
+    }
+
+    @ModelAttribute("authors")
+    public List<Author> authors() {
+        return authorRepository.findAll();
+    }
+
+    @ModelAttribute("genres")
+    public List<Genre> genres() {
+        return genreRepository.findAll();
     }
 
     @GetMapping("/admin")
@@ -41,17 +58,25 @@ public class AdminBookController {
     @GetMapping("/admin/books/new")
     public String newBookForm(Model model) {
         model.addAttribute("book", new Book());
-        model.addAttribute("authors", authorRepository.findAll());
-        model.addAttribute("genres", genreRepository.findAll());
         return "admin/book-form";
     }
 
+    //  if the admin submits the form without picking a file, coverImage is usually not null — HTML file inputs still submit an empty multipart part
+    //  (size 0) even when nothing's selected -> hence the two condition check
     @PostMapping("/admin/books")
-    public String createBook(@ModelAttribute Book book,
+    public String createBook(@Valid @ModelAttribute Book book,
+                              BindingResult bindingResult,
                               @RequestParam(required = false) List<Long> authorIds,
-                              @RequestParam(required = false) List<Long> genreIds) {
+                              @RequestParam(required = false) List<Long> genreIds,
+                              @RequestParam(required = false) MultipartFile coverImage) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "admin/book-form";
+        }
         book.setAuthorInBooks(resolveAuthors(authorIds));
         book.setGenresInBooks(resolveGenres(genreIds));
+        if(coverImage != null && !coverImage.isEmpty()) {
+            book.setImageUrl(cloudinaryService.uploadImage(coverImage));
+        }
         bookService.saveBook(book);
         return "redirect:/admin";
     }
@@ -59,18 +84,24 @@ public class AdminBookController {
     @GetMapping("/admin/books/{id}/edit")
     public String editBookForm(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookService.findBookById(id));
-        model.addAttribute("authors", authorRepository.findAll());
-        model.addAttribute("genres", genreRepository.findAll());
         return "admin/book-form";
     }
 
     @PostMapping("/admin/books/{id}")
     public String updateBook(@PathVariable Long id,
-                              @ModelAttribute Book book,
+                              @Valid @ModelAttribute Book book,
+                              BindingResult bindingResult,
                               @RequestParam(required = false) List<Long> authorIds,
-                              @RequestParam(required = false) List<Long> genreIds) {
+                              @RequestParam(required = false) List<Long> genreIds,
+                              @RequestParam(required = false) MultipartFile coverImage) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "admin/book-form";
+        }
         book.setAuthorInBooks(resolveAuthors(authorIds));
         book.setGenresInBooks(resolveGenres(genreIds));
+        if (coverImage != null && !coverImage.isEmpty()) {
+            book.setImageUrl(cloudinaryService.uploadImage(coverImage));
+        }
         bookService.updateBook(book, id);
         return "redirect:/admin";
     }

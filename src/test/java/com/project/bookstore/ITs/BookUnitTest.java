@@ -13,7 +13,9 @@ public class BookUnitTest extends BaseTest {
     @Test
     void when_insertNewBook_then_countIncreases() {
         final var countAll = bookRepository.findAll().size();
-        final var addedBook = bookRepository.save(new Book());
+        final var newBook = new Book();
+        newBook.setBookTitle("Test Book");
+        final var addedBook = bookRepository.save(newBook);
         final var countAfterAdd = bookRepository.findAll().size();
         assert (countAll + 1 == countAfterAdd);
 

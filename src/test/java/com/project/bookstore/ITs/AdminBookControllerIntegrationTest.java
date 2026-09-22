@@ -10,6 +10,7 @@ import com.project.bookstore.rest.mvc.ModelAttributesController;
 import com.project.bookstore.security.PasswordEncoderConfiguration;
 import com.project.bookstore.security.UserSecurityService;
 import com.project.bookstore.service.BookService;
+import com.project.bookstore.service.CloudinaryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -57,6 +58,9 @@ class AdminBookControllerIntegrationTest {
 
     @MockBean
     private GenreRepository genreRepository;
+
+    @MockBean
+    private CloudinaryService cloudinaryService;
 
     // SecurityConfiguration is picked up by @WebMvcTest and needs these collaborators.
     @MockBean

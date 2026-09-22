@@ -63,11 +63,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Book book, Long id) {
-        if (bookRepository.findById(id).isPresent()) {
-            book.setId(id);
-            return bookRepository.save(book);
-        } else {
-            throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
+        var existing = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName()));
+        existing.setBookTitle(book.getBookTitle());
+        existing.setDescription(book.getDescription());
+        existing.setPages(book.getPages());
+        existing.setYear(book.getYear());
+        existing.setLanguage(book.getLanguage());
+        existing.setAuthorInBooks(book.getAuthorInBooks());
+        existing.setGenresInBooks(book.getGenresInBooks());
+        if(book.getImageUrl() != null) {
+            existing.setImageUrl(book.getImageUrl());
         }
+        return bookRepository.save(existing);
     }
 }
