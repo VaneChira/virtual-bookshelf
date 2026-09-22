@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "genres")
 public class Genre {
 
-    @ManyToMany(mappedBy = "genresInBooks", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "genresInBooks", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("genresInBooks")
     Set<Book> booksForGenre;
 

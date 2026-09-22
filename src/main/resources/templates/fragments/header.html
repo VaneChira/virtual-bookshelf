@@ -10,7 +10,7 @@
             <img class="img-nav"
                  src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs-media-cache-ak0.pinimg.com%2Foriginals%2F6a%2F93%2F2c%2F6a932ce2d58dc66ecd6a74a843495e80.jpg&f=1&nofb=1">
 
-            <a class="navbar-brand" th:href="@{/}">Welcome <span th:text="${currentUserName}?:'reader'"></span></a>
+            <a class="navbar-brand" th:href="${isAdmin} ? @{/admin} : @{/}">Welcome <span th:text="${currentUserName}?:'reader'"></span></a>
             <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
                 <div class="form-group d-flex">
                     <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3"
@@ -28,12 +28,14 @@
                 <ul class="navbar-nav m-auto">
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a th:href="@{/}" class="nav-link">Login</a></li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a th:href="@{/registration}" class="nav-link">Register</a></li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/}" class="nav-link">Home</a></li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My Books</a></li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a>
+                    <li sec:authorize="isAuthenticated()" th:unless="${isAdmin}" class="nav-item"><a th:href="@{/}" class="nav-link">Home</a></li>
+                    <li sec:authorize="isAuthenticated()" th:unless="${isAdmin}" class="nav-item"><a th:href="@{/mybooks}" class="nav-link">My Books</a></li>
+                    <li sec:authorize="isAuthenticated()" th:unless="${isAdmin}" class="nav-item"><a th:href="@{/wishlist}" class="nav-link">Wishlist</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" th:if="${isAdmin}" class="nav-item"><a th:href="@{/admin}" class="nav-link">Admin</a>
                     </li>
 
-                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                    <li sec:authorize="isAuthenticated()" th:unless="${isAdmin}" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Browse genres</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -49,7 +51,7 @@
                                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fp7.hiclipart.com%2Fpreview%2F142%2F76%2F939%2Fsymbol-yellow-orange-logo-ibooks.jpg&f=1&nofb=1">
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown">
-                                    <li class="dropdown-item"><a class="dropdown-item"
+                                    <li class="dropdown-item" th:unless="${isAdmin}"><a class="dropdown-item"
                                                                  th:href="@{'/user/' + ${loggedUserId}}">My Profile</a>
                                     <li class="dropdown-item"><a th:href="@{/logout}" class="dropdown-item">Logout</a>
                                     </li>

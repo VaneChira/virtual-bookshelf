@@ -32,6 +32,7 @@ public class BookIntegrationTest extends BaseTest {
         genres.add(genreRepository.findById(HISTORY_GENRE_ID).get());
 
         final var book = new Book();
+        book.setBookTitle("Test Book");
         book.setGenresInBooks(genres);
         final var addedBook = bookRepository.save(book);
 

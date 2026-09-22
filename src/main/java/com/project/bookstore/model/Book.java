@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Getter
@@ -22,6 +23,7 @@ public class Book {
     @Column(name="id")
     private Long id;
 
+    @NotBlank
     @Column(name="book_title")
     private String bookTitle;
 

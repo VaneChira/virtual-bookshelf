@@ -4,6 +4,8 @@ import com.project.bookstore.exception.ResourceNotFoundException;
 import com.project.bookstore.model.Book;
 import com.project.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,6 +20,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
 
@@ -63,11 +70,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Book book, Long id) {
-        if (bookRepository.findById(id).isPresent()) {
-            book.setId(id);
-            return bookRepository.save(book);
-        } else {
-            throw new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName());
+        var existing = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Did not find book id - " + id, Book.class.getSimpleName()));
+        existing.setBookTitle(book.getBookTitle());
+        existing.setDescription(book.getDescription());
+        existing.setPages(book.getPages());
+        existing.setYear(book.getYear());
+        existing.setLanguage(book.getLanguage());
+        existing.setAuthorInBooks(book.getAuthorInBooks());
+        existing.setGenresInBooks(book.getGenresInBooks());
+        if(book.getImageUrl() != null) {
+            existing.setImageUrl(book.getImageUrl());
         }
+        return bookRepository.save(existing);
     }
 }

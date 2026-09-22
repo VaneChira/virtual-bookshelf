@@ -117,15 +117,6 @@ public class BookDetailsViewController {
         return new FeedbackKey();
     }
 
-    @PostMapping("/deletebook")
-    public String deleteBook() {
-        if (currentBook.isPresent()) {
-            bookRepository.deleteById(currentBook.get().getId());
-            return "redirect:/";
-        }
-        throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
-    }
-
     @PostMapping("/deletereview")
     public String deleteReview(@ModelAttribute("feedbackkey") FeedbackKey feedbackKey) {
         if (feedbackKey.getUserId() != null && feedbackKey.getBookId() != null && currentBook.isPresent()) {

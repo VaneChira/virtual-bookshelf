@@ -1,12 +1,16 @@
 package com.project.bookstore.service;
 
 import com.project.bookstore.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Set;
 
 public interface BookService {
      List<Book> findAll();
+
+     Page<Book> findAll(Pageable pageable);
 
      Book findBookById(Long id);
 

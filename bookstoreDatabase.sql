@@ -156,3 +156,7 @@ SELECT COUNT(*) as count_books, u.id as 'user_id' from user u
                         where ub.book_state = 3
                         group by ub.user_id
                         ORDER BY count_books DESC;
+
+ALTER TABLE `book` MODIFY `description` TEXT;
+ALTER TABLE `author` MODIFY `description` TEXT;
+ALTER TABLE `genres` MODIFY `description` TEXT;
