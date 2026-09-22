@@ -10,6 +10,7 @@ import com.project.bookstore.repository.UserRepository;
 import com.project.bookstore.service.BookProgressService;
 import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -117,6 +118,7 @@ public class BookDetailsViewController {
         return new FeedbackKey();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/deletebook")
     public String deleteBook() {
         if (currentBook.isPresent()) {

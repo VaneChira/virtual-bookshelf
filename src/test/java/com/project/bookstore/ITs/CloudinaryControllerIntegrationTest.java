@@ -16,6 +16,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,6 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // SecurityConfiguration now takes BCryptPasswordEncoder as a constructor arg, sourced from
 // PasswordEncoderConfiguration; @WebMvcTest doesn't scan that config class on its own.
 @Import(PasswordEncoderConfiguration.class)
+// upload-cover is now @PreAuthorize("hasRole('ADMIN')"); that's enforced by a method
+// interceptor independent of the (disabled) filter chain, so it still needs a principal.
+@WithMockUser(authorities = "ROLE_ADMIN")
 class CloudinaryControllerIntegrationTest {
 
     @Autowired
