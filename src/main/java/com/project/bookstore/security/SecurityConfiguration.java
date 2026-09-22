@@ -40,7 +40,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/books/**").hasAuthority(RoleName.ROLE_ADMIN)
                 .antMatchers(HttpMethod.PUT, "/api/books/**").hasAuthority(RoleName.ROLE_ADMIN)
                 .antMatchers(HttpMethod.DELETE, "/api/books/**").hasAuthority(RoleName.ROLE_ADMIN)
-                .antMatchers("/bookdetails/deletebook").hasAuthority(RoleName.ROLE_ADMIN)
                 .antMatchers("/admin/**").hasAuthority(RoleName.ROLE_ADMIN)
                 .anyRequest().authenticated()
                 .and()

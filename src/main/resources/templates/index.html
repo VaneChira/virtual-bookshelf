@@ -185,9 +185,10 @@
                 <tbody>
                 <tr th:each="book: ${books}">
                     <td class="w-15">
-                        <a th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="250px"
+                        <a th:unless="${isAdmin}" th:href="@{'/bookdetails/' + ${book.id}}"> <img class="img-fluid rounded" height="250px"
                                                                            th:src="${book.imageUrl}"
                                                                            width="180px"/> </a>
+                        <img th:if="${isAdmin}" class="img-fluid rounded" height="250px" th:src="${book.imageUrl}" width="180px"/>
                     </td>
                     <td th:text="${book.bookTitle}"/>
                     <td><span class="small text-muted text-uppercase mb-2" th:each="a, iterStat : ${book.authorInBooks}"
@@ -200,7 +201,7 @@
         </div>
     </div>
     <hr>
-    <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
+    <li th:unless="${isAdmin}"><a th:href="@{/}"> Explore</a> for a similar book.</li>
 </div>
 
 
@@ -210,7 +211,7 @@
     <h5> Looking for a book?</h5>
     <ul class="nav" id="loadBooks " type="circle">
         <li> Search by title and double-check the spelling.</li>
-        <li><a th:href="@{/}"> Explore</a> for a similar book.</li>
+        <li th:unless="${isAdmin}"><a th:href="@{/}"> Explore</a> for a similar book.</li>
     </ul>
 </div>
 </body>

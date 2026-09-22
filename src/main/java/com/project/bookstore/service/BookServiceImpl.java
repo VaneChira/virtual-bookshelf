@@ -4,6 +4,8 @@ import com.project.bookstore.exception.ResourceNotFoundException;
 import com.project.bookstore.model.Book;
 import com.project.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,6 +20,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
 

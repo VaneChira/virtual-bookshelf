@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="ISO-8859-1">
+    <title th:text="${book.id} == null ? 'Add Book' : 'Edit Book'"></title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <style>
+        /* style.css sets .form-control { height: 46px !important; } globally, which
+           overrides normal specificity — these need !important too to win over it. */
+        #description {
+            height: 90px !important;
+            transition: height 0.2s ease;
+        }
+        #description:focus {
+            height: 200px !important;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="/fragments/header.html :: header"></div>
+
+<br>
+<br>
+
+<div class="container">
+    <h1 th:text="${book.id} == null ? 'Add Book' : 'Edit Book'"></h1>
+
+    <form th:action="${book.id} == null ? @{/admin/books} : @{'/admin/books/' + ${book.id}}"
+          method="post" enctype="multipart/form-data" th:object="${book}">
+
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="form-group">
+                    <label class="control-label" for="bookTitle">Title</label>
+                    <input id="bookTitle" class="form-control" th:field="*{bookTitle}" required autofocus="autofocus"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="authorNames">Author(s)</label>
+                    <input id="authorNames" name="authorNames" class="form-control"
+                           th:value="${book.authorInBooks != null ? #strings.listJoin(book.authorInBooks.![name], ', ') : ''}"
+                           placeholder="Comma-separated, e.g. Dan Brown, Veronica Roth"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="description">Description</label>
+                    <textarea id="description" class="form-control" rows="3" th:field="*{description}"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="genreNames">Genre(s)</label>
+                    <input id="genreNames" name="genreNames" class="form-control"
+                           th:value="${book.genresInBooks != null ? #strings.listJoin(book.genresInBooks.![type], ', ') : ''}"
+                           placeholder="Comma-separated, e.g. Mystery, History"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="pages">Pages</label>
+                    <input id="pages" type="number" class="form-control" th:field="*{pages}"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="year">Year</label>
+                    <input id="year" type="number" class="form-control" th:field="*{year}"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="language">Language</label>
+                    <input id="language" class="form-control" th:field="*{language}"/>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" th:text="${book.id} == null ? 'Add Book' : 'Update Book'"></button>
+                    <a th:href="@{/admin}" class="btn btn-light">Cancel</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="coverImage">Cover image</label>
+                    <div th:if="${book.imageUrl}">
+                        <img th:src="${book.imageUrl}" class="img-fluid rounded mb-2"/>
+                    </div>
+                    <input id="coverImage" type="file" name="coverImage" class="form-control-file"/>
+                    <small class="form-text text-muted" th:if="${book.imageUrl}">Leave empty to keep the current cover.</small>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

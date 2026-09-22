@@ -148,13 +148,6 @@
             <div class="dropdown-btn" th:unless="${isCurrentlyReading}">
                 <input type="hidden">
             </div>
-            <div class="dropdown-btn" th:if="${isAdmin}">
-                <button class="btn btn-outline-dark" data-target="#deleteBookWindow" data-toggle="modal"
-                        type="button">Delete
-                </button>
-                <div th:insert="fragments/delete-book.html :: deletebook" th:with="book=${book}"></div>
-                <!--include fragmentul cu injectare de parametru (noul parametrul 'book' in fragment va avea valoarea ${book} de aici-->
-            </div>
             <hr>
 
             <div class="progress" th:if="${isCurrentlyReadingOrRead}">

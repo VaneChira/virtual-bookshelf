@@ -17,4 +17,6 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
             "INNER JOIN book b\n" +
             "ON b.id = gib.book_id;\n", nativeQuery = true)
     Set<Genre> getAllUsedGenres();
+
+    Genre findByType(String type);
 }

@@ -7,17 +7,22 @@ import com.project.bookstore.repository.AuthorRepository;
 import com.project.bookstore.repository.GenreRepository;
 import com.project.bookstore.service.BookService;
 import com.project.bookstore.service.CloudinaryService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Admin book management (list/add/edit/delete), server-rendered via Thymeleaf.
@@ -39,19 +44,19 @@ public class AdminBookController {
         this.cloudinaryService = cloudinaryService;
     }
 
-    @ModelAttribute("authors")
-    public List<Author> authors() {
-        return authorRepository.findAll();
-    }
-
-    @ModelAttribute("genres")
-    public List<Genre> genres() {
-        return genreRepository.findAll();
-    }
+    private static final int PAGE_SIZE = 10;
 
     @GetMapping("/admin")
-    public String dashboard(Model model) {
-        model.addAttribute("books", bookService.findAll());
+    public String dashboard(@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "newest") String sort,
+                             Model model) {
+        final var direction = "oldest".equals(sort) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        final var books = bookService.findAll(PageRequest.of(page, PAGE_SIZE, Sort.by(direction, "id")));
+        model.addAttribute("books", books);
+        model.addAttribute("sort", sort);
+        model.addAttribute("totalBooks", books.getTotalElements());
+        model.addAttribute("totalAuthors", authorRepository.count());
+        model.addAttribute("totalGenres", genreRepository.count());
         return "admin/dashboard";
     }
 
@@ -66,18 +71,20 @@ public class AdminBookController {
     @PostMapping("/admin/books")
     public String createBook(@Valid @ModelAttribute Book book,
                               BindingResult bindingResult,
-                              @RequestParam(required = false) List<Long> authorIds,
-                              @RequestParam(required = false) List<Long> genreIds,
-                              @RequestParam(required = false) MultipartFile coverImage) throws IOException {
+                              @RequestParam(required = false) String authorNames,
+                              @RequestParam(required = false) String genreNames,
+                              @RequestParam(required = false) MultipartFile coverImage,
+                              RedirectAttributes redirectAttributes) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/book-form";
         }
-        book.setAuthorInBooks(resolveAuthors(authorIds));
-        book.setGenresInBooks(resolveGenres(genreIds));
+        book.setAuthorInBooks(resolveAuthors(authorNames));
+        book.setGenresInBooks(resolveGenres(genreNames));
         if(coverImage != null && !coverImage.isEmpty()) {
             book.setImageUrl(cloudinaryService.uploadImage(coverImage));
         }
         bookService.saveBook(book);
+        redirectAttributes.addFlashAttribute("successMessage", "\"" + book.getBookTitle() + "\" was added successfully.");
         return "redirect:/admin";
     }
 
@@ -91,14 +98,14 @@ public class AdminBookController {
     public String updateBook(@PathVariable Long id,
                               @Valid @ModelAttribute Book book,
                               BindingResult bindingResult,
-                              @RequestParam(required = false) List<Long> authorIds,
-                              @RequestParam(required = false) List<Long> genreIds,
+                              @RequestParam(required = false) String authorNames,
+                              @RequestParam(required = false) String genreNames,
                               @RequestParam(required = false) MultipartFile coverImage) throws IOException {
         if (bindingResult.hasErrors()) {
             return "admin/book-form";
         }
-        book.setAuthorInBooks(resolveAuthors(authorIds));
-        book.setGenresInBooks(resolveGenres(genreIds));
+        book.setAuthorInBooks(resolveAuthors(authorNames));
+        book.setGenresInBooks(resolveGenres(genreNames));
         if (coverImage != null && !coverImage.isEmpty()) {
             book.setImageUrl(cloudinaryService.uploadImage(coverImage));
         }
@@ -112,17 +119,44 @@ public class AdminBookController {
         return "redirect:/admin";
     }
 
-    private Set<Author> resolveAuthors(List<Long> authorIds) {
-        if (authorIds == null) {
-            return new HashSet<>();
+    private Set<Author> resolveAuthors(String authorNames) {
+        final var authors = new HashSet<Author>();
+        for (String name : splitNames(authorNames)) {
+            final var existing = authorRepository.findByName(name);
+            if (existing != null) {
+                authors.add(existing);
+            } else {
+                final var newAuthor = new Author();
+                newAuthor.setName(name);
+                authors.add(authorRepository.save(newAuthor));
+            }
         }
-        return new HashSet<>(authorRepository.findAllById(authorIds));
+        return authors;
     }
 
-    private Set<Genre> resolveGenres(List<Long> genreIds) {
-        if (genreIds == null) {
-            return new HashSet<>();
+    private Set<Genre> resolveGenres(String genreNames) {
+        final var genres = new HashSet<Genre>();
+        for (String type : splitNames(genreNames)) {
+            final var existing = genreRepository.findByType(type);
+            if (existing != null) {
+                genres.add(existing);
+            } else {
+                final var newGenre = new Genre();
+                newGenre.setType(type);
+                genres.add(genreRepository.save(newGenre));
+            }
         }
-        return new HashSet<>(genreRepository.findAllById(genreIds));
+        return genres;
+    }
+
+    private List<String> splitNames(String commaSeparated) {
+        if (commaSeparated == null || commaSeparated.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(commaSeparated.split(","))
+                .map(String::trim)
+                .filter(name -> !name.isEmpty())
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

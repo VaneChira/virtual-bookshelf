@@ -10,7 +10,6 @@ import com.project.bookstore.repository.UserRepository;
 import com.project.bookstore.service.BookProgressService;
 import com.project.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -116,16 +115,6 @@ public class BookDetailsViewController {
     @ModelAttribute("feedbackkey")
     public FeedbackKey feedbackKey() {
         return new FeedbackKey();
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/deletebook")
-    public String deleteBook() {
-        if (currentBook.isPresent()) {
-            bookRepository.deleteById(currentBook.get().getId());
-            return "redirect:/";
-        }
-        throw new ResourceNotFoundException("Book id not set", Book.class.getSimpleName());
     }
 
     @PostMapping("/deletereview")
