@@ -34,6 +34,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name="author_id"))
     @JsonIgnoreProperties("booksForAuthors")
+    @OrderBy("name")
     Set<Author> authorInBooks;
 
     @NotBlank
@@ -46,6 +47,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name="genre_id"))
     @JsonIgnoreProperties("booksForGenre")
+    @OrderBy("type")
     Set<Genre> genresInBooks;
 
     @Column(name="image_url")

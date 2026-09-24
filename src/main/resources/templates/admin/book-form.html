@@ -10,11 +10,12 @@
     <style>
         /* style.css sets .form-control { height: 46px !important; } globally, which
            overrides normal specificity — these need !important too to win over it. */
-        #description {
+        #descriptionEditor {
             height: 90px !important;
+            overflow-y: auto;
             transition: height 0.2s ease;
         }
-        #description:focus {
+        #descriptionEditor:focus {
             height: 200px !important;
         }
     </style>
@@ -31,7 +32,7 @@
     <p class="text-muted" th:if="${book.id} == null">All fields are required.</p>
     <p class="text-muted" th:unless="${book.id} == null">All fields are required, except the cover image — leave it empty to keep the current one.</p>
 
-    <form th:action="${book.id} == null ? @{/admin/books} : @{'/admin/books/' + ${book.id}}"
+    <form id="bookForm" th:action="${book.id} == null ? @{/admin/books} : @{'/admin/books/' + ${book.id}}"
           method="post" enctype="multipart/form-data" th:object="${book}">
 
         <div class="row">
@@ -52,8 +53,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="description">Description</label>
-                    <textarea id="description" class="form-control" rows="3" required th:field="*{description}"></textarea>
+                    <label class="control-label" for="descriptionEditor">Description</label>
+                    <div class="btn-group btn-group-sm mb-1" role="group">
+                        <button type="button" class="btn btn-outline-dark" onmousedown="event.preventDefault()" onclick="document.execCommand('bold')"><b>B</b></button>
+                        <button type="button" class="btn btn-outline-dark" onmousedown="event.preventDefault()" onclick="document.execCommand('italic')"><i>I</i></button>
+                        <button type="button" class="btn btn-outline-dark" onmousedown="event.preventDefault()" onclick="document.execCommand('underline')"><u>U</u></button>
+                        <button type="button" class="btn btn-outline-dark" onmousedown="event.preventDefault()" onclick="document.execCommand('outdent')" title="Decrease indent"><span class="fa fa-outdent"></span></button>
+                        <button type="button" class="btn btn-outline-dark" onmousedown="event.preventDefault()" onclick="document.execCommand('indent')" title="Increase indent"><span class="fa fa-indent"></span></button>
+                    </div>
+                    <div id="descriptionEditor" class="form-control" contenteditable="true" th:utext="*{description}"></div>
+                    <input type="hidden" id="description" name="description" th:value="*{description}"/>
                     <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                 </div>
 
@@ -103,6 +112,12 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('bookForm').addEventListener('submit', function () {
+        document.getElementById('description').value = document.getElementById('descriptionEditor').innerHTML;
+    });
+</script>
 
 </body>
 </html>

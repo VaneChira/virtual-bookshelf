@@ -8837,5 +8837,41 @@ body {
 .login,
 .image { max-height: 100vh; }
 
+/* Book details "See more" description toggle (bookdetails.html's previewContent
+   fragment, also reused standalone in the admin dashboard's preview modal - lives here
+   instead of a page-scoped <style> so it applies in both places). Only the description
+   text is height-capped when title+description+table together would end up taller than
+   the cover image, and only by as much as needed to bring the block back down to that
+   height - title/table are never touched. */
+.book-description-panel {
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.3s ease;
+}
+.book-description-panel.clipped:not(.expanded)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  pointer-events: none;
+}
+#seeMoreBtn {
+  display: none;
+  margin-bottom: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #000;
+  text-decoration: underline;
+}
+#seeMoreBtn:hover,
+#seeMoreBtn:focus {
+  color: #000;
+  text-decoration: underline;
+}
+
 
 
