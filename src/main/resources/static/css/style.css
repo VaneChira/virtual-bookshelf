@@ -8392,6 +8392,39 @@ h1, h2, h3, h4, h5,
     .searchform .search span {
       font-size: 18px; }
 
+.search-wrapper {
+  position: relative; }
+
+.search-suggestions {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000; }
+  .search-suggestions .search-suggestion-item a {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+    text-decoration: none; }
+    .search-suggestions .search-suggestion-item a:hover {
+      background: #f5f5f5; }
+  .search-suggestions .search-suggestion-title {
+    font-size: 14px;
+    color: #000; }
+  .search-suggestions .search-suggestion-author {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5); }
+
 .form-control {
   height: 46px !important;
   background: #fff !important;
@@ -8803,6 +8836,42 @@ body {
        vertical resize. */
 .login,
 .image { max-height: 100vh; }
+
+/* Book details "See more" description toggle (bookdetails.html's previewContent
+   fragment, also reused standalone in the admin dashboard's preview modal - lives here
+   instead of a page-scoped <style> so it applies in both places). Only the description
+   text is height-capped when title+description+table together would end up taller than
+   the cover image, and only by as much as needed to bring the block back down to that
+   height - title/table are never touched. */
+.book-description-panel {
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.3s ease;
+}
+.book-description-panel.clipped:not(.expanded)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  pointer-events: none;
+}
+#seeMoreBtn {
+  display: none;
+  margin-bottom: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #000;
+  text-decoration: underline;
+}
+#seeMoreBtn:hover,
+#seeMoreBtn:focus {
+  color: #000;
+  text-decoration: underline;
+}
 
 
 

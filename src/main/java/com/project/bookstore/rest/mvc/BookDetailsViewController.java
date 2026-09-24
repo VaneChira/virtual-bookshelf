@@ -44,7 +44,10 @@ public class BookDetailsViewController {
 
 
     @GetMapping("/{id}")
-    public String bookDetails(@PathVariable("id") Long id, Model model) {
+    public String bookDetails(@PathVariable("id") Long id,
+                               @RequestParam(required = false) Boolean preview,
+                               Model model) {
+        model.addAttribute("isPreview", Boolean.TRUE.equals(preview));
         final var book = bookService.findBookById(id);
         currentBook = Optional.of(book);
         final var userId = getUser().getId();
@@ -104,7 +107,7 @@ public class BookDetailsViewController {
                     .get()
                     .getType()));
         }
-        return "bookdetails";
+        return Boolean.TRUE.equals(preview) ? "bookdetails :: previewContent" : "bookdetails";
     }
 
     @ModelAttribute("newrating")

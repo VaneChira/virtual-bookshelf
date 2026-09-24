@@ -15,6 +15,10 @@ public class BookUnitTest extends BaseTest {
         final var countAll = bookRepository.findAll().size();
         final var newBook = new Book();
         newBook.setBookTitle("Test Book");
+        newBook.setDescription("A test description.");
+        newBook.setPages(200L);
+        newBook.setYear(2020);
+        newBook.setLanguage("English");
         final var addedBook = bookRepository.save(newBook);
         final var countAfterAdd = bookRepository.findAll().size();
         assert (countAll + 1 == countAfterAdd);

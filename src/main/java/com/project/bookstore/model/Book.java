@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Getter
@@ -33,8 +34,10 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name="author_id"))
     @JsonIgnoreProperties("booksForAuthors")
+    @OrderBy("name")
     Set<Author> authorInBooks;
 
+    @NotBlank
     @Column(name="description")
     private String description;
 
@@ -44,17 +47,21 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name="genre_id"))
     @JsonIgnoreProperties("booksForGenre")
+    @OrderBy("type")
     Set<Genre> genresInBooks;
 
     @Column(name="image_url")
     private String imageUrl;
 
+    @NotNull
     @Column(name = "pages")
     private Long pages;
 
+    @NotNull
     @Column(name = "year")
     private Integer year;
 
+    @NotBlank
     @Column(name = "language")
     private String language;
 

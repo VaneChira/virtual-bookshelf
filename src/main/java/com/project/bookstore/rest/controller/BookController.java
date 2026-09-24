@@ -10,8 +10,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/books")
@@ -30,6 +32,11 @@ public class BookController {
         return bookService.findAll();
     }
 
+    @GetMapping("/suggestions")
+    public Set<Book> suggestions(@RequestParam String keyword){
+        return bookService.findSuggestions(keyword);
+    }
+
     @GetMapping("/getBookById/{id}")
     public Book getBookById(@PathVariable Long id){
         return bookService.findBookById(id);
@@ -37,7 +44,7 @@ public class BookController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addBook")
-    public Book addBook(@RequestBody Book book){
+    public Book addBook(@Valid @RequestBody Book book){
         bookService.saveBook(book);
         return book;
     }

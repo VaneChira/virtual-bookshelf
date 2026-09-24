@@ -67,6 +67,10 @@ public class BookDeletionIntegrationTest extends BaseTest {
         final var genre = genreRepository.findById(HISTORY_GENRE_ID).get();
         final var book = new Book();
         book.setBookTitle("Deletion Regression Test Book - Genre");
+        book.setDescription("A test description.");
+        book.setPages(200L);
+        book.setYear(2020);
+        book.setLanguage("English");
         book.setGenresInBooks(Set.of(genre));
         final var savedBook = bookRepository.save(book);
 
@@ -91,6 +95,10 @@ public class BookDeletionIntegrationTest extends BaseTest {
 
         final var book = new Book();
         book.setBookTitle("Deletion Regression Test Book - Author");
+        book.setDescription("A test description.");
+        book.setPages(200L);
+        book.setYear(2020);
+        book.setLanguage("English");
         book.setAuthorInBooks(Set.of(savedAuthor));
         final var savedBook = bookRepository.save(book);
 
@@ -121,6 +129,10 @@ public class BookDeletionIntegrationTest extends BaseTest {
         final var genre = genreRepository.findById(HISTORY_GENRE_ID).get();
         final var book = new Book();
         book.setBookTitle("Admin Interface Deletion Test Book");
+        book.setDescription("A test description.");
+        book.setPages(200L);
+        book.setYear(2020);
+        book.setLanguage("English");
         book.setGenresInBooks(Set.of(genre));
         final var savedBook = bookRepository.save(book);
 

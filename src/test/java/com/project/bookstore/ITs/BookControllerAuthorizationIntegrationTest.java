@@ -73,7 +73,8 @@ class BookControllerAuthorizationIntegrationTest {
         mockMvc.perform(post("/api/books/addBook")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"bookTitle\":\"Some Book\"}"))
+                        .content("{\"bookTitle\":\"Some Book\",\"description\":\"A test description.\"," +
+                                "\"pages\":200,\"year\":2020,\"language\":\"English\"}"))
                 .andExpect(status().isOk());
     }
 

@@ -33,6 +33,10 @@ public class BookIntegrationTest extends BaseTest {
 
         final var book = new Book();
         book.setBookTitle("Test Book");
+        book.setDescription("A test description.");
+        book.setPages(200L);
+        book.setYear(2020);
+        book.setLanguage("English");
         book.setGenresInBooks(genres);
         final var addedBook = bookRepository.save(book);
 

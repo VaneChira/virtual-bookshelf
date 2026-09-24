@@ -206,13 +206,8 @@
 
 
 <div th:if="${books.empty}">
-    <h5>No results found for "<span th:text="${keyword}"/>". </h5>
-    <hr>
-    <h5> Looking for a book?</h5>
-    <ul class="nav" id="loadBooks " type="circle">
-        <li> Search by title and double-check the spelling.</li>
-        <li th:unless="${isAdmin}"><a th:href="@{/}"> Explore</a> for a similar book.</li>
-    </ul>
+    <h5 th:if="${#strings.isEmpty(keyword)}">No results found. Please search by title or author.</h5>
+    <h5 th:unless="${#strings.isEmpty(keyword)}">No results found for "<span th:text="${keyword}"/>". </h5>
 </div>
 </body>
 </html>

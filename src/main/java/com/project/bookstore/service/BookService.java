@@ -22,5 +22,7 @@ public interface BookService {
 
     Set<Book> listAll(String keyword);
 
+    Set<Book> findSuggestions(String keyword);
+
     Set<Book> getStatelessBooksByUserId(Long userId);
 }

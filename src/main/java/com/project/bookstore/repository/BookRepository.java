@@ -10,8 +10,17 @@ import java.util.Set;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    @Query(value = "SELECT * FROM book b WHERE CONCAT(b.book_title,' ') LIKE %:keyword%", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT b.* FROM book b " +
+            "LEFT JOIN books_author ba ON b.id = ba.book_id " +
+            "LEFT JOIN author a ON ba.author_id = a.id " +
+            "WHERE b.book_title LIKE %:keyword% OR a.name LIKE %:keyword%", nativeQuery = true)
     Set<Book> search(String keyword);
+
+    @Query(value = "SELECT DISTINCT b.* FROM book b " +
+            "LEFT JOIN books_author ba ON b.id = ba.book_id " +
+            "LEFT JOIN author a ON ba.author_id = a.id " +
+            "WHERE b.book_title LIKE %:keyword% OR a.name LIKE %:keyword% LIMIT 5", nativeQuery = true)
+    Set<Book> findSuggestions(String keyword);
 
     @Query(value = "SELECT * from book b\n" +
             "INNER JOIN genres_in_books gib\n" +
@@ -22,23 +31,28 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> relatedBooksBasedOnGender(Long bookId, String genre);
 
     @Query(value = "SELECT * FROM book b\n" +
-            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=1 AND ub.user_id=:userId", nativeQuery = true)
+            "INNER JOIN user_book ub ON b.id=ub.book_id " +
+            "WHERE ub.book_state=1 AND ub.user_id=:userId", nativeQuery = true)
     List<Book> findAllWishlistByUser(Long userId);
 
     @Query(value = "SELECT * FROM book b\n" +
-            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=2 AND ub.user_id=:userId", nativeQuery = true)
+            "INNER JOIN user_book ub ON b.id=ub.book_id " +
+            "WHERE ub.book_state=2 AND ub.user_id=:userId", nativeQuery = true)
     List<Book> findAllCurrentlyReadingByUser(Long userId);
 
     @Query(value = "SELECT * FROM book b\n" +
-            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE ub.book_state=3 AND ub.user_id=:userId", nativeQuery = true)
+            "INNER JOIN user_book ub ON b.id=ub.book_id " +
+            "WHERE ub.book_state=3 AND ub.user_id=:userId", nativeQuery = true)
     List<Book> findAllReadByUser(Long userId);
 
     @Query(value = "SELECT * FROM book b\n" +
-            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE (ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
+            "INNER JOIN user_book ub ON b.id=ub.book_id " +
+            "WHERE (ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
     List<Book> findAllCurrentlyReadingAndReadByUser(Long userId);
 
     @Query(value = "SELECT * FROM book b\n" +
-            "INNER JOIN user_book ub ON b.id=ub.book_id WHERE (ub.book_state=1 OR ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
+            "INNER JOIN user_book ub ON b.id=ub.book_id " +
+            "WHERE (ub.book_state=1 OR ub.book_state=2 OR ub.book_state=3) AND ub.user_id=:userId", nativeQuery = true)
     List<Book> findAllStatedBooksByUser(Long userId);
 
 }
