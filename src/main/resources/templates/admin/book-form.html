@@ -28,6 +28,8 @@
 
 <div class="container">
     <h1 th:text="${book.id} == null ? 'Add Book' : 'Edit Book'"></h1>
+    <p class="text-muted" th:if="${book.id} == null">All fields are required.</p>
+    <p class="text-muted" th:unless="${book.id} == null">All fields are required, except the cover image — leave it empty to keep the current one.</p>
 
     <form th:action="${book.id} == null ? @{/admin/books} : @{'/admin/books/' + ${book.id}}"
           method="post" enctype="multipart/form-data" th:object="${book}">
@@ -43,36 +45,42 @@
 
                 <div class="form-group">
                     <label class="control-label" for="authorNames">Author(s)</label>
-                    <input id="authorNames" name="authorNames" class="form-control"
+                    <input id="authorNames" name="authorNames" class="form-control" required
                            th:value="${book.authorInBooks != null ? #strings.listJoin(book.authorInBooks.![name], ', ') : ''}"
                            placeholder="Comma-separated, e.g. Dan Brown, Veronica Roth"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('authorInBooks')}" th:errors="*{authorInBooks}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="description">Description</label>
-                    <textarea id="description" class="form-control" rows="3" th:field="*{description}"></textarea>
+                    <textarea id="description" class="form-control" rows="3" required th:field="*{description}"></textarea>
+                    <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="genreNames">Genre(s)</label>
-                    <input id="genreNames" name="genreNames" class="form-control"
+                    <input id="genreNames" name="genreNames" class="form-control" required
                            th:value="${book.genresInBooks != null ? #strings.listJoin(book.genresInBooks.![type], ', ') : ''}"
                            placeholder="Comma-separated, e.g. Mystery, History"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('genresInBooks')}" th:errors="*{genresInBooks}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="pages">Pages</label>
-                    <input id="pages" type="number" class="form-control" th:field="*{pages}"/>
+                    <input id="pages" type="number" class="form-control" required th:field="*{pages}"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('pages')}" th:errors="*{pages}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="year">Year</label>
-                    <input id="year" type="number" class="form-control" th:field="*{year}"/>
+                    <input id="year" type="number" class="form-control" required th:field="*{year}"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="language">Language</label>
-                    <input id="language" class="form-control" th:field="*{language}"/>
+                    <input id="language" class="form-control" required th:field="*{language}"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></span>
                 </div>
 
                 <div class="form-group">
@@ -87,7 +95,8 @@
                     <div th:if="${book.imageUrl}">
                         <img th:src="${book.imageUrl}" class="img-fluid rounded mb-2"/>
                     </div>
-                    <input id="coverImage" type="file" name="coverImage" class="form-control-file"/>
+                    <input id="coverImage" type="file" name="coverImage" class="form-control-file" th:required="${book.id} == null"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></span>
                     <small class="form-text text-muted" th:if="${book.imageUrl}">Leave empty to keep the current cover.</small>
                 </div>
             </div>

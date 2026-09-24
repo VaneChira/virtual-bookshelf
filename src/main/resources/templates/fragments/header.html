@@ -11,14 +11,17 @@
                  src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs-media-cache-ak0.pinimg.com%2Foriginals%2F6a%2F93%2F2c%2F6a932ce2d58dc66ecd6a74a843495e80.jpg&f=1&nofb=1">
 
             <a class="navbar-brand" th:href="${isAdmin} ? @{/admin} : @{/}">Welcome <span th:text="${currentUserName}?:'reader'"></span></a>
-            <form sec:authorize="isAuthenticated()" th:action="@{/}" class="searchform order-sm-start order-lg-last">
-                <div class="form-group d-flex">
-                    <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3"
-                           placeholder="Search">
-                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
-                    </button>
-                </div>
-            </form>
+            <div sec:authorize="isAuthenticated()" class="search-wrapper order-sm-start order-lg-last">
+                <form th:action="@{/}" class="searchform">
+                    <div class="form-group d-flex">
+                        <input type="text" name="keyword" id="keyword" th:value="${keyword}" class="form-control pl-3"
+                               placeholder="Search" autocomplete="off">
+                        <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
+                        </button>
+                    </div>
+                </form>
+                <ul id="searchSuggestions" class="search-suggestions"></ul>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                     aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
@@ -67,6 +70,7 @@
     <script th:src="@{/js/popper.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/search-suggestions.js}"></script>
 </div>
 
 

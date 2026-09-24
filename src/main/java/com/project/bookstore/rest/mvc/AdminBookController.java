@@ -75,14 +75,17 @@ public class AdminBookController {
                               @RequestParam(required = false) String genreNames,
                               @RequestParam(required = false) MultipartFile coverImage,
                               RedirectAttributes redirectAttributes) throws IOException {
+
+        validateAuthorAndGenrePresence(bindingResult, authorNames, genreNames);
+        if (coverImage == null || coverImage.isEmpty()) {
+            bindingResult.rejectValue("imageUrl", "required", "A cover image is required");
+        }
+
         if (bindingResult.hasErrors()) {
             return "admin/book-form";
         }
-        book.setAuthorInBooks(resolveAuthors(authorNames));
-        book.setGenresInBooks(resolveGenres(genreNames));
-        if(coverImage != null && !coverImage.isEmpty()) {
-            book.setImageUrl(cloudinaryService.uploadImage(coverImage));
-        }
+
+        applyAuthorGenreAndImage(book, authorNames, genreNames, coverImage);
         bookService.saveBook(book);
         redirectAttributes.addFlashAttribute("successMessage", "\"" + book.getBookTitle() + "\" was added successfully.");
         return "redirect:/admin";
@@ -100,16 +103,17 @@ public class AdminBookController {
                               BindingResult bindingResult,
                               @RequestParam(required = false) String authorNames,
                               @RequestParam(required = false) String genreNames,
-                              @RequestParam(required = false) MultipartFile coverImage) throws IOException {
+                              @RequestParam(required = false) MultipartFile coverImage,
+                             RedirectAttributes redirectAttributes) throws IOException {
+        validateAuthorAndGenrePresence(bindingResult, authorNames, genreNames);
+
         if (bindingResult.hasErrors()) {
             return "admin/book-form";
         }
-        book.setAuthorInBooks(resolveAuthors(authorNames));
-        book.setGenresInBooks(resolveGenres(genreNames));
-        if (coverImage != null && !coverImage.isEmpty()) {
-            book.setImageUrl(cloudinaryService.uploadImage(coverImage));
-        }
+
+        applyAuthorGenreAndImage(book, authorNames, genreNames, coverImage);
         bookService.updateBook(book, id);
+        redirectAttributes.addFlashAttribute("successMessage", "\"" + book.getBookTitle() + "\" was updated successfully.");
         return "redirect:/admin";
     }
 
@@ -117,6 +121,23 @@ public class AdminBookController {
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteBookById(id);
         return "redirect:/admin";
+    }
+
+    private void validateAuthorAndGenrePresence(BindingResult bindingResult, String authorNames, String genreNames) {
+        if (authorNames == null || authorNames.isBlank()) {
+            bindingResult.rejectValue("authorInBooks", "required", "At least one author is required");
+        }
+        if (genreNames == null || genreNames.isBlank()) {
+            bindingResult.rejectValue("genresInBooks", "required", "At least one genre is required");
+        }
+    }
+
+    private void applyAuthorGenreAndImage(Book book, String authorNames, String genreNames, MultipartFile coverImage) throws IOException {
+        book.setAuthorInBooks(resolveAuthors(authorNames));
+        book.setGenresInBooks(resolveGenres(genreNames));
+        if (coverImage != null && !coverImage.isEmpty()) {
+            book.setImageUrl(cloudinaryService.uploadImage(coverImage));
+        }
     }
 
     private Set<Author> resolveAuthors(String authorNames) {

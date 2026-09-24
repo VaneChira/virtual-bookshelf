@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,6 +41,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -169,10 +171,15 @@ class AdminBookControllerIntegrationTest {
         when(authorRepository.findByName("Dan Brown")).thenReturn(author);
         when(genreRepository.findByType("Mystery")).thenReturn(genre);
 
-        mockMvc.perform(post("/admin/books")
+        final var coverImage = new MockMultipartFile("coverImage", "cover.jpg", "image/jpeg", "fake-image-bytes".getBytes());
+        mockMvc.perform(multipart("/admin/books")
+                        .file(coverImage)
                         .with(csrf())
                         .param("bookTitle", "Some Book")
                         .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
                         .param("authorNames", "Dan Brown")
                         .param("genreNames", "Mystery"))
                 .andExpect(status().is3xxRedirection());
@@ -196,9 +203,15 @@ class AdminBookControllerIntegrationTest {
         when(genreRepository.findByType("New Genre")).thenReturn(null);
         when(genreRepository.save(any(Genre.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        mockMvc.perform(post("/admin/books")
+        final var coverImage = new MockMultipartFile("coverImage", "cover.jpg", "image/jpeg", "fake-image-bytes".getBytes());
+        mockMvc.perform(multipart("/admin/books")
+                        .file(coverImage)
                         .with(csrf())
                         .param("bookTitle", "Some Book")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
                         .param("authorNames", "New Author")
                         .param("genreNames", "New Genre"))
                 .andExpect(status().is3xxRedirection());
@@ -215,24 +228,55 @@ class AdminBookControllerIntegrationTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_ADMIN")
-    void createBook_setsEmptyAuthorsAndGenres_whenNoneSelected() throws Exception {
+    void createBook_redisplaysFormWithError_whenAuthorAndGenreAreMissing() throws Exception {
         mockMvc.perform(post("/admin/books")
                         .with(csrf())
-                        .param("bookTitle", "No Relations Book"))
-                .andExpect(status().is3xxRedirection());
+                        .param("bookTitle", "No Relations Book")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/book-form"))
+                .andExpect(model().attributeHasFieldErrors("book", "authorInBooks"))
+                .andExpect(model().attributeHasFieldErrors("book", "genresInBooks"));
 
-        final var captor = forClass(Book.class);
-        verify(bookService).saveBook(captor.capture());
-        assertThat(captor.getValue().getAuthorInBooks()).isEmpty();
-        assertThat(captor.getValue().getGenresInBooks()).isEmpty();
+        verify(bookService, never()).saveBook(any(Book.class));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_ADMIN")
+    void createBook_redisplaysFormWithError_whenCoverImageIsMissing() throws Exception {
+        mockMvc.perform(post("/admin/books")
+                        .with(csrf())
+                        .param("bookTitle", "No Cover Book")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
+                        .param("authorNames", "Some Author")
+                        .param("genreNames", "Some Genre"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/book-form"))
+                .andExpect(model().attributeHasFieldErrors("book", "imageUrl"));
+
+        verify(bookService, never()).saveBook(any(Book.class));
     }
 
     @Test
     @WithMockUser(authorities = "ROLE_ADMIN")
     void createBook_addsSuccessFlashMessage_withBookTitle() throws Exception {
-        mockMvc.perform(post("/admin/books")
+        final var coverImage = new MockMultipartFile("coverImage", "cover.jpg", "image/jpeg", "fake-image-bytes".getBytes());
+        mockMvc.perform(multipart("/admin/books")
+                        .file(coverImage)
                         .with(csrf())
-                        .param("bookTitle", "Some Book"))
+                        .param("bookTitle", "Some Book")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
+                        .param("authorNames", "Some Author")
+                        .param("genreNames", "Some Genre"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attribute("successMessage", "\"Some Book\" was added successfully."));
     }
@@ -250,6 +294,32 @@ class AdminBookControllerIntegrationTest {
         verify(bookService, never()).saveBook(any(Book.class));
     }
 
+    /**
+     * Regression test: author/genre resolution used to run before the hasErrors()
+     * check, so a brand-new author/genre name got persisted even when the overall
+     * submission failed validation for an unrelated reason (e.g. a blank title) -
+     * leaving orphaned rows behind for a book that was never actually saved.
+     */
+    @Test
+    @WithMockUser(authorities = "ROLE_ADMIN")
+    void createBook_doesNotCreateNewAuthorOrGenre_whenSubmissionFailsValidation() throws Exception {
+        mockMvc.perform(post("/admin/books")
+                        .with(csrf())
+                        .param("bookTitle", "")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
+                        .param("authorNames", "Brand New Author")
+                        .param("genreNames", "Brand New Genre"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/book-form"));
+
+        verify(authorRepository, never()).save(any(Author.class));
+        verify(genreRepository, never()).save(any(Genre.class));
+        verify(bookService, never()).saveBook(any(Book.class));
+    }
+
     @Test
     @WithMockUser(authorities = "ROLE_ADMIN")
     void updateBook_delegatesToServiceWithResolvedRelations() throws Exception {
@@ -261,13 +331,34 @@ class AdminBookControllerIntegrationTest {
         mockMvc.perform(post("/admin/books/42")
                         .with(csrf())
                         .param("bookTitle", "Updated Title")
-                        .param("authorNames", "Veronica Roth"))
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
+                        .param("authorNames", "Veronica Roth")
+                        .param("genreNames", "Some Genre"))
                 .andExpect(status().is3xxRedirection());
 
         final var captor = forClass(Book.class);
         verify(bookService).updateBook(captor.capture(), eq(42L));
         assertThat(captor.getValue().getBookTitle()).isEqualTo("Updated Title");
         assertThat(captor.getValue().getAuthorInBooks()).containsExactly(author);
+    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_ADMIN")
+    void updateBook_addsSuccessFlashMessage_withBookTitle() throws Exception {
+        mockMvc.perform(post("/admin/books/42")
+                        .with(csrf())
+                        .param("bookTitle", "Updated Title")
+                        .param("description", "A description")
+                        .param("pages", "300")
+                        .param("year", "2020")
+                        .param("language", "English")
+                        .param("authorNames", "Some Author")
+                        .param("genreNames", "Some Genre"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("successMessage", "\"Updated Title\" was updated successfully."));
     }
 
     @Test
